@@ -2,7 +2,7 @@
 
     ######################################################
     ##  CMakeLists.txt for mockFootprint v0.0		##
-    ##  Version 2019.01.31				##
+    ##  Version 2019.12.11				##
     ##							##
     ##  Copyright (C) 2019 - Chieh-An Lin		##
     ##  GNU GPLv3 - https://www.gnu.org/licenses/	##
@@ -14,7 +14,7 @@ project(mockFootprint)
 
 ## Use pkg-config to find modules
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(REQ_PKG REQUIRED gsl fftw3 cfitsio chealpix)
+pkg_check_modules(REQ_PKG REQUIRED gsl cfitsio chealpix)
 pkg_check_modules(HEALPIX_CXX healpix_cxx)
 #pkg_check_modules(MPI mpi)
 
