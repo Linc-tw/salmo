@@ -2,7 +2,7 @@
 
   //------------------------------------------------------//
   //--  commonHeader.c					--//
-  //--  Version 2019.04.15				--//
+  //--  Version 2019.12.11				--//
   //--  						--//
   //--  Copyright (C) 2018 - Chieh-An Lin		--//
   //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//

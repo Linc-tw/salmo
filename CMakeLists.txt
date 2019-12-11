@@ -15,7 +15,7 @@ project(mockFootprint)
 ## Use pkg-config to find modules
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(REQ_PKG REQUIRED gsl cfitsio chealpix)
-pkg_check_modules(HEALPIX_CXX healpix_cxx)
+pkg_check_modules(HEALPIX_CXX healpix_cxx>=3.30)
 #pkg_check_modules(MPI mpi)
 
 ## Link the required modules

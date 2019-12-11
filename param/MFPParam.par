@@ -24,7 +24,7 @@ verbose		0			## [int] 0 = default, 1 = all, 2 = no flush, 99 = silent
 ################################################################################
 ## 2. Input maps
 
-nside		128			## [int] N_side of input maps
+nside		256			## [int] N_side of input maps
 					##   Has to be a power of 2
 N_z_map		-1			## [int] Number of redshift slices of maps
 					##   Can be negative (see bin_z_map)
@@ -39,10 +39,10 @@ bin_z_map	0.2  0.8  0.2
 					##     N_z_map    4
 					##     bin_z_map  0.1  0.4  0.65  0.85  1.0
 
-denPrefix	../data/mockFootprint/anas/flask_denMap/denMap
+denPrefix	../data/mockFootprint/anser/flask_denMap/denMap
 					## [string] Prefix for input density maps
 
-lenPrefix	../data/mockFootprint/anas/flask_lenMap/lenMap
+lenPrefix	../data/mockFootprint/anser/flask_lenMap/lenMap
 					## [string] Prefix for input lensing maps
 
 runTag		_run0
@@ -57,22 +57,22 @@ runTag		_run0
 nbTypes		2			## [int] Number of types of galaxies
 					##   Maximal value = 64
 
-maskPath	0	../data/mockFootprint/anas/MFP_selection/mask_type0.fits
-maskPath	1	../data/mockFootprint/anas/MFP_selection/mask_type1.fits
+maskPath	0	../data/mockFootprint/anser/MFP_selection/mask_type0.fits
+maskPath	1	../data/mockFootprint/anser/MFP_selection/mask_type1.fits
 					## [1 int, 1 string] Index of type and path to mask for that type
 					##   The index starts from 0 and should not exceed nbTypes-1.
 					##   Have to be HEALPix maps in FITS format with the same nside
 					##   Have to be put after nbTypes
 
-nOfZPath	0	../data/mockFootprint/anas/MFP_selection/nOfZ_hist_type0.dat
-nOfZPath	1	../data/mockFootprint/anas/MFP_selection/nOfZ_hist_type1.dat
+nOfZPath	0	../data/mockFootprint/anser/MFP_selection/nOfZ_hist_type0.dat
+nOfZPath	1	../data/mockFootprint/anser/MFP_selection/nOfZ_hist_type1.dat
 					## [1 int, 1 string] Index of type and path to n(z) for that type
 					##   The index starts from 0 and should not exceed nbTypes-1.
 					##   All n(z) histogram needs to have the same redshift bins as defined by bin_z_map
 					##   Have to be ASCII files
 					##   Have to be put after nbTypes
 
-n_gal		0.3  1.5
+n_gal		0.3  0.6
 					## [float array | arcmin^-2] Galaxy number densities
 					##   The k-th value for type k galaxies
 					##   The length should be nbTypes.
@@ -81,7 +81,7 @@ n_gal		0.3  1.5
 ## 4. Lensing & outputs
 
 doNoise		1			## [int] 0 = no, 1 = yes, 2 = output both
-doWgt		0			## [int] 0 = no, 1 = yes
+doWgt		1			## [int] 0 = no, 1 = yes
 signConv	1			## [int] 0 = athena, 1 = treecorr
 sigma_eps	0.29			## [float] Ellipticity dispersion, sigma_eps^2 = 0.5 * (<epsilon_1^2> + <epsilon_2^2>) = sigma_kappa^2
 					##   Ignored if doNoise = 0
@@ -91,11 +91,11 @@ doLensing	0  1
 					##   The k-th value for type k galaxies
 					##   The length should be nbTypes.
 
-outPrefix	../data/mockFootprint/anas/MFP_galCat/galCat
+outPrefix	../data/mockFootprint/anser/MFP_galCat/galCat
 					## [string] Prefix for output files
 					##   Output file names are "%s%s%s.fits" % (outPrefix, runTag, fileTag) where fileTag is generated automatically.
 
-outStyle	1			## [int] Output style
+outStyle	64			## [int] Output style
 					##    1 = all galaxies in one file
 					##    2 = two files, one w/ lensing, one w/o
 					##   64 = one file per type

@@ -2,7 +2,7 @@
 
   //------------------------------------------------------//
   //--  sampling.c					--//
-  //--  Version 2019.10.02				--//
+  //--  Version 2019.12.11				--//
   //--  						--//
   //--  Copyright (C) 2019 - Chieh-An Lin		--//
   //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
@@ -1262,6 +1262,7 @@ void makeKappaMap(MFP_param *mPar, HPMap_t *delta, HPMap_t *kappa, interpolator_
 
 void kappaToGamma(MFP_param *mPar, HPMap_t *kappa, HPMap_t *gamma1, HPMap_t *gamma2, double_mat *kAlm, double_mat *gAlm, double_arr *weight, int l_maxx)
 {
+#ifdef __MFP_USE_HEALPIX_CXX__
   mapToAlm(mPar->nside, kappa->map, l_maxx, kAlm->matrix, weight->array);
   
   double factor;
@@ -1285,6 +1286,7 @@ void kappaToGamma(MFP_param *mPar, HPMap_t *kappa, HPMap_t *gamma1, HPMap_t *gam
   
   almToMap_spin2(l_maxx, gAlm->matrix, mPar->nside, gamma1->map, gamma2->map);
   if (mPar->verbose < 3) printf("Transformed kappa to gamma\n");
+#endif
   return;
 }
 
@@ -1327,8 +1329,10 @@ void outFitsLensingMaps(MFP_param *mPar, HPMap_t *kappa, HPMap_t *gamma1, HPMap_
 
 #define N_MAX_1 4000
 #define N_MAX_2 10000
+
 void processLensingMaps(MFP_param *mPar)
 {
+#ifdef __MFP_USE_HEALPIX_CXX__
   //-- Initialize interpolator
   double Omega_m = 0.2905;
   double dz = 0.0002;
@@ -1359,6 +1363,9 @@ void processLensingMaps(MFP_param *mPar)
   free_double_mat(gAlm);
   free_double_arr(weight);
   free_HPMap_arr(bufferMap);
+#else
+  printf("healpix_cxx not found; nothing is done.");
+#endif
   printf("------------------------------------------------------------------------\n");
   return;
 }

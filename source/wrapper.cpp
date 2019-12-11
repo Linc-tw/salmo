@@ -2,7 +2,7 @@
 
   //------------------------------------------------------//
   //--  wrapper.cpp					--//
-  //--  Version 2019.01.25				--//
+  //--  Version 2019.12.11				--//
   //--  						--//
   //--  Copyright (C) 2019 - Chieh-An Lin		--//
   //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
@@ -14,6 +14,7 @@
 #include <unistd.h>
 
 #ifdef __cplusplus
+#include <healpix_cxx/alm_healpix_tools.h>
 #include <healpix_cxx/arr.h>
 #include <healpix_cxx/pointing.h>
 #include <healpix_cxx/healpix_base.h>
@@ -70,9 +71,9 @@ void mapToAlm(long long nside, float *map, int l_maxx, double *alm, double *weig
   //-- Set to 0
   for (l=0; l<=l_maxx; l++) {
     for (m=0; m<=l; m++) {
-      alm_cxx(l, m).Set(0.0, 0.0);
-//       alm_cxx(l, m).real(0.0);
-//       alm_cxx(l, m).imag(0.0);
+//       alm_cxx(l, m).Set(0.0, 0.0);
+      alm_cxx(l, m).real(0.0);
+      alm_cxx(l, m).imag(0.0);
     }
   }
   
@@ -106,12 +107,12 @@ void almToMap_spin2(int l_maxx, double *alm, long long nside, float *map1, float
   for (m=0; m<=l; m++) {
     for (l=m; l<=l_maxx; l++) {
       index = m*(2*l_maxx+1-m)/2+l;
-      alm1_cxx(l, m).Set(alm[0+2*index], alm[1+2*index]);
-      alm2_cxx(l, m).Set(0.0, 0.0); //-- No B modes
-//       alm1_cxx(l, m).real(alm[0+2*index]);
-//       alm1_cxx(l, m).imag(alm[1+2*index]);
-//       alm2_cxx(l, m).real(0.0);
-//       alm2_cxx(l, m).imag(0.0);
+//       alm1_cxx(l, m).Set(alm[0+2*index], alm[1+2*index]);
+//       alm2_cxx(l, m).Set(0.0, 0.0); //-- No B modes
+      alm1_cxx(l, m).real(alm[0+2*index]);
+      alm1_cxx(l, m).imag(alm[1+2*index]);
+      alm2_cxx(l, m).real(0.0);
+      alm2_cxx(l, m).imag(0.0);
     }
   }
   

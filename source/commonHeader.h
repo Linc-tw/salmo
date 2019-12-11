@@ -2,7 +2,7 @@
 
   //------------------------------------------------------//
   //--  commonHeader.h					--//
-  //--  Version 2018.09.26				--//
+  //--  Version 2019.12.11				--//
   //--  						--//
   //--  Copyright (C) 2018 - Chieh-An Lin		--//
   //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
@@ -33,7 +33,7 @@
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_statistics.h>
-#include <fftw3.h>
+// #include <fftw3.h>
 
 //-- Constants
 //-- The precision of 64 bits double is 52 bits, and 2^-52 is roughly 2e-16, so we only keep 17 digits in base 10.
@@ -152,20 +152,20 @@ typedef struct {
   sampler_t **matrix;
 } sampler_mat;
 
-typedef struct {
-  int N;             //-- Resolution, should be a square
-  int length;        //-- Number of pixels
-  int ind;           //-- Index of the transformer in an array
-  double normFactor; //-- Normalization factor
-  fftw_complex *before, *kernel, *after; //-- fftw_complex elements, transformations are in-place
-  fftw_plan before_f, kernel_f, after_b; //-- fftw_plan elements, _f = forward, _b = backward
-  fftw_plan before_b;                    //-- Only used for KS inversion
-} FFT_t;
+// typedef struct {
+//   int N;             //-- Resolution, should be a square
+//   int length;        //-- Number of pixels
+//   int ind;           //-- Index of the transformer in an array
+//   double normFactor; //-- Normalization factor
+//   fftw_complex *before, *kernel, *after; //-- fftw_complex elements, transformations are in-place
+//   fftw_plan before_f, kernel_f, after_b; //-- fftw_plan elements, _f = forward, _b = backward
+//   fftw_plan before_b;                    //-- Only used for KS inversion
+// } FFT_t;
 
-typedef struct {
-  int length;
-  FFT_t **array;
-} FFT_arr;
+// typedef struct {
+//   int length;
+//   FFT_t **array;
+// } FFT_arr;
 
 typedef struct {
   int length;      //-- Number of bins
@@ -214,12 +214,12 @@ typedef struct {
 //-- Functions related to array
 void reset_double(double *lfArr, int length);
 void rescale_double(double *lfArr, int length, double factor);
-void reset_fftw_complex(fftw_complex *table, int length);
-void rescaleReal_fftw_complex(fftw_complex *table, int length, double factor);
-void rescale_fftw_complex(fftw_complex *table, int length, double factor);
-void multiplication_fftw_complex(fftw_complex *table1, fftw_complex *table2, fftw_complex *product, int length);
-void copy_fftw_complex(fftw_complex *from, fftw_complex *to, int length);
-void print_fftw_complex(fftw_complex *table, int N1);
+// void reset_fftw_complex(fftw_complex *table, int length);
+// void rescaleReal_fftw_complex(fftw_complex *table, int length, double factor);
+// void rescale_fftw_complex(fftw_complex *table, int length, double factor);
+// void multiplication_fftw_complex(fftw_complex *table1, fftw_complex *table2, fftw_complex *product, int length);
+// void copy_fftw_complex(fftw_complex *from, fftw_complex *to, int length);
+// void print_fftw_complex(fftw_complex *table, int N1);
 
 //-- Functions related to int_arr
 int_arr *initialize_int_arr(int length);
@@ -280,16 +280,16 @@ sampler_mat *initialize_sampler_mat(int N_type, int N1_array, int N2_array);
 void free_sampler_mat(sampler_mat *sampMat);
 
 //-- Functions related to FFT_t
-FFT_t *initialize_FFT_t(int N);
-void free_FFT_t(FFT_t *transformer);
-void reset_FFT_t(FFT_t *transformer);
-void execute_FFT_t(FFT_t *transformer);
+// FFT_t *initialize_FFT_t(int N);
+// void free_FFT_t(FFT_t *transformer);
+// void reset_FFT_t(FFT_t *transformer);
+// void execute_FFT_t(FFT_t *transformer);
 
 //-- Functions related to FFT_arr
-FFT_arr *initialize_FFT_arr(int N_type, int N_array);
-void free_FFT_arr(FFT_arr *transArr);
-void reset_FFT_arr(FFT_arr *transArr);
-void execute_FFT_arr(FFT_arr *transArr);
+// FFT_arr *initialize_FFT_arr(int N_type, int N_array);
+// void free_FFT_arr(FFT_arr *transArr);
+// void reset_FFT_arr(FFT_arr *transArr);
+// void execute_FFT_arr(FFT_arr *transArr);
 
 //-- Functions related to hist_t
 hist_t *initialize_hist_t(int length);
