@@ -29,75 +29,75 @@ void rescale_double(double *lfArr, int length, double factor)
   return;
 }
 
-void reset_fftw_complex(fftw_complex *table, int length)
-{
-  double *c;
-  int i;
-  for (i=0; i<length; i++) {
-    c = table[i];
-    c[0] = 0.0;
-    c[1] = 0.0;
-  }
-  return;
-}
-
-void rescaleReal_fftw_complex(fftw_complex *table, int length, double factor)
-{
-  int i;
-  for (i=0; i<length; i++) table[i][0] *= factor;
-  return;
-}
-
-void rescale_fftw_complex(fftw_complex *table, int length, double factor)
-{
-  double *c;
-  int i;
-  for (i=0; i<length; i++) {
-    c = table[i];
-    c[0] *= factor;
-    c[1] *= factor;
-  }
-  return;
-}
-
-void multiplication_fftw_complex(fftw_complex *table1, fftw_complex *table2, fftw_complex *product, int length)
-{
-  double value, *c1, *c2;
-  int i;
-  for (i=0; i<length; i++) {
-    c1 = table1[i];
-    c2 = table2[i];
-    value         = c1[0] * c2[0] - c1[1] * c2[1];
-    product[i][1] = c1[0] * c2[1] + c1[1] * c2[0];
-    product[i][0] = value;
-  }
-  return;
-}
-
-void copy_fftw_complex(fftw_complex *from, fftw_complex *to, int length)
-{
-  double *c1, *c2;
-  int i;
-  for (i=0; i<length; i++) {
-    c1 = from[i];
-    c2 = to[i];
-    c2[0] = c1[0];
-    c2[1] = c1[1];
-  }
-  return;
-}
-
-void print_fftw_complex(fftw_complex *table, int N1)
-{
-  int i, j;
-  for (j=0; j<10; j++) {
-    for (i=0; i<10; i++) {
-      printf(" % .3e ", table[i+j*N1][0]);
-    }
-    printf("\n");
-  }
-  return;
-}
+// void reset_fftw_complex(fftw_complex *table, int length)
+// {
+//   double *c;
+//   int i;
+//   for (i=0; i<length; i++) {
+//     c = table[i];
+//     c[0] = 0.0;
+//     c[1] = 0.0;
+//   }
+//   return;
+// }
+// 
+// void rescaleReal_fftw_complex(fftw_complex *table, int length, double factor)
+// {
+//   int i;
+//   for (i=0; i<length; i++) table[i][0] *= factor;
+//   return;
+// }
+// 
+// void rescale_fftw_complex(fftw_complex *table, int length, double factor)
+// {
+//   double *c;
+//   int i;
+//   for (i=0; i<length; i++) {
+//     c = table[i];
+//     c[0] *= factor;
+//     c[1] *= factor;
+//   }
+//   return;
+// }
+// 
+// void multiplication_fftw_complex(fftw_complex *table1, fftw_complex *table2, fftw_complex *product, int length)
+// {
+//   double value, *c1, *c2;
+//   int i;
+//   for (i=0; i<length; i++) {
+//     c1 = table1[i];
+//     c2 = table2[i];
+//     value         = c1[0] * c2[0] - c1[1] * c2[1];
+//     product[i][1] = c1[0] * c2[1] + c1[1] * c2[0];
+//     product[i][0] = value;
+//   }
+//   return;
+// }
+// 
+// void copy_fftw_complex(fftw_complex *from, fftw_complex *to, int length)
+// {
+//   double *c1, *c2;
+//   int i;
+//   for (i=0; i<length; i++) {
+//     c1 = from[i];
+//     c2 = to[i];
+//     c2[0] = c1[0];
+//     c2[1] = c1[1];
+//   }
+//   return;
+// }
+// 
+// void print_fftw_complex(fftw_complex *table, int N1)
+// {
+//   int i, j;
+//   for (j=0; j<10; j++) {
+//     for (i=0; i<10; i++) {
+//       printf(" % .3e ", table[i+j*N1][0]);
+//     }
+//     printf("\n");
+//   }
+//   return;
+// }
 
 //----------------------------------------------------------------------
 //-- Functions related to int_arr
@@ -711,115 +711,115 @@ void free_sampler_mat(sampler_mat *sampMat)
 //----------------------------------------------------------------------
 //-- Functions related to FFT_t
 
-FFT_t *initialize_FFT_t(int N)
-{
-  //-- 'before' and 'kernel' should be set to 0 at the beginning.
-  
-  FFT_t *transformer      = (FFT_t*)malloc(sizeof(FFT_t));
-  transformer->N          = N;
-  transformer->length     = N * N;
-  transformer->normFactor = 1.0 / (double)transformer->length;
-  transformer->ind        = 0;
-  
-  //-- Allocate fftw_complex elements
-  transformer->before     = (fftw_complex*)fftw_malloc(transformer->length * sizeof(fftw_complex));
-  transformer->kernel     = (fftw_complex*)fftw_malloc(transformer->length * sizeof(fftw_complex));
-  transformer->after      = (fftw_complex*)fftw_malloc(transformer->length * sizeof(fftw_complex));
-  
-  //-- Allocate fftw_plan elements
-  transformer->before_f   = fftw_plan_dft_2d(N, N, transformer->before, transformer->before, FFTW_FORWARD,  FFTW_ESTIMATE);
-  transformer->kernel_f   = fftw_plan_dft_2d(N, N, transformer->kernel, transformer->kernel, FFTW_FORWARD,  FFTW_ESTIMATE);
-  transformer->after_b    = fftw_plan_dft_2d(N, N, transformer->after,  transformer->after,  FFTW_BACKWARD, FFTW_ESTIMATE);
-  transformer->before_b   = fftw_plan_dft_2d(N, N, transformer->before, transformer->before, FFTW_BACKWARD, FFTW_ESTIMATE);
-  
-  return transformer;
-}
-
-void free_FFT_t(FFT_t *transformer)
-{
-  if (transformer) {
-    if (transformer->before)   {fftw_free(transformer->before);           transformer->before   = NULL;}
-    if (transformer->kernel)   {fftw_free(transformer->kernel);           transformer->kernel   = NULL;}
-    if (transformer->after)    {fftw_free(transformer->after);            transformer->after    = NULL;}
-    
-    if (transformer->before_f) {fftw_destroy_plan(transformer->before_f); transformer->before_f = NULL;}
-    if (transformer->kernel_f) {fftw_destroy_plan(transformer->kernel_f); transformer->kernel_f = NULL;}
-    if (transformer->after_b)  {fftw_destroy_plan(transformer->after_b);  transformer->after_b  = NULL;}
-    if (transformer->before_b) {fftw_destroy_plan(transformer->before_b); transformer->before_b = NULL;}
-    
-    free(transformer); transformer = NULL;
-  }
-  return;
-}
-
-void reset_FFT_t(FFT_t *transformer)
-{
-  reset_fftw_complex(transformer->before, transformer->length);
-  return;
-}
-
-void execute_FFT_t(FFT_t *transformer)
-{
-  int length    = transformer->length;
-  double factor = 1.0 / (double)length;
-  fftw_complex *after = transformer->after;
-  
-  //-- Go to Fourier space
-  fftw_execute(transformer->before_f);
-  
-  //-- Multiplication
-  multiplication_fftw_complex(transformer->before, transformer->kernel, after, length);
-  
-  //-- Go to direct space
-  fftw_execute(transformer->after_b);
-  
-  //-- Rescale
-  rescale_fftw_complex(after, length, factor);
-  return;
-}
+// FFT_t *initialize_FFT_t(int N)
+// {
+//   //-- 'before' and 'kernel' should be set to 0 at the beginning.
+//   
+//   FFT_t *transformer      = (FFT_t*)malloc(sizeof(FFT_t));
+//   transformer->N          = N;
+//   transformer->length     = N * N;
+//   transformer->normFactor = 1.0 / (double)transformer->length;
+//   transformer->ind        = 0;
+//   
+//   //-- Allocate fftw_complex elements
+//   transformer->before     = (fftw_complex*)fftw_malloc(transformer->length * sizeof(fftw_complex));
+//   transformer->kernel     = (fftw_complex*)fftw_malloc(transformer->length * sizeof(fftw_complex));
+//   transformer->after      = (fftw_complex*)fftw_malloc(transformer->length * sizeof(fftw_complex));
+//   
+//   //-- Allocate fftw_plan elements
+//   transformer->before_f   = fftw_plan_dft_2d(N, N, transformer->before, transformer->before, FFTW_FORWARD,  FFTW_ESTIMATE);
+//   transformer->kernel_f   = fftw_plan_dft_2d(N, N, transformer->kernel, transformer->kernel, FFTW_FORWARD,  FFTW_ESTIMATE);
+//   transformer->after_b    = fftw_plan_dft_2d(N, N, transformer->after,  transformer->after,  FFTW_BACKWARD, FFTW_ESTIMATE);
+//   transformer->before_b   = fftw_plan_dft_2d(N, N, transformer->before, transformer->before, FFTW_BACKWARD, FFTW_ESTIMATE);
+//   
+//   return transformer;
+// }
+// 
+// void free_FFT_t(FFT_t *transformer)
+// {
+//   if (transformer) {
+//     if (transformer->before)   {fftw_free(transformer->before);           transformer->before   = NULL;}
+//     if (transformer->kernel)   {fftw_free(transformer->kernel);           transformer->kernel   = NULL;}
+//     if (transformer->after)    {fftw_free(transformer->after);            transformer->after    = NULL;}
+//     
+//     if (transformer->before_f) {fftw_destroy_plan(transformer->before_f); transformer->before_f = NULL;}
+//     if (transformer->kernel_f) {fftw_destroy_plan(transformer->kernel_f); transformer->kernel_f = NULL;}
+//     if (transformer->after_b)  {fftw_destroy_plan(transformer->after_b);  transformer->after_b  = NULL;}
+//     if (transformer->before_b) {fftw_destroy_plan(transformer->before_b); transformer->before_b = NULL;}
+//     
+//     free(transformer); transformer = NULL;
+//   }
+//   return;
+// }
+// 
+// void reset_FFT_t(FFT_t *transformer)
+// {
+//   reset_fftw_complex(transformer->before, transformer->length);
+//   return;
+// }
+// 
+// void execute_FFT_t(FFT_t *transformer)
+// {
+//   int length    = transformer->length;
+//   double factor = 1.0 / (double)length;
+//   fftw_complex *after = transformer->after;
+//   
+//   //-- Go to Fourier space
+//   fftw_execute(transformer->before_f);
+//   
+//   //-- Multiplication
+//   multiplication_fftw_complex(transformer->before, transformer->kernel, after, length);
+//   
+//   //-- Go to direct space
+//   fftw_execute(transformer->after_b);
+//   
+//   //-- Rescale
+//   rescale_fftw_complex(after, length, factor);
+//   return;
+// }
 
 //----------------------------------------------------------------------
 //-- Functions related to FFT_arr
 
-FFT_arr *initialize_FFT_arr(int N_type, int N_array)
-{
-  FFT_arr *transArr = (FFT_arr*)malloc(sizeof(FFT_arr));
-  transArr->length  = N_array;
-  transArr->array   = (FFT_t**)malloc(N_array * sizeof(FFT_t*));
-  int i;
-  for (i=0; i<N_array; i++) {
-    transArr->array[i]      = initialize_FFT_t(N_type);
-    transArr->array[i]->ind = i;
-  }
-  return transArr;
-}
-
-void free_FFT_arr(FFT_arr *transArr)
-{
-  int i;
-  if (transArr) {
-    if (transArr->array) {
-      for (i=0; i<transArr->length; i++) {free_FFT_t(transArr->array[i]); transArr->array[i] = NULL;}
-      free(transArr->array); transArr->array = NULL;
-    }
-    free(transArr); transArr = NULL;
-  }
-  return;
-}
-
-void reset_FFT_arr(FFT_arr *transArr)
-{ 
-  int i;
-  for (i=0; i<transArr->length; i++) reset_FFT_t(transArr->array[i]);
-  return;
-}
-
-void execute_FFT_arr(FFT_arr *transArr)
-{
-  int i;
-  for (i=0; i<transArr->length; i++) execute_FFT_t(transArr->array[i]);
-  return;
-}
+// FFT_arr *initialize_FFT_arr(int N_type, int N_array)
+// {
+//   FFT_arr *transArr = (FFT_arr*)malloc(sizeof(FFT_arr));
+//   transArr->length  = N_array;
+//   transArr->array   = (FFT_t**)malloc(N_array * sizeof(FFT_t*));
+//   int i;
+//   for (i=0; i<N_array; i++) {
+//     transArr->array[i]      = initialize_FFT_t(N_type);
+//     transArr->array[i]->ind = i;
+//   }
+//   return transArr;
+// }
+// 
+// void free_FFT_arr(FFT_arr *transArr)
+// {
+//   int i;
+//   if (transArr) {
+//     if (transArr->array) {
+//       for (i=0; i<transArr->length; i++) {free_FFT_t(transArr->array[i]); transArr->array[i] = NULL;}
+//       free(transArr->array); transArr->array = NULL;
+//     }
+//     free(transArr); transArr = NULL;
+//   }
+//   return;
+// }
+// 
+// void reset_FFT_arr(FFT_arr *transArr)
+// { 
+//   int i;
+//   for (i=0; i<transArr->length; i++) reset_FFT_t(transArr->array[i]);
+//   return;
+// }
+// 
+// void execute_FFT_arr(FFT_arr *transArr)
+// {
+//   int i;
+//   for (i=0; i<transArr->length; i++) execute_FFT_t(transArr->array[i]);
+//   return;
+// }
 
 //----------------------------------------------------------------------
 //-- Functions related to hist_t
