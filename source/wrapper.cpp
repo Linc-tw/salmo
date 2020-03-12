@@ -14,8 +14,8 @@
 #include <unistd.h>
 
 #ifdef __cplusplus
-#include <../src/cxx/Healpix_cxx/alm_healpix_tools.h>
-#include <../src/cxx/cxxsupport/arr.h>
+#include <Healpix_cxx/alm_healpix_tools.h>
+#include <cxxsupport/arr.h>
 #include <../src/cxx/cxxsupport/pointing.h>
 #include <../src/cxx/Healpix_cxx/healpix_base.h>
 #include <../src/cxx/Healpix_cxx/alm.h>
