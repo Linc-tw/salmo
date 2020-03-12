@@ -14,16 +14,16 @@
 #include <unistd.h>
 
 #ifdef __cplusplus
-#include <healpix_cxx/alm_healpix_tools.h>
-#include <healpix_cxx/arr.h>
-#include <healpix_cxx/pointing.h>
-#include <healpix_cxx/healpix_base.h>
-#include <healpix_cxx/alm.h>
-#include <healpix_cxx/alm_healpix_tools.h>
-#include <healpix_cxx/alm_powspec_tools.h>
-#include <healpix_cxx/healpix_map.h>
-#include <healpix_cxx/healpix_map_fitsio.h>
-#include <healpix_cxx/xcomplex.h>
+#include <../src/cxx/Healpix_cxx/alm_healpix_tools.h>
+#include <../src/cxx/cxxsupport/arr.h>
+#include <../src/cxx/cxxsupport/pointing.h>
+#include <../src/cxx/Healpix_cxx/healpix_base.h>
+#include <../src/cxx/Healpix_cxx/alm.h>
+#include <../src/cxx/Healpix_cxx/alm_healpix_tools.h>
+#include <../src/cxx/Healpix_cxx/alm_powspec_tools.h>
+#include <../src/cxx/Healpix_cxx/healpix_map.h>
+#include <../src/cxx/Healpix_cxx/healpix_map_fitsio.h>
+#include <../src/cxx/cxxsupport/xcomplex.h>
 
 
 extern "C" {
