@@ -25,7 +25,7 @@ link_directories(${REQ_PKG_LIBRARY_DIRS})
 ## Optional module healpix_cxx, link if found
 if (HEALPIX_CXX_FOUND)
   add_definitions(-D __MFP_USE_HEALPIX_CXX__)
-  include_directories(${HEALPIX_CXX_INCLUDE_DIRS})
+  include_directories("${HEALPIX_CXX_INCLUDE_DIRS}/../src/cxx/")
   link_directories(${HEALPIX_CXX_LIBRARY_DIRS})
 endif()
 
