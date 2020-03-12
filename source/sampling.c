@@ -2,7 +2,7 @@
 
   //------------------------------------------------------//
   //--  sampling.c					--//
-  //--  Version 2019.12.11				--//
+  //--  Version 2019.12.15				--//
   //--  						--//
   //--  Copyright (C) 2019 - Chieh-An Lin		--//
   //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
@@ -272,7 +272,7 @@ void set_gal_t(gal_t *g, double RA, double DEC, double z, double p, long long pi
   g->z         = z;
   g->p         = p;
   g->pix       = pix;
-  g->sigma_eps = sigma_eps;
+  g->sigma_eps = sigma_eps; //-- sigma_eps comes in here because in the variable depth case, sigma_eps varies with pixels.
 //   g->kappa;
 //   g->gamma_1;
 //   g->gamma_2;
@@ -400,12 +400,12 @@ void sampleGalaxies(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, sampler
     
     //-- Loop over pixels
     for (i=0; i<nbPix; i++) {
-      sigma_eps = mPar->sigma_eps;
       dArr[i] += 1.0; //-- delta to 1+delta
       
       //-- Loop over types
       for (k=0; k<gListMat->N2; k++) {
 	if (k >= nbTypes) continue;
+	sigma_eps = mPar->sigma_eps[k];
 	
 	if (tArr == NULL)                  value = rMapArr->array[k]->map[i]; //-- Use ratio maps
 	else if (CHECK_BIT_64(tArr[i], k)) value = 1.0;                       //-- Use type map, ratio = 1
@@ -524,11 +524,12 @@ void sampleGalaxies_projCL(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, 
     
     //-- Loop over pixels
     for (i=0; i<nbPix; i++) {
-      sigma_eps = mPar->sigma_eps;
       dArr[i] += 1.0; //-- delta to 1+delta
       
       //-- Loop over types
       for (k=j2; k<j2+nbSplits; k++) {
+	sigma_eps = mPar->sigma_eps[k];
+	
 	if (tArr == NULL)                  value = rMapArr->array[k]->map[i]; //-- Use ratio maps
 	else if (CHECK_BIT_64(tArr[i], k)) value = 1.0;                       //-- Use type map, ratio = 1
 	else continue;                                                        //-- Masked

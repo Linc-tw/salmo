@@ -83,7 +83,11 @@ n_gal		0.3  0.6
 doNoise		1			## [int] 0 = no, 1 = yes, 2 = output both
 doWgt		1			## [int] 0 = no, 1 = yes
 signConv	1			## [int] 0 = athena, 1 = treecorr
-sigma_eps	0.29			## [float] Ellipticity dispersion, sigma_eps^2 = 0.5 * (<epsilon_1^2> + <epsilon_2^2>) = sigma_kappa^2
+
+sigma_eps	0  0.29
+					## [float array] Ellipticity dispersion, sigma_eps^2 = 0.5 * (<epsilon_1^2> + <epsilon_2^2>) = sigma_kappa^2
+					##   The k-th value for type k galaxies
+					##   The length should be nbTypes.
 					##   Ignored if doNoise = 0
 
 doLensing	0  1

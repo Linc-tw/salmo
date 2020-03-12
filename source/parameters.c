@@ -2,7 +2,7 @@
 
   //------------------------------------------------------//
   //--  parameters.c					--//
-  //--  Version 2019.10.02				--//
+  //--  Version 2019.12.15				--//
   //--  						--//
   //--  Copyright (C) 2018 - Chieh-An Lin		--//
   //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
@@ -89,6 +89,8 @@ void free_MFP_param(MFP_param *mPar)
                                            free(mPar->nOfZPath);          mPar->nOfZPath        = NULL;
     }
     if (mPar->n_gal)                      {free(mPar->n_gal);             mPar->n_gal           = NULL;}
+    
+    if (mPar->sigma_eps)                  {free(mPar->sigma_eps);         mPar->sigma_eps       = NULL;}
     if (mPar->doLensing)                  {free(mPar->doLensing);         mPar->doLensing       = NULL;}
     if (mPar->depthMapPath) {
       for (i=0; i<mPar->nbDepthMaps; i++) {free(mPar->depthMapPath[i]);   mPar->depthMapPath[i] = NULL;}
@@ -163,7 +165,10 @@ int findParameterKey(MFP_param *mPar, char kv[][STRING_LENGTH_MAX], int count)
   else if (!strcmp(kv[0], "doNoise"))         mPar->doNoise   = atoi(kv[1]);
   else if (!strcmp(kv[0], "doWgt"))           mPar->doWgt     = atoi(kv[1]);
   else if (!strcmp(kv[0], "signConv"))        mPar->signConv  = atoi(kv[1]);
-  else if (!strcmp(kv[0], "sigma_eps"))       mPar->sigma_eps = atof(kv[1]);
+  else if (!strcmp(kv[0], "sigma_eps")) {
+                                              if (mPar->sigma_eps) free(mPar->sigma_eps);
+                                              mPar->sigma_eps = makeDoubleArray(kv, count);
+  }
   else if (!strcmp(kv[0], "doLensing")) {
                                               if (mPar->doLensing) free(mPar->doLensing);
                                               mPar->doLensing = makeIntArray(kv, count);
@@ -417,7 +422,7 @@ void printParam(MFP_param *mPar)
   printf("doNoise      = %d\n", mPar->doNoise);
   printf("doWgt        = %d\n", mPar->doWgt);
   printf("signConv     = %d\n", mPar->signConv);
-  printf("sigma_eps    = %f\n", mPar->sigma_eps);
+  printf("sigma_eps    = "); printDoubleArray(mPar->sigma_eps, mPar->nbTypes, 1.0, 5); printf("\n");
   printf("doLensing    = "); printIntArray(mPar->doLensing, mPar->nbTypes); printf("\n");
   printf("outPrefix    = \"%s\"\n", mPar->outPrefix);
   printf("outStyle     = %d\n", mPar->outStyle);
@@ -466,7 +471,7 @@ void printCompleteParam(MFP_param *mPar)
   printf("doNoise      = %d\n", mPar->doNoise);
   printf("doWgt        = %d\n", mPar->doWgt);
   printf("signConv     = %d\n", mPar->signConv);
-  printf("sigma_eps    = %f\n", mPar->sigma_eps);
+  printf("sigma_eps    = "); printDoubleArray(mPar->sigma_eps, mPar->nbTypes, 1.0, 5); printf("\n");
   printf("doLensing    = "); printIntArray(mPar->doLensing, mPar->nbTypes); printf("\n");
   printf("outPrefix    = \"%s\"\n", mPar->outPrefix);
   printf("outStyle     = %d\n", mPar->outStyle);

@@ -2,7 +2,7 @@
 
   //------------------------------------------------------//
   //--  main.c						--//
-  //--  Version 2019.10.02				--//
+  //--  Version 2019.12.15				--//
   //--  						--//
   //--  Copyright (C) 2019 - Chieh-An Lin		--//
   //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
   else if (!strcmp(parPath, "anser"))     parPath = "../param/MFPParam_anser.par";
   else if (!strcmp(parPath, "buceros"))   parPath = "../param/MFPParam_buceros.par";
   else if (!strcmp(parPath, "corvus"))    parPath = "../param/MFPParam_corvus.par";
+  else if (!strcmp(parPath, "cygnus"))    parPath = "../param/MFPParam_cygnus.par";
   else if (!strcmp(parPath, "diomedea"))  parPath = "../param/MFPParam_diomedea.par";
   else if (!strcmp(parPath, "egretta"))   parPath = "../param/MFPParam_egretta.par";
   else if (!strcmp(parPath, "falco"))     parPath = "../param/MFPParam_falco.par";
