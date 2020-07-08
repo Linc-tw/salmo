@@ -15,7 +15,7 @@ Salmo is a software to generate fast mocks for cosmological analysis with the fo
 - can generate multiple tracers coherently;
 - each tracer can have its own mask and redshift distribution.
 
-Salmo is designed to be used with the [Flask]() software. 
+Salmo is designed to be used with the [Flask](https://github.com/hsxavier/flask) software. 
 The map outputs from Flask or those with the same format are required to generate catalogues.
 See **Usage** and [Wikis]() for details.
 
