@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     printf("Initialized parameters\n");
     printf("------------------------------------------------------------------------\n");
     
-    if (task == -3) ;
+    if (task == -1) ;
     else {
       printParam(mPar);
       printf("------------------------------------------------------------------------\n");
@@ -114,8 +114,11 @@ int main(int argc, char *argv[])
     sandbox(mPar);
   }
   
+  //-- Print instructions
+  else if (task == -1) printInstructions(-1, 1);
+  
   //-- Print complete parameters
-  else if (task == -3) {
+  else if (task == -2) {
     printCompleteParam(mPar);
     printf("------------------------------------------------------------------------\n");
   }
@@ -182,12 +185,6 @@ int main(int argc, char *argv[])
     }
   }
   
-  //-- These are just different instructions to print.
-  //-- TODO to be refined
-  else if (task == -1) printInstructions(-1, 1);
-  else if (task == -2) printInstructions(-2, 0);
-  else                 printInstructions(-1, 0);
-  
   //-- Stop stopwatch
   clock_t finish = clock();
   if (MPIInd == 0 && mPar->verbose < 99) {
@@ -208,11 +205,6 @@ void printInstructions(int task, int doHelp)
     printHeader(1, 0);
     printDetails(task, doHelp);
   }
-
-  else if (task == -2) { //-- Simple menu
-    printHeader(1, doHelp);
-    printDetails(0, 0); printDetails(1, 0); printDetails(2, 0); printDetails(3, 0); printDetails(4, 0); 
-  }
   
   else { //-- Complete menu
     printHeader(1, doHelp);
@@ -223,9 +215,11 @@ void printInstructions(int task, int doHelp)
   return;
 }
 
+//-- Print header of instructions
+//-- Provide examples if doHelp is on
 void printHeader(int task, int doHelp)
 {
-  if (task >= 0 && task <= 20) {
+  if (task >= 0 && task <= 30) {
     if (doHelp) {
       printf("Commands:\n");
       printf("  ./salmo PATH TASK\n");
@@ -250,6 +244,8 @@ void printHeader(int task, int doHelp)
   return; 
 }
 
+//-- Print detaileds of each option
+//-- Provide variable format if doHelp is on
 void printDetails(int task, int doHelp)
 {
   if (task == 0) {
@@ -298,8 +294,8 @@ void printDetails(int task, int doHelp)
       printf("\n");
       printf("Commands:\n");
       printf("  ./salmo PATH 5 resol nbSplits  # Generate galaxies from projected maps\n");
-      printf("                                         # Matter fields smoothed with a top hat of resol^2\n");
-      printf("                                         # nbSplits tells how many types of galaxies should a map accounts for\n");
+      printf("                                 # Matter fields smoothed with a top hat of resol^2\n");
+      printf("                                 # nbSplits tells how many types of galaxies should a map accounts for\n");
     }
   }
   return;
@@ -311,7 +307,7 @@ void sandbox(MFP_param *mPar)
   char name2[STRING_LENGTH_MAX];
   printf("This is a sandbox of MFP.\n\n");
   
-  printCompleteParam(mPar);
+//   printCompleteParam(mPar);
   
   //mpirun -n 3 ./camelus default 35
   //-- Hold root processor if others have not finished

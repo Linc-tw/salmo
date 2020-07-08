@@ -17,7 +17,7 @@ Salmo is a software to generate fast mocks for cosmological analysis with the fo
 
 Salmo is designed to be used with the [Flask](https://github.com/hsxavier/flask) software. 
 The map outputs from Flask or those with the same format are required to generate catalogues.
-See **Usage** and [Wikis]() for details.
+See **Usage** and [Wiki](https://github.com/Linc-tw/salmo/wiki) for details.
 
 
 Installation
@@ -57,7 +57,7 @@ $ make
 
 To see if the compilation is successful, please execute:
 ```Bash
-$ ./mockFootprint
+$ ./salmo
 ```
 and users will see usage instructions.
 
@@ -82,7 +82,7 @@ An example parameter file is provided: `param/MFPParam.par`.
 
 To get program instructions, please execute:
 ```Bash
-$ ./mockFootprint
+$ ./salmo
 ```
 
 
