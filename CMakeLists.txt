@@ -1,16 +1,16 @@
 
 
     ######################################################
-    ##  CMakeLists.txt for mockFootprint v0.0		##
-    ##  Version 2019.12.11				##
-    ##							##
-    ##  Copyright (C) 2019 - Chieh-An Lin		##
-    ##  GNU GPLv3 - https://www.gnu.org/licenses/	##
+    ##  CMakeLists.txt for salmo v0.0                   ##
+    ##  Version 2020.07.08                              ##
+    ##                                                  ##
+    ##  Copyright (C) 2019 - Chieh-An Lin               ##
+    ##  GNU GPLv3 - https://www.gnu.org/licenses/       ##
     ######################################################
 
 
 cmake_minimum_required(VERSION 2.6)
-project(mockFootprint)
+project(salmo)
 
 ## Use pkg-config to find modules
 find_package(PkgConfig REQUIRED)
@@ -44,8 +44,8 @@ set(CMAKE_CXX_FLAGS "${DEF_C_FLAGS} ${ADD_C_FLAGS}")
 
 ## Build executable
 file(GLOB_RECURSE SRC_FILES "${PROJECT_SOURCE_DIR}/source/*.c" "${PROJECT_SOURCE_DIR}/source/*.cpp")
-add_executable(mockFootprint ${SRC_FILES})
-target_link_libraries(mockFootprint
+add_executable(salmo ${SRC_FILES})
+target_link_libraries(salmo
   ${REQ_PKG_LIBRARIES}
   ${HEALPIX_CXX_LIBRARIES}
 #  ${MPI_LIBRARIES}

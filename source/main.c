@@ -1,12 +1,12 @@
 
 
-  //------------------------------------------------------//
-  //--  main.c						--//
-  //--  Version 2020.04.01				--//
-  //--  						--//
-  //--  Copyright (C) 2019 - Chieh-An Lin		--//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
-  //------------------------------------------------------//
+  //-------------------------------------------------//
+  //--  main.c                                     --//
+  //--  Version 2020.07.08                         --//
+  //--                                             --//
+  //--  Copyright (C) 2019 - Chieh-An Lin          --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/  --//
+  //-------------------------------------------------//
 
 
 #include "main.h"
@@ -228,9 +228,9 @@ void printHeader(int task, int doHelp)
   if (task >= 0 && task <= 20) {
     if (doHelp) {
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH TASK\n");
-      printf("  ./mockFootprint PATH TASK -h\n");
-      printf("  ./mockFootprint PATH TASK KEY=VALUE\n");
+      printf("  ./salmo PATH TASK\n");
+      printf("  ./salmo PATH TASK -h\n");
+      printf("  ./salmo PATH TASK KEY=VALUE\n");
       printf("\n");
       printf("Notes:\n");
       printf("  - PATH = path to the camelusParam.par file\n");
@@ -240,9 +240,9 @@ void printHeader(int task, int doHelp)
       printf("  - Some parameters can be updated by KEY=VALUE.\n");
       printf("\n");
       printf("Examples:\n");
-      printf("  ./mockFootprint default 0\n");
-      printf("  ./mockFootprint ../param/camelusParam.par 1\n");
-      printf("  ./mockFootprint default 1 runTag=\"_hello\"\n");
+      printf("  ./salmo default 0\n");
+      printf("  ./salmo ../param/camelusParam.par 1\n");
+      printf("  ./salmo default 1 runTag=\"_hello\"\n");
       printf("\n");
     }
       printf("Tasks:\n");
@@ -257,7 +257,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 0    # Sandbox\n");
+      printf("  ./salmo PATH 0    # Sandbox\n");
     }
   }
   else if (task == 1) {
@@ -265,7 +265,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 1    # delta to lensing\n");
+      printf("  ./salmo PATH 1    # delta to lensing\n");
     }
   }
   else if (task == 2) {
@@ -273,7 +273,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 2    # Generate a mock using type map, lenMap interpreted as at the upper bin edges\n");
+      printf("  ./salmo PATH 2    # Generate a mock using type map, lenMap interpreted as at the upper bin edges\n");
     }
   }
   else if (task == 3) {
@@ -281,7 +281,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 3    # Generate a mock, lenMap interpreted as at the upper bin edges\n");
+      printf("  ./salmo PATH 3    # Generate a mock, lenMap interpreted as at the upper bin edges\n");
     }
   }
   else if (task == 4) {
@@ -289,7 +289,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 4    # Generate a mock, lenMap interpreted as at the middle of bins\n");
+      printf("  ./salmo PATH 4    # Generate a mock, lenMap interpreted as at the middle of bins\n");
     }
   }
   else if (task == 5) {
@@ -297,7 +297,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 5 resol nbSplits  # Generate galaxies from projected maps\n");
+      printf("  ./salmo PATH 5 resol nbSplits  # Generate galaxies from projected maps\n");
       printf("                                         # Matter fields smoothed with a top hat of resol^2\n");
       printf("                                         # nbSplits tells how many types of galaxies should a map accounts for\n");
     }
