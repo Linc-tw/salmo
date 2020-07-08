@@ -11,7 +11,7 @@ Description
 
 Salmo is a software to generate fast mocks for cosmological analysis with the following characteristics:
 - galaxy mocks, with or without lensing signals;
-- curved-sky;
+- curved sky;
 - can generate multiple tracers coherently;
 - each tracer can have its own mask and redshift distribution.
 

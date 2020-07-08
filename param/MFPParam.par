@@ -1,9 +1,9 @@
 
 
-    ##############################################
-    ##  MFPParam.par				##
-    ##  Parameter file for MFP v0.0		##
-    ##############################################
+    #####################################
+    ##  MFPParam.par                   ##
+    ##  Parameter file for Salmo v0.0  ##
+    #####################################
 
 
 ## All contents after the first '#' of each line are ignored.
@@ -28,7 +28,7 @@ nside		256			## [int] N_side of input maps
 					##   Has to be a power of 2
 N_z_map		-1			## [int] Number of redshift slices of maps
 					##   Can be negative (see bin_z_map)
-bin_z_map	0.2  0.8  0.2
+bin_z_map	0.0  1.0  0.2
 					## [float array] Bin edge values for input map redshifts
 					##   If N_z_map > 0, bin_z_map should have N_z_map + 1 values.
 					##   If N_z_map < 0, the first 3 values are successively read as z_map_min, z_map_max, dz_map.
@@ -39,10 +39,10 @@ bin_z_map	0.2  0.8  0.2
 					##     N_z_map    4
 					##     bin_z_map  0.1  0.4  0.65  0.85  1.0
 
-denPrefix	../data/mockFootprint/anser/flask_denMap/denMap
+denPrefix	../demo/input/denMap
 					## [string] Prefix for input density maps
 
-lenPrefix	../data/mockFootprint/anser/flask_lenMap/lenMap
+lenPrefix	../demo/input/lenMap
 					## [string] Prefix for input lensing maps
 
 runTag		_run0
@@ -57,22 +57,22 @@ runTag		_run0
 nbTypes		2			## [int] Number of types of galaxies
 					##   Maximal value = 64
 
-maskPath	0	../data/mockFootprint/anser/MFP_selection/mask_type0.fits
-maskPath	1	../data/mockFootprint/anser/MFP_selection/mask_type1.fits
+maskPath	0	../demo/input/mask_type0.fits
+maskPath        1       ../demo/input/mask_type1.fits
 					## [1 int, 1 string] Index of type and path to mask for that type
 					##   The index starts from 0 and should not exceed nbTypes-1.
 					##   Have to be HEALPix maps in FITS format with the same nside
 					##   Have to be put after nbTypes
 
-nOfZPath	0	../data/mockFootprint/anser/MFP_selection/nOfZ_hist_type0.dat
-nOfZPath	1	../data/mockFootprint/anser/MFP_selection/nOfZ_hist_type1.dat
+nOfZPath	0	../demo/input/nOfZ_hist_type0.dat
+nOfZPath        1       ../demo/input/nOfZ_hist_type1.dat
 					## [1 int, 1 string] Index of type and path to n(z) for that type
 					##   The index starts from 0 and should not exceed nbTypes-1.
 					##   All n(z) histogram needs to have the same redshift bins as defined by bin_z_map
 					##   Have to be ASCII files
 					##   Have to be put after nbTypes
 
-n_gal		0.3  0.6
+n_gal		0.01  0.1
 					## [float array | arcmin^-2] Galaxy number densities
 					##   The k-th value for type k galaxies
 					##   The length should be nbTypes.
@@ -80,7 +80,7 @@ n_gal		0.3  0.6
 ################################################################################
 ## 4. Lensing & outputs
 
-doNoise		1			## [int] 0 = no, 1 = yes, 2 = output both
+doNoise		2			## [int] 0 = no, 1 = yes, 2 = output both
 doWgt		1			## [int] 0 = no, 1 = yes
 signConv	1			## [int] 0 = athena, 1 = treecorr
 
@@ -95,7 +95,7 @@ doLensing	0  1
 					##   The k-th value for type k galaxies
 					##   The length should be nbTypes.
 
-outPrefix	../data/mockFootprint/anser/MFP_galCat/galCat
+outPrefix	../demo/output/galCat
 					## [string] Prefix for output files
 					##   Output file names are "%s%s%s.fits" % (outPrefix, runTag, fileTag) where fileTag is generated automatically.
 

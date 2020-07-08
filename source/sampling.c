@@ -400,7 +400,7 @@ void sampleGalaxies(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, sampler
     
     //-- Loop over pixels
     for (i=0; i<nbPix; i++) {
-      dArr[i] += 1.0; //-- delta to 1+delta
+      dArr[i] += 1.0; //-- delta to 1+delta; there is no need to reset as it's done in read_HPMap_t(name, delta, 1)
       
       //-- Loop over types
       for (k=0; k<gListMat->N2; k++) {
@@ -1169,6 +1169,7 @@ void outFitsGalListMat(MFP_param *mPar, gal_list_mat *gListMat, int verbose)
     else if (mPar->outStyle == 2) k2 = (k >= mPar->nbTypes || mPar->doLensing[k]);
     else                          k2 = k;
     
+    //-- Loop over redshift slices
     for (j=0; j<gListMat->N1; j++) {
       gList      = gListMat->matrix[j+k*gListMat->N1];
       nbGal[k2] += gList->size;
