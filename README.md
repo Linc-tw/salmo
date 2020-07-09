@@ -63,16 +63,23 @@ Usage
 
 Salmo requires some external files as inputs to work:
 - density & lensing maps,
-- masks,
-- redshift distributions, and 
-- values like galaxy number densities & shape noise.
+- masks, and 
+- redshift distributions.
+
+Other values to specify are galaxy number densities & shape noise.
 
 ### Quick Run
-(To be completed)
 
-### Instructions Reminder
+With the provided parameter file `param/salmoParam.par` and input files in `demo/input`, 
+users can execute:
+```Bash
+$ ./salmo default 3
+```
+for a quick sample run and find catalogues in `demo/output`.
 
-An example parameter file is provided: `param/MFPParam.par`. 
+See [Wiki](https://github.com/Linc-tw/salmo/wiki) for detailed tutorials.
+
+### Instructions reminder
 
 To get program instructions, please execute:
 ```Bash

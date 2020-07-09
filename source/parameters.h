@@ -21,7 +21,7 @@
 //-- Parameters
 typedef struct {
   //-- When adding new keys:
-  //-- - Check SALMOParam.par
+  //-- - Check salmoParam.par
   //-- - Check parameters.h
   //-- - Check find Key
   //-- - Check print
@@ -29,7 +29,7 @@ typedef struct {
   //-- - Check free
   
   //----------------------------------------------------------------------
-  //-- Customized part (see SALMOParam.par for documentations)
+  //-- Customized part (see salmoParam.par for documentations)
   
   //-- 1. Generality
   char parPath[STRING_LENGTH_MAX];
