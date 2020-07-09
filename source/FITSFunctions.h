@@ -1,18 +1,18 @@
 
 
   //------------------------------------------------------//
-  //--  FITSFunctions.h					--//
-  //--  Version 2018.09.25				--//
-  //--  						--//
-  //--  Copyright (C) 2018 - Chieh-An Lin		--//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
+  //--  FITSFunctions.h                                 --//
+  //--  Version 2020.07.09                              --//
+  //--                                                  --//
+  //--  Copyright (C) 2020 - Chieh-An Lin               --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/       --//
   //------------------------------------------------------//
 
 
 #include "commonHeader.h"
   
-#ifndef __MFP_FITS_FUNCTIONS__
-#define __MFP_FITS_FUNCTIONS__
+#ifndef __SALMO_FITS_FUNCTIONS__
+#define __SALMO_FITS_FUNCTIONS__
 
 #include <fitsio.h>
 

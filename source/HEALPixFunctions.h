@@ -1,18 +1,18 @@
 
 
   //------------------------------------------------------//
-  //--  HEALPixFunctions.h				--//
-  //--  Version 2019.01.25				--//
-  //--  						--//
-  //--  Copyright (C) 2019 - Chieh-An Lin		--//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
+  //--  HEALPixFunctions.h                              --//
+  //--  Version 2020.07.09                              --//
+  //--                                                  --//
+  //--  Copyright (C) 2020 - Chieh-An Lin               --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/       --//
   //------------------------------------------------------//
 
 
 #include "commonHeader.h"
 
-#ifndef __MFP_HEALPIX_FUNCTIONS__
-#define __MFP_HEALPIX_FUNCTIONS__
+#ifndef __SALMO_HEALPIX_FUNCTIONS__
+#define __SALMO_HEALPIX_FUNCTIONS__
 
 #include <chealpix.h>
 

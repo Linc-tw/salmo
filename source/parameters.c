@@ -1,11 +1,11 @@
 
 
   //------------------------------------------------------//
-  //--  parameters.c					--//
-  //--  Version 2019.12.15				--//
-  //--  						--//
-  //--  Copyright (C) 2018 - Chieh-An Lin		--//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
+  //--  parameters.c                                    --//
+  //--  Version 2020.07.09                              --//
+  //--                                                  --//
+  //--  Copyright (C) 2020 - Chieh-An Lin               --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/       --//
   //------------------------------------------------------//
 
 
@@ -64,182 +64,182 @@ void setPathWhichCanBeBlank(char path[], char kv[][STRING_LENGTH_MAX], int count
 }
 
 //----------------------------------------------------------------------
-//-- Functions related to MFP_param
+//-- Functions related to Salmo_param
 
-MFP_param *initialize_MFP_param()
+Salmo_param *initialize_Salmo_param()
 {
-  MFP_param *mPar = (MFP_param*)malloc(sizeof(MFP_param));
+  Salmo_param *sPar = (Salmo_param*)malloc(sizeof(Salmo_param));
   //-- Essential
-  mPar->N_depth    = 0;
-  mPar->nbTomo     = 0;
-  return mPar;
+  sPar->N_depth    = 0;
+  sPar->nbTomo     = 0;
+  return sPar;
 }
 
-void free_MFP_param(MFP_param *mPar)
+void free_Salmo_param(Salmo_param *sPar)
 {
   int i;
-  if (mPar) {
-    if (mPar->bin_z_map)                  {free(mPar->bin_z_map);         mPar->bin_z_map       = NULL;}
-    if (mPar->maskPath) {
-      for (i=0; i<mPar->nbTypes; i++)     {free(mPar->maskPath[i]);       mPar->maskPath[i]     = NULL;}
-                                           free(mPar->maskPath);          mPar->maskPath        = NULL;
+  if (sPar) {
+    if (sPar->bin_z_map)                  {free(sPar->bin_z_map);         sPar->bin_z_map       = NULL;}
+    if (sPar->maskPath) {
+      for (i=0; i<sPar->nbTypes; i++)     {free(sPar->maskPath[i]);       sPar->maskPath[i]     = NULL;}
+                                           free(sPar->maskPath);          sPar->maskPath        = NULL;
     }
-    if (mPar->nOfZPath) {
-      for (i=0; i<mPar->nbTypes; i++)     {free(mPar->nOfZPath[i]);       mPar->nOfZPath[i]     = NULL;}
-                                           free(mPar->nOfZPath);          mPar->nOfZPath        = NULL;
+    if (sPar->nOfZPath) {
+      for (i=0; i<sPar->nbTypes; i++)     {free(sPar->nOfZPath[i]);       sPar->nOfZPath[i]     = NULL;}
+                                           free(sPar->nOfZPath);          sPar->nOfZPath        = NULL;
     }
-    if (mPar->n_gal)                      {free(mPar->n_gal);             mPar->n_gal           = NULL;}
+    if (sPar->n_gal)                      {free(sPar->n_gal);             sPar->n_gal           = NULL;}
     
-    if (mPar->sigma_eps)                  {free(mPar->sigma_eps);         mPar->sigma_eps       = NULL;}
-    if (mPar->doLensing)                  {free(mPar->doLensing);         mPar->doLensing       = NULL;}
-    if (mPar->depthMapPath) {
-      for (i=0; i<mPar->nbDepthMaps; i++) {free(mPar->depthMapPath[i]);   mPar->depthMapPath[i] = NULL;}
-                                           free(mPar->depthMapPath);      mPar->depthMapPath    = NULL;
+    if (sPar->sigma_eps)                  {free(sPar->sigma_eps);         sPar->sigma_eps       = NULL;}
+    if (sPar->doLensing)                  {free(sPar->doLensing);         sPar->doLensing       = NULL;}
+    if (sPar->depthMapPath) {
+      for (i=0; i<sPar->nbDepthMaps; i++) {free(sPar->depthMapPath[i]);   sPar->depthMapPath[i] = NULL;}
+                                           free(sPar->depthMapPath);      sPar->depthMapPath    = NULL;
     }
-    if (mPar->bin_depth)                  {free(mPar->bin_depth);         mPar->bin_depth       = NULL;}
-    if (mPar->a_n_gal)                    {free(mPar->a_n_gal);           mPar->a_n_gal         = NULL;}
-    if (mPar->b_n_gal)                    {free(mPar->b_n_gal);           mPar->b_n_gal         = NULL;}
-    if (mPar->a_sigma_eps)                {free(mPar->a_sigma_eps);       mPar->a_sigma_eps     = NULL;}
-    if (mPar->b_sigma_eps)                {free(mPar->b_sigma_eps);       mPar->b_sigma_eps     = NULL;}
-    if (mPar->VD_nOfZPath) {
-      for (i=0; i<mPar->VD_nbNOfZ; i++)   {free(mPar->VD_nOfZPath[i]);    mPar->VD_nOfZPath[i]  = NULL;}
-                                           free(mPar->VD_nOfZPath);       mPar->VD_nOfZPath     = NULL;
+    if (sPar->bin_depth)                  {free(sPar->bin_depth);         sPar->bin_depth       = NULL;}
+    if (sPar->a_n_gal)                    {free(sPar->a_n_gal);           sPar->a_n_gal         = NULL;}
+    if (sPar->b_n_gal)                    {free(sPar->b_n_gal);           sPar->b_n_gal         = NULL;}
+    if (sPar->a_sigma_eps)                {free(sPar->a_sigma_eps);       sPar->a_sigma_eps     = NULL;}
+    if (sPar->b_sigma_eps)                {free(sPar->b_sigma_eps);       sPar->b_sigma_eps     = NULL;}
+    if (sPar->VD_nOfZPath) {
+      for (i=0; i<sPar->VD_nbNOfZ; i++)   {free(sPar->VD_nOfZPath[i]);    sPar->VD_nOfZPath[i]  = NULL;}
+                                           free(sPar->VD_nOfZPath);       sPar->VD_nOfZPath     = NULL;
     }
     
-    if (mPar->generator)                  {gsl_rng_free(mPar->generator); mPar->generator       = NULL;}
-    if (mPar->z_map)                      {free(mPar->z_map);             mPar->z_map           = NULL;}
-    if (mPar->half_dz_map)                {free(mPar->half_dz_map);       mPar->half_dz_map     = NULL;}
-    free(mPar); mPar = NULL;
+    if (sPar->generator)                  {gsl_rng_free(sPar->generator); sPar->generator       = NULL;}
+    if (sPar->z_map)                      {free(sPar->z_map);             sPar->z_map           = NULL;}
+    if (sPar->half_dz_map)                {free(sPar->half_dz_map);       sPar->half_dz_map     = NULL;}
+    free(sPar); sPar = NULL;
   }
   return;
 }
 
-int findParameterKey(MFP_param *mPar, char kv[][STRING_LENGTH_MAX], int count)
+int findParameterKey(Salmo_param *sPar, char kv[][STRING_LENGTH_MAX], int count)
 {
   int i;
   
   if (count == 0) return 0; //-- unknown = 0
   
   //-- 1. Generality
-  if (!strcmp(kv[0], "seed"))                 setPathWhichCanBeBlank(mPar->seed, kv, count);
-  else if (!strcmp(kv[0], "verbose"))         mPar->verbose = atoi(kv[1]);
+  if (!strcmp(kv[0], "seed"))                 setPathWhichCanBeBlank(sPar->seed, kv, count);
+  else if (!strcmp(kv[0], "verbose"))         sPar->verbose = atoi(kv[1]);
   
   //-- 2. Input maps
-  else if (!strcmp(kv[0], "nside"))           mPar->nside     = strtol(kv[1], NULL, 10);
-  else if (!strcmp(kv[0], "N_z_map"))         mPar->N_z_map   = atoi(kv[1]);
+  else if (!strcmp(kv[0], "nside"))           sPar->nside     = strtol(kv[1], NULL, 10);
+  else if (!strcmp(kv[0], "N_z_map"))         sPar->N_z_map   = atoi(kv[1]);
   else if (!strcmp(kv[0], "bin_z_map")) {
-                                              if (mPar->bin_z_map) free(mPar->bin_z_map);
-                                              mPar->bin_z_map = makeDoubleArray(kv, count);
+                                              if (sPar->bin_z_map) free(sPar->bin_z_map);
+                                              sPar->bin_z_map = makeDoubleArray(kv, count);
   }
-  else if (!strcmp(kv[0], "denPrefix"))       setPathWhichCanBeBlank(mPar->denPrefix, kv, count);
-  else if (!strcmp(kv[0], "lenPrefix"))       setPathWhichCanBeBlank(mPar->lenPrefix, kv, count);
-  else if (!strcmp(kv[0], "runTag"))          setPathWhichCanBeBlank(mPar->runTag, kv, count);
+  else if (!strcmp(kv[0], "denPrefix"))       setPathWhichCanBeBlank(sPar->denPrefix, kv, count);
+  else if (!strcmp(kv[0], "lenPrefix"))       setPathWhichCanBeBlank(sPar->lenPrefix, kv, count);
+  else if (!strcmp(kv[0], "runTag"))          setPathWhichCanBeBlank(sPar->runTag, kv, count);
   
   //-- 3. Selection functions
   else if (!strcmp(kv[0], "nbTypes")) {
-                                              if (mPar->maskPath) {
-                                                for (i=0; i<mPar->nbTypes; i++) {free(mPar->maskPath[i]); mPar->maskPath[i] = NULL;}
-                                                free(mPar->maskPath); mPar->maskPath = NULL;
+                                              if (sPar->maskPath) {
+                                                for (i=0; i<sPar->nbTypes; i++) {free(sPar->maskPath[i]); sPar->maskPath[i] = NULL;}
+                                                free(sPar->maskPath); sPar->maskPath = NULL;
                                               }
-                                              if (mPar->nOfZPath) {
-                                                for (i=0; i<mPar->nbTypes; i++) {free(mPar->nOfZPath[i]); mPar->nOfZPath[i] = NULL;}
-                                                free(mPar->nOfZPath); mPar->nOfZPath = NULL;
+                                              if (sPar->nOfZPath) {
+                                                for (i=0; i<sPar->nbTypes; i++) {free(sPar->nOfZPath[i]); sPar->nOfZPath[i] = NULL;}
+                                                free(sPar->nOfZPath); sPar->nOfZPath = NULL;
                                               }
-                                              mPar->nbTypes  = atoi(kv[1]);
-                                              mPar->maskPath = (char**)malloc(mPar->nbTypes * sizeof(char*));
-                                              mPar->nOfZPath = (char**)malloc(mPar->nbTypes * sizeof(char*));
-                                              for (i=0; i<mPar->nbTypes; i++) {
-                                                mPar->maskPath[i] = (char*)malloc(STRING_LENGTH_MAX * sizeof(char));
-                                                mPar->nOfZPath[i] = (char*)malloc(STRING_LENGTH_MAX * sizeof(char));
+                                              sPar->nbTypes  = atoi(kv[1]);
+                                              sPar->maskPath = (char**)malloc(sPar->nbTypes * sizeof(char*));
+                                              sPar->nOfZPath = (char**)malloc(sPar->nbTypes * sizeof(char*));
+                                              for (i=0; i<sPar->nbTypes; i++) {
+                                                sPar->maskPath[i] = (char*)malloc(STRING_LENGTH_MAX * sizeof(char));
+                                                sPar->nOfZPath[i] = (char*)malloc(STRING_LENGTH_MAX * sizeof(char));
                                               }
   }
-  else if (!strcmp(kv[0], "maskPath"))        sprintf(mPar->maskPath[atoi(kv[1])], "%s", kv[2]);
-  else if (!strcmp(kv[0], "nOfZPath"))        sprintf(mPar->nOfZPath[atoi(kv[1])], "%s", kv[2]);
+  else if (!strcmp(kv[0], "maskPath"))        sprintf(sPar->maskPath[atoi(kv[1])], "%s", kv[2]);
+  else if (!strcmp(kv[0], "nOfZPath"))        sprintf(sPar->nOfZPath[atoi(kv[1])], "%s", kv[2]);
   else if (!strcmp(kv[0], "n_gal")) {
-                                              if (mPar->n_gal) free(mPar->n_gal);
-                                              mPar->n_gal = makeDoubleArray(kv, count);
-                                              for (i=0; i<mPar->nbTypes; i++) mPar->n_gal[i] /= ARCMIN_SQ_TO_RADIAN_SQ;
+                                              if (sPar->n_gal) free(sPar->n_gal);
+                                              sPar->n_gal = makeDoubleArray(kv, count);
+                                              for (i=0; i<sPar->nbTypes; i++) sPar->n_gal[i] /= ARCMIN_SQ_TO_RADIAN_SQ;
   }
   
   //-- 4. Lensing & outputs
-  else if (!strcmp(kv[0], "doNoise"))         mPar->doNoise   = atoi(kv[1]);
-  else if (!strcmp(kv[0], "doWgt"))           mPar->doWgt     = atoi(kv[1]);
-  else if (!strcmp(kv[0], "signConv"))        mPar->signConv  = atoi(kv[1]);
+  else if (!strcmp(kv[0], "doNoise"))         sPar->doNoise   = atoi(kv[1]);
+  else if (!strcmp(kv[0], "doWgt"))           sPar->doWgt     = atoi(kv[1]);
+  else if (!strcmp(kv[0], "signConv"))        sPar->signConv  = atoi(kv[1]);
   else if (!strcmp(kv[0], "sigma_eps")) {
-                                              if (mPar->sigma_eps) free(mPar->sigma_eps);
-                                              mPar->sigma_eps = makeDoubleArray(kv, count);
+                                              if (sPar->sigma_eps) free(sPar->sigma_eps);
+                                              sPar->sigma_eps = makeDoubleArray(kv, count);
   }
   else if (!strcmp(kv[0], "doLensing")) {
-                                              if (mPar->doLensing) free(mPar->doLensing);
-                                              mPar->doLensing = makeIntArray(kv, count);
+                                              if (sPar->doLensing) free(sPar->doLensing);
+                                              sPar->doLensing = makeIntArray(kv, count);
   }
-  else if (!strcmp(kv[0], "outPrefix"))       setPathWhichCanBeBlank(mPar->outPrefix, kv, count);
-  else if (!strcmp(kv[0], "outStyle"))        mPar->outStyle = atoi(kv[1]);
+  else if (!strcmp(kv[0], "outPrefix"))       setPathWhichCanBeBlank(sPar->outPrefix, kv, count);
+  else if (!strcmp(kv[0], "outStyle"))        sPar->outStyle = atoi(kv[1]);
   
   //-- 5. Variable depth
-  else if (!strcmp(kv[0], "doVariableDepth")) mPar->doVariableDepth = atoi(kv[1]);
+  else if (!strcmp(kv[0], "doVariableDepth")) sPar->doVariableDepth = atoi(kv[1]);
   else if (!strcmp(kv[0], "nbDepthMaps")) {
-                                              if (mPar->depthMapPath) {
-                                                for (i=0; i<mPar->nbDepthMaps; i++) {free(mPar->depthMapPath[i]); mPar->depthMapPath[i] = NULL;}
-                                                free(mPar->depthMapPath); mPar->depthMapPath = NULL;
+                                              if (sPar->depthMapPath) {
+                                                for (i=0; i<sPar->nbDepthMaps; i++) {free(sPar->depthMapPath[i]); sPar->depthMapPath[i] = NULL;}
+                                                free(sPar->depthMapPath); sPar->depthMapPath = NULL;
                                               }
-                                              mPar->nbDepthMaps  = atoi(kv[1]);
-                                              mPar->depthMapPath = (char**)malloc(mPar->nbDepthMaps * sizeof(char*));
-                                              for (i=0; i<mPar->nbDepthMaps; i++) mPar->depthMapPath[i] = (char*)malloc(STRING_LENGTH_MAX * sizeof(char));
+                                              sPar->nbDepthMaps  = atoi(kv[1]);
+                                              sPar->depthMapPath = (char**)malloc(sPar->nbDepthMaps * sizeof(char*));
+                                              for (i=0; i<sPar->nbDepthMaps; i++) sPar->depthMapPath[i] = (char*)malloc(STRING_LENGTH_MAX * sizeof(char));
   }
-  else if (!strcmp(kv[0], "depthMapPath"))    sprintf(mPar->depthMapPath[atoi(kv[1])], "%s", kv[2]);
+  else if (!strcmp(kv[0], "depthMapPath"))    sprintf(sPar->depthMapPath[atoi(kv[1])], "%s", kv[2]);
   else if (!strcmp(kv[0], "N_depth")) {
-                                              if (mPar->VD_nOfZPath) {
-                                                for (i=0; i<mPar->VD_nbNOfZ; i++) {free(mPar->VD_nOfZPath[i]); mPar->VD_nOfZPath[i] = NULL;}
-                                                free(mPar->VD_nOfZPath); mPar->VD_nOfZPath = NULL;
+                                              if (sPar->VD_nOfZPath) {
+                                                for (i=0; i<sPar->VD_nbNOfZ; i++) {free(sPar->VD_nOfZPath[i]); sPar->VD_nOfZPath[i] = NULL;}
+                                                free(sPar->VD_nOfZPath); sPar->VD_nOfZPath = NULL;
                                               }
-                                              mPar->N_depth   = atoi(kv[1]);
-                                              mPar->VD_nbNOfZ = mPar->N_depth * mPar->nbTomo;
-                                              if (mPar->VD_nbNOfZ > 0) mPar->VD_nOfZPath = (char**)malloc(mPar->VD_nbNOfZ * sizeof(char*));
-                                              for (i=0; i<mPar->VD_nbNOfZ; i++) mPar->VD_nOfZPath[i] = (char*)malloc(STRING_LENGTH_MAX * sizeof(char));
+                                              sPar->N_depth   = atoi(kv[1]);
+                                              sPar->VD_nbNOfZ = sPar->N_depth * sPar->nbTomo;
+                                              if (sPar->VD_nbNOfZ > 0) sPar->VD_nOfZPath = (char**)malloc(sPar->VD_nbNOfZ * sizeof(char*));
+                                              for (i=0; i<sPar->VD_nbNOfZ; i++) sPar->VD_nOfZPath[i] = (char*)malloc(STRING_LENGTH_MAX * sizeof(char));
   }
   else if (!strcmp(kv[0], "bin_depth")) {
-                                              if (mPar->bin_depth) free(mPar->bin_depth);
-                                              mPar->bin_depth = makeDoubleArray(kv, count);
+                                              if (sPar->bin_depth) free(sPar->bin_depth);
+                                              sPar->bin_depth = makeDoubleArray(kv, count);
   }
   else if (!strcmp(kv[0], "nbTomo")) {
-                                              if (mPar->VD_nOfZPath) {
-                                                for (i=0; i<mPar->VD_nbNOfZ; i++) {free(mPar->VD_nOfZPath[i]); mPar->VD_nOfZPath[i] = NULL;}
-                                                free(mPar->VD_nOfZPath); mPar->VD_nOfZPath = NULL;
+                                              if (sPar->VD_nOfZPath) {
+                                                for (i=0; i<sPar->VD_nbNOfZ; i++) {free(sPar->VD_nOfZPath[i]); sPar->VD_nOfZPath[i] = NULL;}
+                                                free(sPar->VD_nOfZPath); sPar->VD_nOfZPath = NULL;
                                               }
-                                              mPar->nbTomo    = atoi(kv[1]);
-                                              mPar->VD_nbNOfZ = mPar->N_depth * mPar->nbTomo;
-                                              if (mPar->VD_nbNOfZ > 0) mPar->VD_nOfZPath = (char**)malloc(mPar->VD_nbNOfZ * sizeof(char*));
-                                              for (i=0; i<mPar->VD_nbNOfZ; i++) mPar->VD_nOfZPath[i] = (char*)malloc(STRING_LENGTH_MAX * sizeof(char));
+                                              sPar->nbTomo    = atoi(kv[1]);
+                                              sPar->VD_nbNOfZ = sPar->N_depth * sPar->nbTomo;
+                                              if (sPar->VD_nbNOfZ > 0) sPar->VD_nOfZPath = (char**)malloc(sPar->VD_nbNOfZ * sizeof(char*));
+                                              for (i=0; i<sPar->VD_nbNOfZ; i++) sPar->VD_nOfZPath[i] = (char*)malloc(STRING_LENGTH_MAX * sizeof(char));
   }
   else if (!strcmp(kv[0], "a_n_gal")) {
-                                              if (mPar->a_n_gal) free(mPar->a_n_gal);
-                                              mPar->a_n_gal = makeDoubleArray(kv, count);
+                                              if (sPar->a_n_gal) free(sPar->a_n_gal);
+                                              sPar->a_n_gal = makeDoubleArray(kv, count);
   }
   else if (!strcmp(kv[0], "b_n_gal")) {
-                                              if (mPar->b_n_gal) free(mPar->b_n_gal);
-                                              mPar->b_n_gal = makeDoubleArray(kv, count);
+                                              if (sPar->b_n_gal) free(sPar->b_n_gal);
+                                              sPar->b_n_gal = makeDoubleArray(kv, count);
   }
   else if (!strcmp(kv[0], "a_sigma_eps")) {
-                                              if (mPar->a_sigma_eps) free(mPar->a_sigma_eps);
-                                              mPar->a_sigma_eps = makeDoubleArray(kv, count);
+                                              if (sPar->a_sigma_eps) free(sPar->a_sigma_eps);
+                                              sPar->a_sigma_eps = makeDoubleArray(kv, count);
   }
   else if (!strcmp(kv[0], "b_sigma_eps")) {
-                                              if (mPar->b_sigma_eps) free(mPar->b_sigma_eps);
-                                              mPar->b_sigma_eps = makeDoubleArray(kv, count);
+                                              if (sPar->b_sigma_eps) free(sPar->b_sigma_eps);
+                                              sPar->b_sigma_eps = makeDoubleArray(kv, count);
   }
-  else if (!strcmp(kv[0], "VD_nOfZPath"))     sprintf(mPar->VD_nOfZPath[atoi(kv[1])], "%s", kv[2]);
+  else if (!strcmp(kv[0], "VD_nOfZPath"))     sprintf(sPar->VD_nOfZPath[atoi(kv[1])], "%s", kv[2]);
   
   else return 1; //-- unknown = 1
   
   return 0;
 }
 
-void readParameters(char name[], MFP_param *mPar, int verbose)
+void readParameters(char name[], Salmo_param *sPar, int verbose)
 {
-  sprintf(mPar->parPath, "%s", name);
+  sprintf(sPar->parPath, "%s", name);
   FILE *file = fopen(name, "r");
-  int verbose2 = (mPar->MPIInd == 0) && (mPar->verbose < 99) && verbose;
+  int verbose2 = (sPar->MPIInd == 0) && (sPar->verbose < 99) && verbose;
   
   char line[STRING_LENGTH_MAX], kv[STRING_LENGTH_MAX][STRING_LENGTH_MAX], *buffer;
   int count, unknown;
@@ -249,7 +249,7 @@ void readParameters(char name[], MFP_param *mPar, int verbose)
   while (buffer != NULL) {
     ignoreComments(line);
     count   = getKeyAndValues(line, kv);
-    unknown = findParameterKey(mPar, kv, count);
+    unknown = findParameterKey(sPar, kv, count);
     buffer  = fgets(line, STRING_LENGTH_MAX, file);
     
     if (verbose == 0 && !strcmp(kv[0], "verbose")) {
@@ -263,87 +263,87 @@ void readParameters(char name[], MFP_param *mPar, int verbose)
   return;
 }
 
-int updateFromCommandLine(int argc, char *argv[], MFP_param *mPar)
+int updateFromCommandLine(int argc, char *argv[], Salmo_param *sPar)
 {
   //-- Update from the command line
   
-  int verbose = (mPar->MPIInd == 0) && (mPar->verbose < 99);
+  int verbose = (sPar->MPIInd == 0) && (sPar->verbose < 99);
   char kv[STRING_LENGTH_MAX][STRING_LENGTH_MAX];
   int i, count, unknown;
   
   for (i=3; i<argc; i++) {
     count = getKeyAndValues(argv[i], kv);
     if (count == -1) break; //-- Help detected
-    unknown = findParameterKey(mPar, kv, count); 
+    unknown = findParameterKey(sPar, kv, count); 
     if (unknown == 1 && count > 1 && verbose) printf("Detected the keyword \"%s\" but unable to interpret, skipped\n", kv[0]);
   }
   
   return (int)(count == -1);
 }
 
-void setParameters(MFP_param *mPar)
+void setParameters(Salmo_param *sPar)
 {
-  int verbose = mPar->MPIInd == 0 && mPar->verbose < 99;
+  int verbose = sPar->MPIInd == 0 && sPar->verbose < 99;
   u_int32_t seed;
   int i;
   
   //-- Precomputed part - Generality
-  if (strchr(mPar->seed, 'r') == NULL) seed = strtoul(mPar->seed, NULL, 10);
+  if (strchr(sPar->seed, 'r') == NULL) seed = strtoul(sPar->seed, NULL, 10);
   else {
     seed = renewSeed();
-    sprintf(mPar->seed, "%u (random)", seed);
+    sprintf(sPar->seed, "%u (random)", seed);
   }
-  mPar->generator = initializeGenerator(seed);
-  mPar->nbPix     = 12 * mPar->nside * mPar->nside;
-  mPar->A_pix     = FULL_SKY * DEGREE_SQ_TO_RADIAN_SQ / mPar->nbPix;
-  if (mPar->N_z_map < 0) {
-    mPar->zMapRange[0] = mPar->bin_z_map[0];
-    mPar->zMapRange[1] = mPar->bin_z_map[1];
-    mPar->zMapRange[2] = mPar->bin_z_map[2];
-    mPar->N_z_map      = (int)round((mPar->zMapRange[1] - mPar->zMapRange[0]) / mPar->zMapRange[2]);
-    if (mPar->bin_z_map) free(mPar->bin_z_map);
-    mPar->bin_z_map    = (double*)malloc((mPar->N_z_map+1) * sizeof(double));
-    for (i=0; i<=mPar->N_z_map; i++) mPar->bin_z_map[i] = mPar->zMapRange[0] + i * mPar->zMapRange[2];
+  sPar->generator = initializeGenerator(seed);
+  sPar->nbPix     = 12 * sPar->nside * sPar->nside;
+  sPar->A_pix     = FULL_SKY * DEGREE_SQ_TO_RADIAN_SQ / sPar->nbPix;
+  if (sPar->N_z_map < 0) {
+    sPar->zMapRange[0] = sPar->bin_z_map[0];
+    sPar->zMapRange[1] = sPar->bin_z_map[1];
+    sPar->zMapRange[2] = sPar->bin_z_map[2];
+    sPar->N_z_map      = (int)round((sPar->zMapRange[1] - sPar->zMapRange[0]) / sPar->zMapRange[2]);
+    if (sPar->bin_z_map) free(sPar->bin_z_map);
+    sPar->bin_z_map    = (double*)malloc((sPar->N_z_map+1) * sizeof(double));
+    for (i=0; i<=sPar->N_z_map; i++) sPar->bin_z_map[i] = sPar->zMapRange[0] + i * sPar->zMapRange[2];
   }
   else {
-    mPar->zMapRange[0] = mPar->bin_z_map[0];
-    mPar->zMapRange[1] = mPar->bin_z_map[mPar->N_z_map];
-    mPar->zMapRange[2] = 0.0; //-- dz_map is not defined.
+    sPar->zMapRange[0] = sPar->bin_z_map[0];
+    sPar->zMapRange[1] = sPar->bin_z_map[sPar->N_z_map];
+    sPar->zMapRange[2] = 0.0; //-- dz_map is not defined.
   }
-  if (mPar->z_map)       free(mPar->z_map);
-  if (mPar->half_dz_map) free(mPar->half_dz_map);
-  mPar->z_map       = (double*)malloc(mPar->N_z_map * sizeof(double));
-  mPar->half_dz_map = (double*)malloc(mPar->N_z_map * sizeof(double));
-  for (i=0; i<mPar->N_z_map; i++) {
-    mPar->z_map[i]       = 0.5 * (mPar->bin_z_map[i] + mPar->bin_z_map[i+1]);
-    mPar->half_dz_map[i] = 0.5 * (mPar->bin_z_map[i+1] - mPar->bin_z_map[i]);
+  if (sPar->z_map)       free(sPar->z_map);
+  if (sPar->half_dz_map) free(sPar->half_dz_map);
+  sPar->z_map       = (double*)malloc(sPar->N_z_map * sizeof(double));
+  sPar->half_dz_map = (double*)malloc(sPar->N_z_map * sizeof(double));
+  for (i=0; i<sPar->N_z_map; i++) {
+    sPar->z_map[i]       = 0.5 * (sPar->bin_z_map[i] + sPar->bin_z_map[i+1]);
+    sPar->half_dz_map[i] = 0.5 * (sPar->bin_z_map[i+1] - sPar->bin_z_map[i]);
   }
-  mPar->skipLensing = 1;
-  for (i=0; i<mPar->nbTypes; i++) {
-    if (mPar->doLensing[i] == 1) {
-      mPar->skipLensing = 0;
+  sPar->skipLensing = 1;
+  for (i=0; i<sPar->nbTypes; i++) {
+    if (sPar->doLensing[i] == 1) {
+      sPar->skipLensing = 0;
       break;
     }
   }
   
-  if (mPar->doVariableDepth == 0) {
-    mPar->nbDepthMaps = 0;
-    mPar->N_depth     = 0;
-    mPar->nbTomo      = 0;
-    mPar->VD_nbNOfZ   = 0;
-    mPar->VD_nbTypes  = 0;
+  if (sPar->doVariableDepth == 0) {
+    sPar->nbDepthMaps = 0;
+    sPar->N_depth     = 0;
+    sPar->nbTomo      = 0;
+    sPar->VD_nbNOfZ   = 0;
+    sPar->VD_nbTypes  = 0;
   }
   else {
-    mPar->skipLensing = 0;
-//     mPar->VD_nbNOfZ; //-- Already initialized
-    mPar->VD_nbTypes = mPar->nbDepthMaps * mPar->nbTomo;
+    sPar->skipLensing = 0;
+//     sPar->VD_nbNOfZ; //-- Already initialized
+    sPar->VD_nbTypes = sPar->nbDepthMaps * sPar->nbTomo;
   }
-  mPar->totNbTypes = mPar->nbTypes + mPar->VD_nbTypes;
+  sPar->totNbTypes = sPar->nbTypes + sPar->VD_nbTypes;
   
   
   //-- Running part
-  //mPar->MPISize;  //-- Should not be initialized here
-  //mPar->MPIInd;   //-- Should not be initialized here
+  //sPar->MPISize;  //-- Should not be initialized here
+  //sPar->MPIInd;   //-- Should not be initialized here
   return;
 }
 
@@ -398,108 +398,116 @@ void printDoubleArray(double *lfArr, int length, double factor, int digit)
   return;
 }
 
-void printParam(MFP_param *mPar)
+void printParam(Salmo_param *sPar)
 {
   int i;
-  printf("seed         = %s\n", mPar->seed);
-  printf("verbose      = %d\n", mPar->verbose);
+  printf("seed         = %s\n", sPar->seed);
+  printf("verbose      = %d\n", sPar->verbose);
   
   printf("\n");
-  printf("nside        = %lld\n", mPar->nside);
-  printf("N_z_map      = %d\n", mPar->N_z_map);
-  printf("bin_z_map    = "); printDoubleArray(mPar->bin_z_map, mPar->N_z_map+1, 1.0, 2); printf(" [-]\n");
-  printf("denPrefix    = \"%s\"\n", mPar->denPrefix);
-  printf("lenPrefix    = \"%s\"\n", mPar->lenPrefix);
-  printf("runTag       = \"%s\"\n", mPar->runTag);
+  printf("nside        = %lld\n", sPar->nside);
+  printf("N_z_map      = %d\n", sPar->N_z_map);
+  printf("bin_z_map    = "); printDoubleArray(sPar->bin_z_map, sPar->N_z_map+1, 1.0, 2); printf(" [-]\n");
+  printf("denPrefix    = \"%s\"\n", sPar->denPrefix);
+  printf("lenPrefix    = \"%s\"\n", sPar->lenPrefix);
+  printf("runTag       = \"%s\"\n", sPar->runTag);
   
   printf("\n");
-  printf("nbTypes      = %d\n", mPar->nbTypes);
-  for (i=0; i<mPar->nbTypes;i++) printf("maskPath[%2d] = \"%s\"\n", i, mPar->maskPath[i]);
-  for (i=0; i<mPar->nbTypes;i++) printf("nOfZPath[%2d] = \"%s\"\n", i, mPar->nOfZPath[i]);
-  printf("n_gal        = "); printDoubleArray(mPar->n_gal, mPar->nbTypes, 1.0/RADIAN_SQ_TO_ARCMIN_SQ, 2); printf(" [arcmin^-2]\n");
+  printf("nbTypes      = %d\n", sPar->nbTypes);
+  for (i=0; i<sPar->nbTypes;i++) printf("maskPath[%2d] = \"%s\"\n", i, sPar->maskPath[i]);
+  for (i=0; i<sPar->nbTypes;i++) printf("nOfZPath[%2d] = \"%s\"\n", i, sPar->nOfZPath[i]);
+  printf("n_gal        = "); printDoubleArray(sPar->n_gal, sPar->nbTypes, 1.0/RADIAN_SQ_TO_ARCMIN_SQ, 2); printf(" [arcmin^-2]\n");
   
   printf("\n");
-  printf("doNoise      = %d\n", mPar->doNoise);
-  printf("doWgt        = %d\n", mPar->doWgt);
-  printf("signConv     = %d\n", mPar->signConv);
-  printf("sigma_eps    = "); printDoubleArray(mPar->sigma_eps, mPar->nbTypes, 1.0, 5); printf("\n");
-  printf("doLensing    = "); printIntArray(mPar->doLensing, mPar->nbTypes); printf("\n");
-  printf("outPrefix    = \"%s\"\n", mPar->outPrefix);
-  printf("outStyle     = %d\n", mPar->outStyle);
+  printf("doNoise      = %d\n", sPar->doNoise);
+  printf("doWgt        = %d\n", sPar->doWgt);
+  printf("signConv     = %d\n", sPar->signConv);
+  printf("sigma_eps    = "); printDoubleArray(sPar->sigma_eps, sPar->nbTypes, 1.0, 5); printf("\n");
+  printf("doLensing    = "); printIntArray(sPar->doLensing, sPar->nbTypes); printf("\n");
+  printf("outPrefix    = \"%s\"\n", sPar->outPrefix);
+  printf("outStyle     = %d\n", sPar->outStyle);
   
   printf("\n");
-  printf("doVariableDepth  = %d\n", mPar->doVariableDepth);
+  printf("doVariableDepth  = %d\n", sPar->doVariableDepth);
   
-  if (mPar->doVariableDepth == 1) {
-    printf("nbDepthMaps      = %d\n", mPar->nbDepthMaps);
-    for (i=0; i<mPar->nbDepthMaps;i++) printf("depthMapPath[%2d] = \"%s\"\n", i, mPar->depthMapPath[i]);
-    printf("N_depth          = %d\n", mPar->N_depth);
-    printf("bin_depth        = "); printDoubleArray(mPar->bin_depth, mPar->N_depth+1, 1.0, 2); printf(" [-]\n");
-    printf("nbTomo           = %d\n", mPar->nbTomo);
-    printf("a_n_gal          = "); printDoubleArray(mPar->a_n_gal, mPar->nbTomo, 1.0, 3); printf("\n");
-    printf("b_n_gal          = "); printDoubleArray(mPar->b_n_gal, mPar->nbTomo, 1.0, 3); printf("\n");
-    printf("a_sigma_eps      = "); printDoubleArray(mPar->a_sigma_eps, mPar->nbTomo, 1.0, 3); printf("\n");
-    printf("b_sigma_eps      = "); printDoubleArray(mPar->b_sigma_eps, mPar->nbTomo, 1.0, 3); printf("\n");
-    for (i=0; i<mPar->VD_nbNOfZ;i++) printf("VD_nOfZPath[%2d]  = \"%s\"\n", i, mPar->VD_nOfZPath[i]);
+  if (sPar->doVariableDepth == 1) {
+    printf("nbDepthMaps      = %d\n", sPar->nbDepthMaps);
+    for (i=0; i<sPar->nbDepthMaps;i++) printf("depthMapPath[%2d] = \"%s\"\n", i, sPar->depthMapPath[i]);
+    printf("N_depth          = %d\n", sPar->N_depth);
+    printf("bin_depth        = "); printDoubleArray(sPar->bin_depth, sPar->N_depth+1, 1.0, 2); printf(" [-]\n");
+    printf("nbTomo           = %d\n", sPar->nbTomo);
+    printf("a_n_gal          = "); printDoubleArray(sPar->a_n_gal, sPar->nbTomo, 1.0, 3); printf("\n");
+    printf("b_n_gal          = "); printDoubleArray(sPar->b_n_gal, sPar->nbTomo, 1.0, 3); printf("\n");
+    printf("a_sigma_eps      = "); printDoubleArray(sPar->a_sigma_eps, sPar->nbTomo, 1.0, 3); printf("\n");
+    printf("b_sigma_eps      = "); printDoubleArray(sPar->b_sigma_eps, sPar->nbTomo, 1.0, 3); printf("\n");
+    for (i=0; i<sPar->VD_nbNOfZ;i++) printf("VD_nOfZPath[%2d]  = \"%s\"\n", i, sPar->VD_nOfZPath[i]);
   }
   return;
 }
 
-void printCompleteParam(MFP_param *mPar)
+void printCompleteParam(Salmo_param *sPar)
 {
   int i;
+  printf("\n");
+  
   printf("------ 1. Generality ------\n");
-  printf("parPath      = \"%s\"\n", mPar->parPath);
-  printf("seed         = %s\n", mPar->seed);
-  printf("verbose      = %d\n", mPar->verbose);
+  printf("parPath      = \"%s\"\n", sPar->parPath);
+  printf("seed         = %s\n", sPar->seed);
+  printf("verbose      = %d\n", sPar->verbose);
+  printf("\n");
   
   printf("------ 2. Input maps ------\n");
-  printf("nside        = %lld\n", mPar->nside);
-  printf("N_z_map      = %d\n", mPar->N_z_map);
-  printf("bin_z_map    = "); printDoubleArray(mPar->bin_z_map, mPar->N_z_map+1, 1.0, 2); printf(" [-]\n");
-  printf("denPrefix    = \"%s\"\n", mPar->denPrefix);
-  printf("lenPrefix    = \"%s\"\n", mPar->lenPrefix);
-  printf("runTag       = \"%s\"\n", mPar->runTag);
+  printf("nside        = %lld\n", sPar->nside);
+  printf("N_z_map      = %d\n", sPar->N_z_map);
+  printf("bin_z_map    = "); printDoubleArray(sPar->bin_z_map, sPar->N_z_map+1, 1.0, 2); printf(" [-]\n");
+  printf("denPrefix    = \"%s\"\n", sPar->denPrefix);
+  printf("lenPrefix    = \"%s\"\n", sPar->lenPrefix);
+  printf("runTag       = \"%s\"\n", sPar->runTag);
+  printf("\n");
   
   printf("------ 3. Selection functions ------\n");
-  printf("nbTypes      = %d\n", mPar->nbTypes);
-  for (i=0; i<mPar->nbTypes;i++) printf("maskPath[%2d] = \"%s\"\n", i, mPar->maskPath[i]);
-  for (i=0; i<mPar->nbTypes;i++) printf("nOfZPath[%2d] = \"%s\"\n", i, mPar->nOfZPath[i]);
-  printf("n_gal        = "); printDoubleArray(mPar->n_gal, mPar->nbTypes, 1.0/RADIAN_SQ_TO_ARCMIN_SQ, 2); printf(" [arcmin^-2]\n");
+  printf("nbTypes      = %d\n", sPar->nbTypes);
+  for (i=0; i<sPar->nbTypes;i++) printf("maskPath[%2d] = \"%s\"\n", i, sPar->maskPath[i]);
+  for (i=0; i<sPar->nbTypes;i++) printf("nOfZPath[%2d] = \"%s\"\n", i, sPar->nOfZPath[i]);
+  printf("n_gal        = "); printDoubleArray(sPar->n_gal, sPar->nbTypes, 1.0/RADIAN_SQ_TO_ARCMIN_SQ, 2); printf(" [arcmin^-2]\n");
+  printf("\n");
   
   printf("------ 4. Lensing & outputs ------\n");
-  printf("doNoise      = %d\n", mPar->doNoise);
-  printf("doWgt        = %d\n", mPar->doWgt);
-  printf("signConv     = %d\n", mPar->signConv);
-  printf("sigma_eps    = "); printDoubleArray(mPar->sigma_eps, mPar->nbTypes, 1.0, 5); printf("\n");
-  printf("doLensing    = "); printIntArray(mPar->doLensing, mPar->nbTypes); printf("\n");
-  printf("outPrefix    = \"%s\"\n", mPar->outPrefix);
-  printf("outStyle     = %d\n", mPar->outStyle);
+  printf("doNoise      = %d\n", sPar->doNoise);
+  printf("doWgt        = %d\n", sPar->doWgt);
+  printf("signConv     = %d\n", sPar->signConv);
+  printf("sigma_eps    = "); printDoubleArray(sPar->sigma_eps, sPar->nbTypes, 1.0, 5); printf("\n");
+  printf("doLensing    = "); printIntArray(sPar->doLensing, sPar->nbTypes); printf("\n");
+  printf("outPrefix    = \"%s\"\n", sPar->outPrefix);
+  printf("outStyle     = %d\n", sPar->outStyle);
+  printf("\n");
   
   printf("------ 5. Variable depth ------\n");
-  printf("doVariableDepth  = %d\n", mPar->doVariableDepth);
-  printf("nbDepthMaps      = %d\n", mPar->nbDepthMaps);
-  for (i=0; i<mPar->nbDepthMaps;i++) printf("depthMapPath[%2d] = \"%s\"\n", i, mPar->depthMapPath[i]);
-  printf("N_depth          = %d\n", mPar->N_depth);
-  printf("bin_depth        = "); printDoubleArray(mPar->bin_depth, mPar->N_depth+1, 1.0, 2); printf(" [-]\n");
-  printf("nbTomo           = %d\n", mPar->nbTomo);
-  printf("a_n_gal          = "); printDoubleArray(mPar->a_n_gal, mPar->nbTomo, 1.0, 3); printf("\n");
-  printf("b_n_gal          = "); printDoubleArray(mPar->b_n_gal, mPar->nbTomo, 1.0, 3); printf("\n");
-  printf("a_sigma_eps      = "); printDoubleArray(mPar->a_sigma_eps, mPar->nbTomo, 1.0, 3); printf("\n");
-  printf("b_sigma_eps      = "); printDoubleArray(mPar->b_sigma_eps, mPar->nbTomo, 1.0, 3); printf("\n");
-  for (i=0; i<mPar->VD_nbNOfZ;i++) printf("VD_nOfZPath[%2d]  = \"%s\"\n", i, mPar->VD_nOfZPath[i]);
+  printf("doVariableDepth  = %d\n", sPar->doVariableDepth);
+  printf("nbDepthMaps      = %d\n", sPar->nbDepthMaps);
+  for (i=0; i<sPar->nbDepthMaps;i++) printf("depthMapPath[%2d] = \"%s\"\n", i, sPar->depthMapPath[i]);
+  printf("N_depth          = %d\n", sPar->N_depth);
+  printf("bin_depth        = "); printDoubleArray(sPar->bin_depth, sPar->N_depth+1, 1.0, 2); printf(" [-]\n");
+  printf("nbTomo           = %d\n", sPar->nbTomo);
+  printf("a_n_gal          = "); printDoubleArray(sPar->a_n_gal, sPar->nbTomo, 1.0, 3); printf("\n");
+  printf("b_n_gal          = "); printDoubleArray(sPar->b_n_gal, sPar->nbTomo, 1.0, 3); printf("\n");
+  printf("a_sigma_eps      = "); printDoubleArray(sPar->a_sigma_eps, sPar->nbTomo, 1.0, 3); printf("\n");
+  printf("b_sigma_eps      = "); printDoubleArray(sPar->b_sigma_eps, sPar->nbTomo, 1.0, 3); printf("\n");
+  for (i=0; i<sPar->VD_nbNOfZ;i++) printf("VD_nOfZPath[%2d]  = \"%s\"\n", i, sPar->VD_nOfZPath[i]);
+  printf("\n");
   
   printf("------ Precomputed part ------\n");
-  printf("generator    = What do you expect from this?\n");
-  printf("nbPix        = %lld\n", mPar->nbPix);
-  printf("A_pix        = %f [arcmin^2]\n", mPar->A_pix*RADIAN_SQ_TO_ARCMIN_SQ);
-  printf("z_map        = "); printDoubleArray(mPar->z_map, mPar->N_z_map, 1.0, 2); printf(" [-]\n");
-  printf("half_dz_map  = "); printDoubleArray(mPar->half_dz_map, mPar->N_z_map, 1.0, 2); printf(" [-]\n");
-  printf("zMapRange    = %.3f, %.3f, %.3f [-]\n", mPar->zMapRange[0], mPar->zMapRange[1], mPar->zMapRange[2]);
-  printf("skipLensing  = %d\n", mPar->skipLensing);
-  printf("VD_nbNOfZ    = %d\n", mPar->VD_nbNOfZ);
-  printf("VD_nbTypes   = %d\n", mPar->VD_nbTypes);
-  printf("totNbTypes   = %d\n", mPar->totNbTypes);
+  printf("generator    = %s (default)\n", gsl_rng_name(sPar->generator));
+  printf("nbPix        = %lld\n", sPar->nbPix);
+  printf("A_pix        = %f [arcmin^2]\n", sPar->A_pix*RADIAN_SQ_TO_ARCMIN_SQ);
+  printf("z_map        = "); printDoubleArray(sPar->z_map, sPar->N_z_map, 1.0, 2); printf(" [-]\n");
+  printf("half_dz_map  = "); printDoubleArray(sPar->half_dz_map, sPar->N_z_map, 1.0, 2); printf(" [-]\n");
+  printf("zMapRange    = %.3f, %.3f, %.3f [-]\n", sPar->zMapRange[0], sPar->zMapRange[1], sPar->zMapRange[2]);
+  printf("skipLensing  = %d\n", sPar->skipLensing);
+  printf("VD_nbNOfZ    = %d\n", sPar->VD_nbNOfZ);
+  printf("VD_nbTypes   = %d\n", sPar->VD_nbTypes);
+  printf("totNbTypes   = %d\n", sPar->totNbTypes);
+  printf("\n");
   return;
 }
 

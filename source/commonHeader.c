@@ -1,11 +1,11 @@
 
 
   //------------------------------------------------------//
-  //--  commonHeader.c					--//
-  //--  Version 2019.12.11				--//
-  //--  						--//
-  //--  Copyright (C) 2018 - Chieh-An Lin		--//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
+  //--  commonHeader.c                                  --//
+  //--  Version 2020.07.09                              --//
+  //--                                                  --//
+  //--  Copyright (C) 2020 - Chieh-An Lin               --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/       --//
   //------------------------------------------------------//
 
 
