@@ -2,7 +2,7 @@
 
   //------------------------------------------------------//
   //--  parameters.h					--//
-  //--  Version 2019.10.02				--//
+  //--  Version 2019.12.15				--//
   //--  						--//
   //--  Copyright (C) 2018 - Chieh-An Lin		--//
   //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
@@ -54,7 +54,7 @@ typedef struct {
   int doNoise;
   int doWgt;
   int signConv;
-  double sigma_eps;
+  double *sigma_eps;
   int *doLensing;
   char outPrefix[STRING_LENGTH_MAX];
   int outStyle;

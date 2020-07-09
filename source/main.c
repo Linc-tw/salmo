@@ -1,12 +1,12 @@
 
 
-  //------------------------------------------------------//
-  //--  main.c						--//
-  //--  Version 2019.10.02				--//
-  //--  						--//
-  //--  Copyright (C) 2019 - Chieh-An Lin		--//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
-  //------------------------------------------------------//
+  //-------------------------------------------------//
+  //--  main.c                                     --//
+  //--  Version 2020.07.08                         --//
+  //--                                             --//
+  //--  Copyright (C) 2019 - Chieh-An Lin          --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/  --//
+  //-------------------------------------------------//
 
 
 #include "main.h"
@@ -14,6 +14,8 @@
 
 int main(int argc, char *argv[])
 {
+  //-- This code has not been implemented with MPI.
+  //-- Here the related variables & functions are only kept for future developments.
   int MPISize = 1;
   int MPIInd  = 0;
   
@@ -27,21 +29,20 @@ int main(int argc, char *argv[])
   //-- Start stopwatch
   clock_t start = clock();
   
-  //-- Read inputs
-  //-- anser, buceros, corvus, diomedea, egretta, 
-  //-- falco, gallus, hirundo, icterus, jacana, 
-  //-- larus, milvus, numida, otis, pavo, 
-  //-- raphus, strix, turdus, upupa, vultur, 
-  //-- zosterops
+  //-- Load inputs
+  //-- Below are some strings that will be automatically recognized as keys for parameter files.
   char *parPath = (argc >= 2) ? argv[1] : "../param/MFPParam.par";
   if (!strcmp(parPath, "default"))        parPath = "../param/MFPParam.par";
   else if (!strcmp(parPath, "anser"))     parPath = "../param/MFPParam_anser.par";
   else if (!strcmp(parPath, "buceros"))   parPath = "../param/MFPParam_buceros.par";
   else if (!strcmp(parPath, "corvus"))    parPath = "../param/MFPParam_corvus.par";
+  else if (!strcmp(parPath, "cygnus"))    parPath = "../param/MFPParam_cygnus.par";
+  else if (!strcmp(parPath, "cuculus"))   parPath = "../param/MFPParam_cuculus.par";
   else if (!strcmp(parPath, "diomedea"))  parPath = "../param/MFPParam_diomedea.par";
   else if (!strcmp(parPath, "egretta"))   parPath = "../param/MFPParam_egretta.par";
   else if (!strcmp(parPath, "falco"))     parPath = "../param/MFPParam_falco.par";
   else if (!strcmp(parPath, "gallus"))    parPath = "../param/MFPParam_gallus.par";
+  else if (!strcmp(parPath, "grus"))      parPath = "../param/MFPParam_grus.par";
   else if (!strcmp(parPath, "hirundo"))   parPath = "../param/MFPParam_hirundo.par";
   else if (!strcmp(parPath, "icterus"))   parPath = "../param/MFPParam_icterus.par";
   else if (!strcmp(parPath, "jacana"))    parPath = "../param/MFPParam_jacana.par";
@@ -56,6 +57,9 @@ int main(int argc, char *argv[])
   else if (!strcmp(parPath, "upupa"))     parPath = "../param/MFPParam_upupa.par";
   else if (!strcmp(parPath, "vultur"))    parPath = "../param/MFPParam_vultur.par";
   else if (!strcmp(parPath, "zosterops")) parPath = "../param/MFPParam_zosterops.par";
+  
+  //-- Read the task index. 
+  //-- If not provided, set to -1 (print instructions).
   int task = (argc >= 3) ? atoi(argv[2]) : -1;
   
   //-- Initialization
@@ -68,9 +72,9 @@ int main(int argc, char *argv[])
   if (MPIInd == 0 && mPar->verbose < 99) {
     printf("\n");
     printf("        #################################################\n");
-    printf("        ##               mockFootprint                 ##\n");
+    printf("        ##                    Salmo                    ##\n");
     printf("        ##                                             ##\n");
-    printf("        ##  Copyright (C) 2018 - Chieh-An Lin          ##\n");
+    printf("        ##  Copyright (C) 2020 - Chieh-An Lin          ##\n");
     printf("        ##  GNU GPLv3 - https://www.gnu.org/licenses/  ##\n");
     printf("        #################################################\n");
     printf("\n");
@@ -86,7 +90,7 @@ int main(int argc, char *argv[])
     printf("Initialized parameters\n");
     printf("------------------------------------------------------------------------\n");
     
-    if (task == -3) ;
+    if (task == -1) ;
     else {
       printParam(mPar);
       printf("------------------------------------------------------------------------\n");
@@ -110,11 +114,16 @@ int main(int argc, char *argv[])
     sandbox(mPar);
   }
   
-  else if (task == -3) {
+  //-- Print instructions
+  else if (task == -1) printInstructions(-1, 1);
+  
+  //-- Print complete parameters
+  else if (task == -2) {
     printCompleteParam(mPar);
     printf("------------------------------------------------------------------------\n");
   }
   
+  //-- Make kappa+gamma maps (3 extensions in a FITS file) given a kappa map
   else if (task == 1) {
     if (argc < 3 || help) printInstructions(task, 1);
     else {
@@ -122,6 +131,11 @@ int main(int argc, char *argv[])
     }
   }
   
+  //-- Create mocks using a type map.
+  //-- A type map is an int64 array.
+  //-- Each int64 of the array represents a pixel.
+  //-- The bit of each int64 indicates whether the selection function of a certain tracer is activated at the corresponding pixel or not.
+  //-- Since int64 has 64 bits, this approach allows up to 64 different types of tracers.
   else if (task == 2) {
     if (argc < 3 || help) printInstructions(task, 1);
     else {
@@ -129,6 +143,15 @@ int main(int argc, char *argv[])
     }
   }
   
+  //-- Create mocks using a ratio map in LOS mode.
+  //-- LOS mode means that the lensing maps provided are considered as lensing signals at the outer edge of the shell (not the center).
+  //-- A ratio map is a float32 array.
+  //-- Each float32 of the array represents the filling factor of a certain tracer in a pixel.
+  //-- The filling factor can be any positive real number or zero.
+  //-- It is the ratio of the expected tracer density in that pixel with regard to the reference value (usually the global mean density).
+  //-- If filling factors are either 0 or 1, we find the case of the classical binary mask.
+  //-- A ratio map can only provide information for one tracer.
+  //-- Therefore, users need to specify paths of all ratio maps if multiple tracers are used.
   else if (task == 3) {
     if (argc < 3 || help) printInstructions(task, 1);
     else {
@@ -137,6 +160,8 @@ int main(int argc, char *argv[])
     }
   }
   
+  //-- Create mocks using a ratio map in C_ell mode.
+  //-- C_ell mode means that the lensing maps provided are considered as lensing signals at the center of the shell (not the outer edge).
   else if (task == 4) {
     if (argc < 3 || help) printInstructions(task, 1);
     else {
@@ -144,6 +169,12 @@ int main(int argc, char *argv[])
     }
   }
   
+  //-- You won't want to use this, but I will still explain.
+  //-- Given a tracer, given its n(z), one can calculate its projected C_ell.
+  //-- If we use this C_ell to generate a matter shell from Flask, then this matter shell becomes a projected density map (i.e. all redshift included).
+  //-- In practice, we may have N tracers.
+  //-- We can then calculate N sets of projected C_ell & generate N projected density maps.
+  //-- Salmo will take that & sample redshifts beside to create catalogues.
   else if (task == 5) {
     if (argc < 5 || help) printInstructions(task, 1);
     else {
@@ -153,10 +184,6 @@ int main(int argc, char *argv[])
       processMock_ratioMap_projCL(mPar, resol, nbSplits);
     }
   }
-  
-  else if (task == -1) printInstructions(-1, 1);
-  else if (task == -2) printInstructions(-2, 0);
-  else                 printInstructions(-1, 0);
   
   //-- Stop stopwatch
   clock_t finish = clock();
@@ -178,11 +205,6 @@ void printInstructions(int task, int doHelp)
     printHeader(1, 0);
     printDetails(task, doHelp);
   }
-
-  else if (task == -2) { //-- Simple menu
-    printHeader(1, doHelp);
-    printDetails(0, 0); printDetails(1, 0); printDetails(2, 0); printDetails(3, 0); printDetails(4, 0); 
-  }
   
   else { //-- Complete menu
     printHeader(1, doHelp);
@@ -193,14 +215,16 @@ void printInstructions(int task, int doHelp)
   return;
 }
 
+//-- Print header of instructions
+//-- Provide examples if doHelp is on
 void printHeader(int task, int doHelp)
 {
-  if (task >= 0 && task <= 20) {
+  if (task >= 0 && task <= 30) {
     if (doHelp) {
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH TASK\n");
-      printf("  ./mockFootprint PATH TASK -h\n");
-      printf("  ./mockFootprint PATH TASK KEY=VALUE\n");
+      printf("  ./salmo PATH TASK\n");
+      printf("  ./salmo PATH TASK -h\n");
+      printf("  ./salmo PATH TASK KEY=VALUE\n");
       printf("\n");
       printf("Notes:\n");
       printf("  - PATH = path to the camelusParam.par file\n");
@@ -210,9 +234,9 @@ void printHeader(int task, int doHelp)
       printf("  - Some parameters can be updated by KEY=VALUE.\n");
       printf("\n");
       printf("Examples:\n");
-      printf("  ./mockFootprint default 0\n");
-      printf("  ./mockFootprint ../param/camelusParam.par 1\n");
-      printf("  ./mockFootprint default 1 runTag=\"_hello\"\n");
+      printf("  ./salmo default 0\n");
+      printf("  ./salmo ../param/camelusParam.par 1\n");
+      printf("  ./salmo default 1 runTag=\"_hello\"\n");
       printf("\n");
     }
       printf("Tasks:\n");
@@ -220,6 +244,8 @@ void printHeader(int task, int doHelp)
   return; 
 }
 
+//-- Print detaileds of each option
+//-- Provide variable format if doHelp is on
 void printDetails(int task, int doHelp)
 {
   if (task == 0) {
@@ -227,7 +253,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 0    # Sandbox\n");
+      printf("  ./salmo PATH 0    # Sandbox\n");
     }
   }
   else if (task == 1) {
@@ -235,7 +261,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 1    # delta to lensing\n");
+      printf("  ./salmo PATH 1    # delta to lensing\n");
     }
   }
   else if (task == 2) {
@@ -243,7 +269,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 2    # Generate a mock using type map, lenMap interpreted as at the upper bin edges\n");
+      printf("  ./salmo PATH 2    # Generate a mock using type map, lenMap interpreted as at the upper bin edges\n");
     }
   }
   else if (task == 3) {
@@ -251,7 +277,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 3    # Generate a mock, lenMap interpreted as at the upper bin edges\n");
+      printf("  ./salmo PATH 3    # Generate a mock, lenMap interpreted as at the upper bin edges\n");
     }
   }
   else if (task == 4) {
@@ -259,7 +285,7 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 4    # Generate a mock, lenMap interpreted as at the middle of bins\n");
+      printf("  ./salmo PATH 4    # Generate a mock, lenMap interpreted as at the middle of bins\n");
     }
   }
   else if (task == 5) {
@@ -267,9 +293,9 @@ void printDetails(int task, int doHelp)
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./mockFootprint PATH 5 resol nbSplits  # Generate galaxies from projected maps\n");
-      printf("                                         # Matter fields smoothed with a top hat of resol^2\n");
-      printf("                                         # nbSplits tells how many types of galaxies should a map accounts for\n");
+      printf("  ./salmo PATH 5 resol nbSplits  # Generate galaxies from projected maps\n");
+      printf("                                 # Matter fields smoothed with a top hat of resol^2\n");
+      printf("                                 # nbSplits tells how many types of galaxies should a map accounts for\n");
     }
   }
   return;
@@ -281,7 +307,7 @@ void sandbox(MFP_param *mPar)
   char name2[STRING_LENGTH_MAX];
   printf("This is a sandbox of MFP.\n\n");
   
-  printCompleteParam(mPar);
+//   printCompleteParam(mPar);
   
   //mpirun -n 3 ./camelus default 35
   //-- Hold root processor if others have not finished

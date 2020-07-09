@@ -2,7 +2,7 @@
 
   //------------------------------------------------------//
   //--  sampling.h					--//
-  //--  Version 2019.10.02				--//
+  //--  Version 2020.04.01				--//
   //--  						--//
   //--  Copyright (C) 2019 - Chieh-An Lin		--//
   //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
