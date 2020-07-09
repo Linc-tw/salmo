@@ -25,18 +25,12 @@ Installation
 
 ### Requirements
 
-Required softwares:
 - [cmake](https://cmake.org/cmake/resources/software.html)
 - [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/)
 - [gcc](https://gcc.gnu.org/)
 - [gsl](https://www.gnu.org/software/gsl/)
 - [cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/fitsio.html)
 - [chealpix](https://healpix.jpl.nasa.gov/index.shtml)
-
-Optional software:
-- [healpix_cxx](https://healpix.jpl.nasa.gov/index.shtml)
-
-During the compilation, `cmake` uses `pkg-config` to find optional softwares. If they are missing, the compilation still continues without providing all functionalitites.
 
 
 ### Compilation

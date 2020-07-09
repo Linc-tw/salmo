@@ -1,11 +1,11 @@
 
 
   //------------------------------------------------------//
-  //--  parameters.c					--//
-  //--  Version 2019.12.15				--//
-  //--  						--//
-  //--  Copyright (C) 2018 - Chieh-An Lin		--//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
+  //--  parameters.c                                    --//
+  //--  Version 2020.07.09                              --//
+  //--                                                  --//
+  //--  Copyright (C) 2020 - Chieh-An Lin               --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/       --//
   //------------------------------------------------------//
 
 
@@ -448,10 +448,13 @@ void printParam(MFP_param *mPar)
 void printCompleteParam(MFP_param *mPar)
 {
   int i;
+  printf("\n");
+  
   printf("------ 1. Generality ------\n");
   printf("parPath      = \"%s\"\n", mPar->parPath);
   printf("seed         = %s\n", mPar->seed);
   printf("verbose      = %d\n", mPar->verbose);
+  printf("\n");
   
   printf("------ 2. Input maps ------\n");
   printf("nside        = %lld\n", mPar->nside);
@@ -460,12 +463,14 @@ void printCompleteParam(MFP_param *mPar)
   printf("denPrefix    = \"%s\"\n", mPar->denPrefix);
   printf("lenPrefix    = \"%s\"\n", mPar->lenPrefix);
   printf("runTag       = \"%s\"\n", mPar->runTag);
+  printf("\n");
   
   printf("------ 3. Selection functions ------\n");
   printf("nbTypes      = %d\n", mPar->nbTypes);
   for (i=0; i<mPar->nbTypes;i++) printf("maskPath[%2d] = \"%s\"\n", i, mPar->maskPath[i]);
   for (i=0; i<mPar->nbTypes;i++) printf("nOfZPath[%2d] = \"%s\"\n", i, mPar->nOfZPath[i]);
   printf("n_gal        = "); printDoubleArray(mPar->n_gal, mPar->nbTypes, 1.0/RADIAN_SQ_TO_ARCMIN_SQ, 2); printf(" [arcmin^-2]\n");
+  printf("\n");
   
   printf("------ 4. Lensing & outputs ------\n");
   printf("doNoise      = %d\n", mPar->doNoise);
@@ -475,6 +480,7 @@ void printCompleteParam(MFP_param *mPar)
   printf("doLensing    = "); printIntArray(mPar->doLensing, mPar->nbTypes); printf("\n");
   printf("outPrefix    = \"%s\"\n", mPar->outPrefix);
   printf("outStyle     = %d\n", mPar->outStyle);
+  printf("\n");
   
   printf("------ 5. Variable depth ------\n");
   printf("doVariableDepth  = %d\n", mPar->doVariableDepth);
@@ -488,9 +494,10 @@ void printCompleteParam(MFP_param *mPar)
   printf("a_sigma_eps      = "); printDoubleArray(mPar->a_sigma_eps, mPar->nbTomo, 1.0, 3); printf("\n");
   printf("b_sigma_eps      = "); printDoubleArray(mPar->b_sigma_eps, mPar->nbTomo, 1.0, 3); printf("\n");
   for (i=0; i<mPar->VD_nbNOfZ;i++) printf("VD_nOfZPath[%2d]  = \"%s\"\n", i, mPar->VD_nOfZPath[i]);
+  printf("\n");
   
   printf("------ Precomputed part ------\n");
-  printf("generator    = What do you expect from this?\n");
+  printf("generator    = %s (default)\n", gsl_rng_name(mPar->generator));
   printf("nbPix        = %lld\n", mPar->nbPix);
   printf("A_pix        = %f [arcmin^2]\n", mPar->A_pix*RADIAN_SQ_TO_ARCMIN_SQ);
   printf("z_map        = "); printDoubleArray(mPar->z_map, mPar->N_z_map, 1.0, 2); printf(" [-]\n");
@@ -500,6 +507,7 @@ void printCompleteParam(MFP_param *mPar)
   printf("VD_nbNOfZ    = %d\n", mPar->VD_nbNOfZ);
   printf("VD_nbTypes   = %d\n", mPar->VD_nbTypes);
   printf("totNbTypes   = %d\n", mPar->totNbTypes);
+  printf("\n");
   return;
 }
 

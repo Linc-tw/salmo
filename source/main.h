@@ -1,11 +1,11 @@
 
 
   //------------------------------------------------------//
-  //--  main.h						--//
-  //--  Version 2019.01.25				--//
-  //--  						--//
-  //--  Copyright (C) 2019 - Chieh-An Lin		--//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
+  //--  main.h                                          --//
+  //--  Version 2020.07.09                              --//
+  //--                                                  --//
+  //--  Copyright (C) 2020 - Chieh-An Lin               --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/       --//
   //------------------------------------------------------//
 
 

@@ -1,20 +1,20 @@
 
 
   //------------------------------------------------------//
-  //--  commonHeader.h					--//
-  //--  Version 2019.12.11				--//
-  //--  						--//
-  //--  Copyright (C) 2018 - Chieh-An Lin		--//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
+  //--  commonHeader.h                                  --//
+  //--  Version 2020.07.09                              --//
+  //--                                                  --//
+  //--  Copyright (C) 2020 - Chieh-An Lin               --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/       --//
   //------------------------------------------------------//
 
 
 #ifndef __MFP_COMMON_HEADER__
 #define __MFP_COMMON_HEADER__
 
-#ifndef __MFP_USE_HEALPIX_CXX__
-  #define __MFP_USE_HEALPIX_CXX__
-#endif
+//#ifndef __MFP_USE_HEALPIX_CXX__
+//  #define __MFP_USE_HEALPIX_CXX__
+//#endif
 // #ifndef __MFP_USE_MPI__
 //   #define __MFP_USE_MPI__
 // #endif

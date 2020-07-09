@@ -28,7 +28,7 @@ nside		256			## [int] N_side of input maps
 					##   Has to be a power of 2
 N_z_map		-1			## [int] Number of redshift slices of maps
 					##   Can be negative (see bin_z_map)
-bin_z_map	0.0  1.0  0.2
+bin_z_map	0.0  0.6  0.2
 					## [float array] Bin edge values for input map redshifts
 					##   If N_z_map > 0, bin_z_map should have N_z_map + 1 values.
 					##   If N_z_map < 0, the first 3 values are successively read as z_map_min, z_map_max, dz_map.

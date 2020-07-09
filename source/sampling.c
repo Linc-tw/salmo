@@ -1,11 +1,11 @@
 
 
   //------------------------------------------------------//
-  //--  sampling.c					--//
-  //--  Version 2020.04.01				--//
-  //--  						--//
-  //--  Copyright (C) 2019 - Chieh-An Lin		--//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/	--//
+  //--  sampling.c                                      --//
+  //--  Version 2020.07.09                              --//
+  //--                                                  --//
+  //--  Copyright (C) 2020 - Chieh-An Lin               --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/       --//
   //------------------------------------------------------//
 
 
@@ -1366,7 +1366,7 @@ void processLensingMaps(MFP_param *mPar)
   free_double_arr(weight);
   free_HPMap_arr(bufferMap);
 #else
-  printf("healpix_cxx not found; nothing is done.");
+  printf("healpix_cxx not found; nothing is done.\n");
 #endif
   printf("------------------------------------------------------------------------\n");
   return;

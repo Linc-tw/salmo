@@ -1,12 +1,12 @@
 
 
-  //-------------------------------------------------//
-  //--  main.c                                     --//
-  //--  Version 2020.07.08                         --//
-  //--                                             --//
-  //--  Copyright (C) 2019 - Chieh-An Lin          --//
-  //--  GNU GPLv3 - https://www.gnu.org/licenses/  --//
-  //-------------------------------------------------//
+  //------------------------------------------------------//
+  //--  main.c                                          --//
+  //--  Version 2020.07.09                              --//
+  //--                                                  --//
+  //--  Copyright (C) 2020 - Chieh-An Lin               --//
+  //--  GNU GPLv3 - https://www.gnu.org/licenses/       --//
+  //------------------------------------------------------//
 
 
 #include "main.h"
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     printf("Initialized parameters\n");
     printf("------------------------------------------------------------------------\n");
     
-    if (task == -1) ;
+    if (task == -1 || task == -2) ;
     else {
       printParam(mPar);
       printf("------------------------------------------------------------------------\n");
@@ -123,6 +123,7 @@ int main(int argc, char *argv[])
     printf("------------------------------------------------------------------------\n");
   }
   
+  //-- WARNING This function has been deactivated in the public version.
   //-- Make kappa+gamma maps (3 extensions in a FITS file) given a kappa map
   else if (task == 1) {
     if (argc < 3 || help) printInstructions(task, 1);
@@ -208,7 +209,10 @@ void printInstructions(int task, int doHelp)
   
   else { //-- Complete menu
     printHeader(1, doHelp);
-    printDetails(0, 0); printDetails(1, 0); printDetails(2, 0); printDetails(3, 0); printDetails(4, 0); 
+    printDetails(-2, 0);
+    printDetails(-1, 0);
+    printDetails(0, 0); printDetails(1, 0); 
+    printDetails(2, 0); printDetails(3, 0); printDetails(4, 0); 
   }
   
   printf("------------------------------------------------------------------------\n");
@@ -227,15 +231,15 @@ void printHeader(int task, int doHelp)
       printf("  ./salmo PATH TASK KEY=VALUE\n");
       printf("\n");
       printf("Notes:\n");
-      printf("  - PATH = path to the camelusParam.par file\n");
-      printf("  - Can replace PATH with the string \"default\", equivalent to \"../param/camelusParam.par\"\n");
+      printf("  - PATH = path to the salmoParam.par file\n");
+      printf("  - Can replace PATH with the string \"default\", equivalent to \"../param/salmoParam.par\"\n");
       printf("  - TASK = number of the task to do\n");
       printf("  - Add -h after TASK for more detailed instructions\n");
-      printf("  - Some parameters can be updated by KEY=VALUE.\n");
+      printf("  - Non-array parameters can be updated by KEY=VALUE.\n");
       printf("\n");
       printf("Examples:\n");
       printf("  ./salmo default 0\n");
-      printf("  ./salmo ../param/camelusParam.par 1\n");
+      printf("  ./salmo ../param/salmoParam.par 1\n");
       printf("  ./salmo default 1 runTag=\"_hello\"\n");
       printf("\n");
     }
@@ -256,12 +260,30 @@ void printDetails(int task, int doHelp)
       printf("  ./salmo PATH 0    # Sandbox\n");
     }
   }
-  else if (task == 1) {
-      printf("  1 = Compute lensing maps\n");
+  else if (task == -1) {
+      printf(" -1 = Print help messages\n");
     if (doHelp) {
       printf("\n");
       printf("Commands:\n");
-      printf("  ./salmo PATH 1    # delta to lensing\n");
+      printf("  ./salmo PATH -1   # Print help messages\n");
+    }
+  }
+  else if (task == -2) {
+      printf(" -2 = Print all parameters\n");
+    if (doHelp) {
+      printf("\n");
+      printf("Commands:\n");
+      printf("  ./salmo PATH -2   # Print all parameters\n");
+    }
+  }
+  else if (task == 1) {
+//       printf("  1 = Compute lensing maps\n");
+      printf("  1 = (deactivated)\n");
+    if (doHelp) {
+      printf("\n");
+      printf("Commands:\n");
+//       printf("  ./salmo PATH 1    # delta to lensing\n");
+      printf("  ./salmo PATH 1    # (deactivated)\n");
     }
   }
   else if (task == 2) {
@@ -305,12 +327,14 @@ void sandbox(MFP_param *mPar)
 {
   char name[STRING_LENGTH_MAX];
   char name2[STRING_LENGTH_MAX];
-  printf("This is a sandbox of MFP.\n\n");
+  printf("\n");
+  printf("This is a sandbox in Salmo.\n");
+  printf("If you are a developer, please feel free to use this function for quick tests.\n");
+  printf("\n");
   
 //   printCompleteParam(mPar);
   
-  //mpirun -n 3 ./camelus default 35
-  //-- Hold root processor if others have not finished
+  //mpirun -n 3 ./salmo default 35
   printf("------------------------------------------------------------------------\n");
   return;
 }
