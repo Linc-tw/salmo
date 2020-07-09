@@ -62,7 +62,9 @@ else()
   add_executable(salmo ${SRC_FILES})
   target_link_libraries(salmo
     ${REQ_PKG_LIBRARIES}
-    ${HEALPIX_CXX_LIBRARIES}
+  )
+  target_include_directories(salmo PUBLIC
+    ${INCLUDE_DIRECTORIES}
   )
 endif()
 
