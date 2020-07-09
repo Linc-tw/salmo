@@ -11,8 +11,8 @@
 
 #include "commonHeader.h"
 
-#ifndef __MFP_PARAMETERS__
-#define __MFP_PARAMETERS__
+#ifndef __SALMO_PARAMETERS__
+#define __SALMO_PARAMETERS__
 
 #include "FITSFunctions.h"
 #include "HEALPixFunctions.h"
@@ -21,7 +21,7 @@
 //-- Parameters
 typedef struct {
   //-- When adding new keys:
-  //-- - Check MFPParam.par
+  //-- - Check SALMOParam.par
   //-- - Check parameters.h
   //-- - Check find Key
   //-- - Check print
@@ -29,7 +29,7 @@ typedef struct {
   //-- - Check free
   
   //----------------------------------------------------------------------
-  //-- Customized part (see MFPParam.par for documentations)
+  //-- Customized part (see SALMOParam.par for documentations)
   
   //-- 1. Generality
   char parPath[STRING_LENGTH_MAX];
@@ -95,7 +95,7 @@ typedef struct {
   int MPIInd;			//-- [int] Index for MPI processors
   
   //----------------------------------------------------------------------
-} MFP_param;
+} Salmo_param;
 
 
 //-- Functions related to file reading
@@ -105,19 +105,19 @@ int *makeIntArray(char kv[][STRING_LENGTH_MAX], int count);
 double *makeDoubleArray(char kv[][STRING_LENGTH_MAX], int count);
 void setPathWhichCanBeBlank(char path[], char kv[][STRING_LENGTH_MAX], int count);
 
-//-- Functions related to MFP_param
-MFP_param *initialize_MFP_param();
-void free_MFP_param(MFP_param *mPar);
-int findParameterKey(MFP_param *mPar, char kv[][STRING_LENGTH_MAX], int count);
-void readParameters(char name[], MFP_param *mPar, int verbose);
-int updateFromCommandLine(int argc, char *argv[], MFP_param *mPar);
-void setParameters(MFP_param *mPar);
+//-- Functions related to Salmo_param
+Salmo_param *initialize_Salmo_param();
+void free_Salmo_param(Salmo_param *sPar);
+int findParameterKey(Salmo_param *sPar, char kv[][STRING_LENGTH_MAX], int count);
+void readParameters(char name[], Salmo_param *sPar, int verbose);
+int updateFromCommandLine(int argc, char *argv[], Salmo_param *sPar);
+void setParameters(Salmo_param *sPar);
 
 //-- Functions related to printing
 void printIntArray(int *iArr, int length);
 void printDoubleArray(double *lfArr, int length, double factor, int digit);
-void printParam(MFP_param *mPar);
-void printCompleteParam(MFP_param *mPar);
+void printParam(Salmo_param *sPar);
+void printCompleteParam(Salmo_param *sPar);
 
 #endif
 

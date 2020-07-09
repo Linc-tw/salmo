@@ -9,14 +9,14 @@
   //------------------------------------------------------//
 
 
-#ifndef __MFP_COMMON_HEADER__
-#define __MFP_COMMON_HEADER__
+#ifndef __SALMO_COMMON_HEADER__
+#define __SALMO_COMMON_HEADER__
 
-//#ifndef __MFP_USE_HEALPIX_CXX__
-//  #define __MFP_USE_HEALPIX_CXX__
+//#ifndef __SALMO_USE_HEALPIX_CXX__
+//  #define __SALMO_USE_HEALPIX_CXX__
 //#endif
-// #ifndef __MFP_USE_MPI__
-//   #define __MFP_USE_MPI__
+// #ifndef __SALMO_USE_MPI__
+//   #define __SALMO_USE_MPI__
 // #endif
 
 #ifndef _GNU_SOURCE

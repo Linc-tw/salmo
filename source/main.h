@@ -11,14 +11,14 @@
 
 #include "commonHeader.h"
 
-#ifndef __MFP_MAIN__
-#define __MFP_MAIN__
+#ifndef __SALMO_MAIN__
+#define __SALMO_MAIN__
 
-#ifdef __MFP_USE_HEALPIX_CXX__
+#ifdef __SALMO_USE_HEALPIX_CXX__
 #include "wrapper.h"
 #endif
 
-#ifdef __MFP_USE_MPI__
+#ifdef __SALMO_USE_MPI__
 #include <mpi/mpi.h>
 #endif
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]);
 void printInstructions(int task, int doHelp);
 void printHeader(int task, int doHelp);
 void printDetails(int task, int doHelp);
-void sandbox(MFP_param *mPar);
+void sandbox(Salmo_param *mPar);
 
 #endif
 

@@ -11,8 +11,8 @@
 
 #include "commonHeader.h"
   
-#ifndef __MFP_FITS_FUNCTIONS__
-#define __MFP_FITS_FUNCTIONS__
+#ifndef __SALMO_FITS_FUNCTIONS__
+#define __SALMO_FITS_FUNCTIONS__
 
 #include <fitsio.h>
 

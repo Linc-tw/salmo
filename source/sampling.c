@@ -125,25 +125,25 @@ void free_HPMap_arr(HPMap_arr *fullArr)
 //----------------------------------------------------------------------
 //-- Functions related to sampling
 
-void setTypeMap(MFP_param *mPar, type_map *tMap, HPMap_t *mask)
+void setTypeMap(Salmo_param *sPar, type_map *tMap, HPMap_t *mask)
 {
   long long i;
   int k;
-  for (k=0; k<mPar->nbTypes; k++) {
-    read_HPMap_t(mPar->maskPath[k], mask, 1); //-- verbose = 1
+  for (k=0; k<sPar->nbTypes; k++) {
+    read_HPMap_t(sPar->maskPath[k], mask, 1); //-- verbose = 1
     for (i=0; i<mask->nbPix; i++) {
       if (mask->map[i] > 0) tMap->map[i] = SET_BIT_64(tMap->map[i], k); //-- 0 = masked, 1 = activated
     }
   }
-  if (mPar->verbose < 3) printf("Set up angular selections\n");
+  if (sPar->verbose < 3) printf("Set up angular selections\n");
   return;
 }
 
-void setRatioMaps(MFP_param *mPar, HPMap_arr *rMapArr)
+void setRatioMaps(Salmo_param *sPar, HPMap_arr *rMapArr)
 {
   int k;
-  for (k=0; k<mPar->nbTypes; k++) read_HPMap_t(mPar->maskPath[k], rMapArr->array[k], 1); //-- verbose = 1
-  if (mPar->verbose < 3) printf("Set up angular selections\n");
+  for (k=0; k<sPar->nbTypes; k++) read_HPMap_t(sPar->maskPath[k], rMapArr->array[k], 1); //-- verbose = 1
+  if (sPar->verbose < 3) printf("Set up angular selections\n");
   return;
 }
 
@@ -193,15 +193,15 @@ void readAsciiNOfZ(char name[], interpolator_t *inter, int verbose)
   return;
 }
 
-void setNOfZArr(MFP_param *mPar, interpolator_t *inter, sampler_arr *nOfZArr)
+void setNOfZArr(Salmo_param *sPar, interpolator_t *inter, sampler_arr *nOfZArr)
 {
-  double *bin_z_map = mPar->bin_z_map;
+  double *bin_z_map = sPar->bin_z_map;
   sampler_t *nOfZ;
   double z, cdf_lower, cdf_upper;
   int j, k;
   
   for (k=0; k<nOfZArr->length; k++) {
-    readAsciiNOfZ(mPar->nOfZPath[k], inter, 1);             //-- verbose = 1, reset inside
+    readAsciiNOfZ(sPar->nOfZPath[k], inter, 1);             //-- verbose = 1, reset inside
     nOfZ       = nOfZArr->array[k];
     
     z          = bin_z_map[0];
@@ -218,30 +218,30 @@ void setNOfZArr(MFP_param *mPar, interpolator_t *inter, sampler_arr *nOfZArr)
     nOfZ->pdf[nOfZ->length-1] = 0.0;
     
     set_sampler_t(nOfZ, 4, 1);                                                   //-- mode = 4, setTotalToOne = 1 (see commonHeader.c)
-    for (j=0; j<nOfZ->length; j++) nOfZ->pdf[j] *= mPar->A_pix * mPar->n_gal[k]; //-- Rescale by A_pix * n_gal[k]
+    for (j=0; j<nOfZ->length; j++) nOfZ->pdf[j] *= sPar->A_pix * sPar->n_gal[k]; //-- Rescale by A_pix * n_gal[k]
   }
   
-  if (mPar->verbose < 3) printf("Set up redshift selections\n");
+  if (sPar->verbose < 3) printf("Set up redshift selections\n");
   return;
 }
 
-void setDepthMaps(MFP_param *mPar, HPMap_arr *vdMapArr)
+void setDepthMaps(Salmo_param *sPar, HPMap_arr *vdMapArr)
 {
   int k;
-  for (k=0; k<mPar->nbDepthMaps; k++) read_HPMap_t(mPar->depthMapPath[k], vdMapArr->array[k], 1); //-- verbose = 1
-  if (mPar->verbose < 3) printf("Set up depth maps\n");
+  for (k=0; k<sPar->nbDepthMaps; k++) read_HPMap_t(sPar->depthMapPath[k], vdMapArr->array[k], 1); //-- verbose = 1
+  if (sPar->verbose < 3) printf("Set up depth maps\n");
   return;
 }
 
-void setVDNOfZArr(MFP_param *mPar, interpolator_t *inter, sampler_arr *VD_nOfZArr)
+void setVDNOfZArr(Salmo_param *sPar, interpolator_t *inter, sampler_arr *VD_nOfZArr)
 {
-  double *bin_z_map = mPar->bin_z_map;
+  double *bin_z_map = sPar->bin_z_map;
   sampler_t *nOfZ;
   double z, cdf_lower, cdf_upper;
   int j, k;
   
   for (k=0; k<VD_nOfZArr->length; k++) {
-    readAsciiNOfZ(mPar->VD_nOfZPath[k], inter, 1);          //-- verbose = 1, reset inside
+    readAsciiNOfZ(sPar->VD_nOfZPath[k], inter, 1);          //-- verbose = 1, reset inside
     nOfZ       = VD_nOfZArr->array[k];
     
     z          = bin_z_map[0];
@@ -258,10 +258,10 @@ void setVDNOfZArr(MFP_param *mPar, interpolator_t *inter, sampler_arr *VD_nOfZAr
     nOfZ->pdf[nOfZ->length-1] = 0.0;
     
     set_sampler_t(nOfZ, 4, 1);                                  //-- mode = 4, setTotalToOne = 1 (see commonHeader.c)
-    for (j=0; j<nOfZ->length; j++) nOfZ->pdf[j] *= mPar->A_pix; //-- Rescale by A_pix
+    for (j=0; j<nOfZ->length; j++) nOfZ->pdf[j] *= sPar->A_pix; //-- Rescale by A_pix
   }
   
-  if (mPar->verbose < 3) printf("Set up variable depth redshift selections\n");
+  if (sPar->verbose < 3) printf("Set up variable depth redshift selections\n");
   return;
 }
 
@@ -353,19 +353,19 @@ void samplePos_projCL(gsl_rng *generator, long long nside, long long pix, int N_
   return;
 }
 
-void sampleGalaxies(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, sampler_arr *nOfZArr, HPMap_arr *vdMapArr, sampler_arr *VD_nOfZArr, gal_list_mat *gListMat, HPMap_t *delta, int N_max)
+void sampleGalaxies(Salmo_param *sPar, type_map *tMap, HPMap_arr *rMapArr, sampler_arr *nOfZArr, HPMap_arr *vdMapArr, sampler_arr *VD_nOfZArr, gal_list_mat *gListMat, HPMap_t *delta, int N_max)
 {
-  int nbTypes         = mPar->nbTypes;
-  int nbDepthMaps     = mPar->nbDepthMaps;
-  int N_depth         = mPar->N_depth;
-  int nbTomo          = mPar->nbTomo;
-  long long nside     = mPar->nside;
-  long long nbPix     = mPar->nbPix;
-  double *a_n_gal     = mPar->a_n_gal;
-  double *b_n_gal     = mPar->b_n_gal;
-  double *a_sigma_eps = mPar->a_sigma_eps;
-  double *b_sigma_eps = mPar->b_sigma_eps;
-  gsl_rng *generator  = mPar->generator;
+  int nbTypes         = sPar->nbTypes;
+  int nbDepthMaps     = sPar->nbDepthMaps;
+  int N_depth         = sPar->N_depth;
+  int nbTomo          = sPar->nbTomo;
+  long long nside     = sPar->nside;
+  long long nbPix     = sPar->nbPix;
+  double *a_n_gal     = sPar->a_n_gal;
+  double *b_n_gal     = sPar->b_n_gal;
+  double *a_sigma_eps = sPar->a_sigma_eps;
+  double *b_sigma_eps = sPar->b_sigma_eps;
+  gsl_rng *generator  = sPar->generator;
   
   long long *tArr     = (tMap == NULL) ? NULL : tMap->map;
   float *dArr         = delta->map;
@@ -393,10 +393,10 @@ void sampleGalaxies(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, sampler
   //-- Loop over redshift slices
   for (j=0; j<gListMat->N1; j++) {
     //-- Read delta map
-    sprintf(name, "%s%s_f1z%d.fits", mPar->denPrefix, mPar->runTag, j+1);
+    sprintf(name, "%s%s_f1z%d.fits", sPar->denPrefix, sPar->runTag, j+1);
     read_HPMap_t(name, delta, 1); //-- verbose = 1
-    z1 = mPar->bin_z_map[j];
-    z2 = mPar->bin_z_map[j+1];
+    z1 = sPar->bin_z_map[j];
+    z2 = sPar->bin_z_map[j+1];
     
     //-- Loop over pixels
     for (i=0; i<nbPix; i++) {
@@ -405,7 +405,7 @@ void sampleGalaxies(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, sampler
       //-- Loop over types
       for (k=0; k<gListMat->N2; k++) {
 	if (k >= nbTypes) continue;
-	sigma_eps = mPar->sigma_eps[k];
+	sigma_eps = sPar->sigma_eps[k];
 	
 	if (tArr == NULL)                  value = rMapArr->array[k]->map[i]; //-- Use ratio maps
 	else if (CHECK_BIT_64(tArr[i], k)) value = 1.0;                       //-- Use type map, ratio = 1
@@ -427,12 +427,12 @@ void sampleGalaxies(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, sampler
 	
 	//-- Determine which depth bin
 	for (m2=-1; m2<N_depth; m2++) {
-	  if (mPar->bin_depth[m2+1] > depth) break;
+	  if (sPar->bin_depth[m2+1] > depth) break;
 	}
 	if (m2 < 0 || m2 >= N_depth) continue;
 	
 	//-- Loop over tomographic bins
-	for (n=0; n<mPar->nbTomo; n++) {
+	for (n=0; n<sPar->nbTomo; n++) {
 	  k2        = m2 + n * N_depth;
 	  n_gal     = a_n_gal[n] * depth + b_n_gal[n];
 	  n_gal    *= RADIAN_SQ_TO_ARCMIN_SQ;
@@ -454,15 +454,15 @@ void sampleGalaxies(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, sampler
   free(cumLenArr);
   free(RAArr);
   free(DECArr);
-  if (mPar->verbose < 3) printf("Did galaxy sampling\n");
+  if (sPar->verbose < 3) printf("Did galaxy sampling\n");
   return;
 }
 
-void smoothDeltaMap(MFP_param *mPar, HPMap_t *delta, int resol)
+void smoothDeltaMap(Salmo_param *sPar, HPMap_t *delta, int resol)
 {
   int length      = resol*resol;
-  long long nside = mPar->nside;
-  long long nbPix = mPar->nbPix;
+  long long nside = sPar->nside;
+  long long nbPix = sPar->nbPix;
   float *dArr     = delta->map;
   
   double value;
@@ -486,13 +486,13 @@ void smoothDeltaMap(MFP_param *mPar, HPMap_t *delta, int resol)
   return;
 }
 
-void sampleGalaxies_projCL(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, sampler_arr *nOfZArr, HPMap_arr *vdMapArr, sampler_arr *VD_nOfZArr, gal_list_mat *gListMat, 
+void sampleGalaxies_projCL(Salmo_param *sPar, type_map *tMap, HPMap_arr *rMapArr, sampler_arr *nOfZArr, HPMap_arr *vdMapArr, sampler_arr *VD_nOfZArr, gal_list_mat *gListMat, 
 			   HPMap_t *delta, int N_max, int resol, int nbSplits)
 {
   int N_z_map         = gListMat->N1 / nbSplits; //WARNING Special settings
-  long long nside     = mPar->nside;
-  long long nbPix     = mPar->nbPix;
-  gsl_rng *generator  = mPar->generator;
+  long long nside     = sPar->nside;
+  long long nbPix     = sPar->nbPix;
+  gsl_rng *generator  = sPar->generator;
   
   long long *tArr     = (tMap == NULL) ? NULL : tMap->map;
   float *dArr         = delta->map;
@@ -517,10 +517,10 @@ void sampleGalaxies_projCL(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, 
     j2 = j * nbSplits;
     
     //-- Read delta map
-    sprintf(name, "%s%s_f1z%d.fits", mPar->denPrefix, mPar->runTag, j+1);
+    sprintf(name, "%s%s_f1z%d.fits", sPar->denPrefix, sPar->runTag, j+1);
     read_HPMap_t(name, delta, 1); //-- verbose = 1
-    smoothDeltaMap(mPar, delta, resol);
-    factor = mPar->A_pix * mPar->n_gal[j2];
+    smoothDeltaMap(sPar, delta, resol);
+    factor = sPar->A_pix * sPar->n_gal[j2];
     
     //-- Loop over pixels
     for (i=0; i<nbPix; i++) {
@@ -528,7 +528,7 @@ void sampleGalaxies_projCL(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, 
       
       //-- Loop over types
       for (k=j2; k<j2+nbSplits; k++) {
-	sigma_eps = mPar->sigma_eps[k];
+	sigma_eps = sPar->sigma_eps[k];
 	
 	if (tArr == NULL)                  value = rMapArr->array[k]->map[i]; //-- Use ratio maps
 	else if (CHECK_BIT_64(tArr[i], k)) value = 1.0;                       //-- Use type map, ratio = 1
@@ -549,7 +549,7 @@ void sampleGalaxies_projCL(MFP_param *mPar, type_map *tMap, HPMap_arr *rMapArr, 
   free(cumLenArr);
   free(RAArr);
   free(DECArr);
-  if (mPar->verbose < 3) printf("Did galaxy sampling\n");
+  if (sPar->verbose < 3) printf("Did galaxy sampling\n");
   return;
 }
 
@@ -586,7 +586,7 @@ double interpolateBetweenPixels(HPMap_t *full, long long neighbor[4], double wei
   return value;
 }
 
-void interpolateLensing(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *k_lower, HPMap_t *g1_lower, HPMap_t *g2_lower, HPMap_t *k_upper, HPMap_t *g1_upper, HPMap_t *g2_upper)
+void interpolateLensing(Salmo_param *sPar, gal_list_mat *gListMat, HPMap_t *k_lower, HPMap_t *g1_lower, HPMap_t *g2_lower, HPMap_t *k_upper, HPMap_t *g1_upper, HPMap_t *g2_upper)
 {
   long long i;
   
@@ -626,24 +626,24 @@ void interpolateLensing(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *k_lowe
     g2_upper->map = buffer;
     
     //-- Read 3 new maps
-    sprintf(name, "%s%s_f2z%d.fits", mPar->lenPrefix, mPar->runTag, j+1);
+    sprintf(name, "%s%s_f2z%d.fits", sPar->lenPrefix, sPar->runTag, j+1);
     readLensingMaps(name, k_upper, g1_upper, g2_upper, 1); //-- verbose = 1
     
     //-- Loop over types
     for (k=0; k<gListMat->N2; k++) {
       gList = gListMat->matrix[j+k*gListMat->N1];
       
-      if (k >= mPar->nbTypes || mPar->doLensing[k]) {
+      if (k >= sPar->nbTypes || sPar->doLensing[k]) {
 	//-- Loop over galaxies
 	for (l=0, gNode=gList->first; l<gList->size; l++, gNode=gNode->next) {
 	  g = gNode->g;
 	  p = g->p;
 	  
-#ifdef __MFP_USE_HEALPIX_CXX__
+#ifdef __SALMO_USE_HEALPIX_CXX__
 	  //-- Interpolate between pixels
 	  thetaPhi[0] = HALF_PI - g->DEC; //-- [rad]
 	  thetaPhi[1] = g->RA;            //-- [rad]
-	  getNgbAndWeight(thetaPhi, mPar->nside, neighbor, weight);
+	  getNgbAndWeight(thetaPhi, sPar->nside, neighbor, weight);
 	  k_lower_itp  = interpolateBetweenPixels(k_lower, neighbor, weight);
 	  g1_lower_itp = interpolateBetweenPixels(g1_lower, neighbor, weight);
 	  g2_lower_itp = interpolateBetweenPixels(g2_lower, neighbor, weight);
@@ -679,8 +679,8 @@ void interpolateLensing(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *k_lowe
     }
   }
   
-  if (mPar->verbose < 3) {
-#ifdef __MFP_USE_HEALPIX_CXX__
+  if (sPar->verbose < 3) {
+#ifdef __SALMO_USE_HEALPIX_CXX__
     printf("Has compiled with healpix_cxx\n");
     printf("Interpolated lensing signals between pixels and redshifts\n");
 #else
@@ -691,7 +691,7 @@ void interpolateLensing(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *k_lowe
   return;
 }
 
-void assignLensing(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *kappa, HPMap_t *gamma_1, HPMap_t *gamma_2)
+void assignLensing(Salmo_param *sPar, gal_list_mat *gListMat, HPMap_t *kappa, HPMap_t *gamma_1, HPMap_t *gamma_2)
 {
   gal_list *gList;
   gal_node *gNode;
@@ -707,23 +707,23 @@ void assignLensing(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *kappa, HPMa
   //-- Loop over redshift
   for (j=0; j<gListMat->N1; j++) {
     //-- Read 3 new maps
-    sprintf(name, "%s%s_f2z%d.fits", mPar->lenPrefix, mPar->runTag, j+1);
+    sprintf(name, "%s%s_f2z%d.fits", sPar->lenPrefix, sPar->runTag, j+1);
     readLensingMaps(name, kappa, gamma_1, gamma_2, 1); //-- verbose = 1
     
     //-- Loop over types
     for (k=0; k<gListMat->N2; k++) {
       gList = gListMat->matrix[j+k*gListMat->N1];
       
-      if (k >= mPar->nbTypes || mPar->doLensing[k]) {
+      if (k >= sPar->nbTypes || sPar->doLensing[k]) {
 	//-- Loop over galaxies
 	for (l=0, gNode=gList->first; l<gList->size; l++, gNode=gNode->next) {
 	  g = gNode->g;
 	  
-#ifdef __MFP_USE_HEALPIX_CXX__
+#ifdef __SALMO_USE_HEALPIX_CXX__
 	  //-- Interpolate between pixels
 	  thetaPhi[0] = HALF_PI - g->DEC; //-- [rad]
 	  thetaPhi[1] = g->RA;            //-- [rad]
-	  getNgbAndWeight(thetaPhi, mPar->nside, neighbor, weight);
+	  getNgbAndWeight(thetaPhi, sPar->nside, neighbor, weight);
 	  g->kappa   = interpolateBetweenPixels(kappa, neighbor, weight);
 	  g->gamma_1 = interpolateBetweenPixels(gamma_1, neighbor, weight);
 	  g->gamma_2 = interpolateBetweenPixels(gamma_2, neighbor, weight);
@@ -751,8 +751,8 @@ void assignLensing(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *kappa, HPMa
     }
   }
   
-  if (mPar->verbose < 3) {
-#ifdef __MFP_USE_HEALPIX_CXX__
+  if (sPar->verbose < 3) {
+#ifdef __SALMO_USE_HEALPIX_CXX__
     printf("Has compiled with healpix_cxx\n");
     printf("Interpolated lensing signals between pixels\n");
 #else
@@ -763,7 +763,7 @@ void assignLensing(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *kappa, HPMa
   return;
 }
 
-void assignLensing_projCL(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *kappa, HPMap_t *gamma_1, HPMap_t *gamma_2, int nbSplits)
+void assignLensing_projCL(Salmo_param *sPar, gal_list_mat *gListMat, HPMap_t *kappa, HPMap_t *gamma_1, HPMap_t *gamma_2, int nbSplits)
 {
   int N_z_map = gListMat->N1 / nbSplits; //WARNING Special settings
   
@@ -782,9 +782,9 @@ void assignLensing_projCL(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *kapp
   for (j=0; j<N_z_map; j++) {
     j2 = j * nbSplits;
     
-    if (mPar->doLensing[j2]) {
+    if (sPar->doLensing[j2]) {
       //-- Read 3 new maps
-      sprintf(name, "%s%s_f2z%d.fits", mPar->lenPrefix, mPar->runTag, j+1);
+      sprintf(name, "%s%s_f2z%d.fits", sPar->lenPrefix, sPar->runTag, j+1);
       readLensingMaps(name, kappa, gamma_1, gamma_2, 1); //-- verbose = 1
       
       //-- Loop over types
@@ -795,11 +795,11 @@ void assignLensing_projCL(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *kapp
 	for (l=0, gNode=gList->first; l<gList->size; l++, gNode=gNode->next) {
 	  g = gNode->g;
 	  
-#ifdef __MFP_USE_HEALPIX_CXX__
+#ifdef __SALMO_USE_HEALPIX_CXX__
 	  //-- Interpolate between pixels
 	  thetaPhi[0] = HALF_PI - g->DEC; //-- [rad]
 	  thetaPhi[1] = g->RA;            //-- [rad]
-	  getNgbAndWeight(thetaPhi, mPar->nside, neighbor, weight);
+	  getNgbAndWeight(thetaPhi, sPar->nside, neighbor, weight);
 	  g->kappa   = interpolateBetweenPixels(kappa, neighbor, weight);
 	  g->gamma_1 = interpolateBetweenPixels(gamma_1, neighbor, weight);
 	  g->gamma_2 = interpolateBetweenPixels(gamma_2, neighbor, weight);
@@ -832,8 +832,8 @@ void assignLensing_projCL(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *kapp
     }
   }
   
-  if (mPar->verbose < 3) {
-#ifdef __MFP_USE_HEALPIX_CXX__
+  if (sPar->verbose < 3) {
+#ifdef __SALMO_USE_HEALPIX_CXX__
     printf("Has compiled with healpix_cxx\n");
     printf("Interpolated lensing signals between pixels\n");
 #else
@@ -844,7 +844,7 @@ void assignLensing_projCL(MFP_param *mPar, gal_list_mat *gListMat, HPMap_t *kapp
   return;
 }
 
-void makeG(MFP_param *mPar, gal_list_mat *gListMat)
+void makeG(Salmo_param *sPar, gal_list_mat *gListMat)
 {
   gal_list *gList;
   gal_node *gNode;
@@ -853,7 +853,7 @@ void makeG(MFP_param *mPar, gal_list_mat *gListMat)
   int j, k, l;
   
   for (k=0; k<gListMat->N2; k++) {
-    if (k < mPar->nbTypes && mPar->doLensing[k] == 0) continue;
+    if (k < sPar->nbTypes && sPar->doLensing[k] == 0) continue;
     
     for (j=0; j<gListMat->N1; j++) {
       gList = gListMat->matrix[j+k*gListMat->N1];
@@ -867,11 +867,11 @@ void makeG(MFP_param *mPar, gal_list_mat *gListMat)
     }
   }
   
-  if (mPar->verbose < 3) printf("Computed reduced shear\n");
+  if (sPar->verbose < 3) printf("Computed reduced shear\n");
   return;
 }
 
-void addNoise(MFP_param *mPar, gal_list_mat *gListMat)
+void addNoise(Salmo_param *sPar, gal_list_mat *gListMat)
 {
   gal_list *gList;
   gal_node *gNode;
@@ -879,7 +879,7 @@ void addNoise(MFP_param *mPar, gal_list_mat *gListMat)
   double g1, g2, e1, e2, A, B, C, g1_sq, g2_sq, factor;
   int j, k, l;
   
-  if (mPar->doNoise) {
+  if (sPar->doNoise) {
     //-- Let e be source ellipticity, epsilon be observed ellipticity
     //-- epsilon = (e + g) / (1 + g^* e)
     //-- where
@@ -912,7 +912,7 @@ void addNoise(MFP_param *mPar, gal_list_mat *gListMat)
     //--   epsilon2 = [e2(1 - g1^2 + g2^2) + g2(1 + C + A)] / [1 + A + B + C(g1^2 + g2^2)]
     
     for (k=0; k<gListMat->N2; k++) {
-      if (k < mPar->nbTypes && mPar->doLensing[k] == 0) continue;
+      if (k < sPar->nbTypes && sPar->doLensing[k] == 0) continue;
       
       for (j=0; j<gListMat->N1; j++) {
 	gList = gListMat->matrix[j+k*gListMat->N1];
@@ -922,9 +922,9 @@ void addNoise(MFP_param *mPar, gal_list_mat *gListMat)
 	  g1 = g->gamma_1; //-- Already reduced shear
 	  g2 = g->gamma_2;
 	  
-	  do e1 = gsl_ran_gaussian(mPar->generator, g->sigma_eps);
+	  do e1 = gsl_ran_gaussian(sPar->generator, g->sigma_eps);
 	  while (fabs(e1) >= 1.0);
-	  do e2 = gsl_ran_gaussian(mPar->generator, g->sigma_eps);
+	  do e2 = gsl_ran_gaussian(sPar->generator, g->sigma_eps);
 	  while (fabs(e2) >= 1.0);
 	  
 	  A = 2.0 * g1 * e1;
@@ -941,14 +941,14 @@ void addNoise(MFP_param *mPar, gal_list_mat *gListMat)
     }
   }
   
-  if (mPar->verbose < 3) {
-    if (mPar->doNoise) printf("Added noise\n");
+  if (sPar->verbose < 3) {
+    if (sPar->doNoise) printf("Added noise\n");
     else               printf("No noise\n");
   }
   return;
 }
 
-void flipSign(MFP_param *mPar, gal_list_mat *gListMat)
+void flipSign(Salmo_param *sPar, gal_list_mat *gListMat)
 {
   gal_list *gList;
   gal_node *gNode;
@@ -956,12 +956,12 @@ void flipSign(MFP_param *mPar, gal_list_mat *gListMat)
   int j, k, l;
   
   //-- Athena convention, do nothing
-  if (mPar->signConv == 0) ;
+  if (sPar->signConv == 0) ;
   
   //-- treecorr convention, flip g_2
-  else if (mPar->signConv == 1) {
+  else if (sPar->signConv == 1) {
     for (k=0; k<gListMat->N2; k++) {
-      if (k < mPar->nbTypes && mPar->doLensing[k] == 0) continue;
+      if (k < sPar->nbTypes && sPar->doLensing[k] == 0) continue;
       
       for (j=0; j<gListMat->N1; j++) {
 	gList = gListMat->matrix[j+k*gListMat->N1];
@@ -976,9 +976,9 @@ void flipSign(MFP_param *mPar, gal_list_mat *gListMat)
   }
   
   //-- Flask convention, flip g_1 & g_2
-  else if (mPar->signConv == 1) {
+  else if (sPar->signConv == 1) {
     for (k=0; k<gListMat->N2; k++) {
-      if (k < mPar->nbTypes && mPar->doLensing[k] == 0) continue;
+      if (k < sPar->nbTypes && sPar->doLensing[k] == 0) continue;
       
       for (j=0; j<gListMat->N1; j++) {
 	gList = gListMat->matrix[j+k*gListMat->N1];
@@ -994,10 +994,10 @@ void flipSign(MFP_param *mPar, gal_list_mat *gListMat)
     }
   }
   
-  if (mPar->verbose < 3) {
-    if      (mPar->signConv == 0) printf("Flipped sign to the Athena convention\n");
-    else if (mPar->signConv == 1) printf("Flipped sign to the treecorr convention\n");
-    else if (mPar->signConv == 2) printf("Flipped sign to the Flask convention\n");
+  if (sPar->verbose < 3) {
+    if      (sPar->signConv == 0) printf("Flipped sign to the Athena convention\n");
+    else if (sPar->signConv == 1) printf("Flipped sign to the treecorr convention\n");
+    else if (sPar->signConv == 2) printf("Flipped sign to the Flask convention\n");
   }
   return;
 }
@@ -1036,86 +1036,86 @@ void outFits_gal_t(FITS_t *fits, gal_t *g, double factor, int doNoise, int doWgt
   return;
 }
 
-void outFitsParam(FITS_t *fits, MFP_param *mPar, int k2)
+void outFitsParam(FITS_t *fits, Salmo_param *sPar, int k2)
 {
-  int outStyle   = mPar->outStyle;
-  int *doLensing = mPar->doLensing;
+  int outStyle   = sPar->outStyle;
+  int *doLensing = sPar->doLensing;
   
   char sBuff[STRING_LENGTH_MAX];
   double lfBuff;
   int k, m, n, m2;
   
   addLineSpread(fits);
-  addKeyword(fits, TSTRING,   "PARPATH",  mPar->parPath,       "[-] Path of the parameter file");
-  addKeyword(fits, TSTRING,   "SEED",     mPar->seed,          "[-] Seed for generating random numbers");
-  addKeyword(fits, TSTRING,   "RUNTAG",   mPar->runTag,        "[-] Tag for identifying different runs");
+  addKeyword(fits, TSTRING,   "PARPATH",  sPar->parPath,       "[-] Path of the parameter file");
+  addKeyword(fits, TSTRING,   "SEED",     sPar->seed,          "[-] Seed for generating random numbers");
+  addKeyword(fits, TSTRING,   "RUNTAG",   sPar->runTag,        "[-] Tag for identifying different runs");
   
   addLineSpread(fits);
-  addKeyword(fits, TLONGLONG, "NSIDE",    &mPar->nside,        "[-] N_side of input maps");
-  addKeyword(fits, TLONGLONG, "NBPIX",    &mPar->nbPix,        "[-] Number of pixels");
-  lfBuff = mPar->A_pix * RADIAN_SQ_TO_ARCMIN_SQ;
+  addKeyword(fits, TLONGLONG, "NSIDE",    &sPar->nside,        "[-] N_side of input maps");
+  addKeyword(fits, TLONGLONG, "NBPIX",    &sPar->nbPix,        "[-] Number of pixels");
+  lfBuff = sPar->A_pix * RADIAN_SQ_TO_ARCMIN_SQ;
   addKeyword(fits, TDOUBLE,   "APIX",     &lfBuff,             "[arcmin^2] Area of pixels");
   
   addLineSpread(fits);
-  addKeyword(fits, TINT,      "NZMAP",    &mPar->N_z_map,      "[-] Number of redshift slices of maps");
-  addKeyword(fits, TDOUBLE,   "ZMAPMIN",  &mPar->zMapRange[0], "[-] Minimal map redshift");
-  addKeyword(fits, TDOUBLE,   "ZMAPMAX",  &mPar->zMapRange[1], "[-] Maximal map redshift");
-  addKeyword(fits, TDOUBLE,   "DZMAP",    &mPar->zMapRange[2], "[-] Map redshift binwidth (can be 0)");
+  addKeyword(fits, TINT,      "NZMAP",    &sPar->N_z_map,      "[-] Number of redshift slices of maps");
+  addKeyword(fits, TDOUBLE,   "ZMAPMIN",  &sPar->zMapRange[0], "[-] Minimal map redshift");
+  addKeyword(fits, TDOUBLE,   "ZMAPMAX",  &sPar->zMapRange[1], "[-] Maximal map redshift");
+  addKeyword(fits, TDOUBLE,   "DZMAP",    &sPar->zMapRange[2], "[-] Map redshift binwidth (can be 0)");
   
   addLineSpread(fits);
-  addKeyword(fits, TINT,      "NBTYPES",  &mPar->totNbTypes,   "[-] Number of types of galaxies");
+  addKeyword(fits, TINT,      "NBTYPES",  &sPar->totNbTypes,   "[-] Number of types of galaxies");
   if (outStyle == 64) {
-    if (k2 < mPar->nbTypes) {
-      addKeyword(fits, TSTRING, "MASKPATH", mPar->maskPath[k2],  "[-] Path to mask for type k");
-      addKeyword(fits, TSTRING, "NOFZPATH", mPar->nOfZPath[k2],  "[-] Path to n(z) for type k");
+    if (k2 < sPar->nbTypes) {
+      addKeyword(fits, TSTRING, "MASKPATH", sPar->maskPath[k2],  "[-] Path to mask for type k");
+      addKeyword(fits, TSTRING, "NOFZPATH", sPar->nOfZPath[k2],  "[-] Path to n(z) for type k");
     }
   }
-  for (k=0; k<mPar->nbTypes; k++) {
+  for (k=0; k<sPar->nbTypes; k++) {
     if (outStyle == 1 || (outStyle == 2 && doLensing[k] == k2) || (outStyle == 64 && k == k2)) {
       sprintf(sBuff, "NGAL%d", k);
-      lfBuff = mPar->n_gal[k] / RADIAN_SQ_TO_ARCMIN_SQ;
+      lfBuff = sPar->n_gal[k] / RADIAN_SQ_TO_ARCMIN_SQ;
       addKeyword(fits, TDOUBLE, sBuff,    &lfBuff,             "[-] Galaxy number density for type k");
     }
   }
   
   addLineSpread(fits);
-  addKeyword(fits, TINT,      "DONOISE",  &mPar->doNoise,      "[-] 0 = no, 1 = yes, 2 = output both");
-  if (k2<mPar->nbTypes) {
-    addKeyword(fits, TDOUBLE, "SIGMAEPS", &mPar->sigma_eps,    "[-] Ellipticity dispersion");
+  addKeyword(fits, TINT,      "DONOISE",  &sPar->doNoise,      "[-] 0 = no, 1 = yes, 2 = output both");
+  if (k2<sPar->nbTypes) {
+    addKeyword(fits, TDOUBLE, "SIGMAEPS", &sPar->sigma_eps,    "[-] Ellipticity dispersion");
   }
-  for (k=0; k<mPar->nbTypes; k++) {
+  for (k=0; k<sPar->nbTypes; k++) {
     if (outStyle == 1 || (outStyle == 2 && doLensing[k] == k2) || (outStyle == 64 && k == k2)) {
       sprintf(sBuff, "DOLEN%d", k);
       addKeyword(fits, TINT,  sBuff,      &doLensing[k],       "[-] Do lensing for type k");
     }
   }
-  addKeyword(fits, TINT,      "OUTSTYLE", &mPar->outStyle,     "[-] Output style");
+  addKeyword(fits, TINT,      "OUTSTYLE", &sPar->outStyle,     "[-] Output style");
   
   //-- Variable depth
   if (outStyle == 64) {
-    if (k2 >= mPar->nbTypes) {
-      m = (k2 - mPar->nbTypes) % mPar->nbDepthMaps;
-      n = (k2 - mPar->nbTypes) / mPar->nbDepthMaps;
-      addKeyword(fits, TINT,    "NDEPTH",   &mPar->N_depth,         "[-] Number of depth bins");
-      addKeyword(fits, TSTRING, "DMAPPATH", mPar->depthMapPath[m],  "[-] Path to depth map for type k");
-      addKeyword(fits, TDOUBLE, "ANGAL",    &mPar->a_n_gal[n],      "[-] Slope parameter for n_gal = a*depth + b");
-      addKeyword(fits, TDOUBLE, "BNGAL",    &mPar->b_n_gal[n],      "[-] Intercept parameter for n_gal = a*depth + b");
-      addKeyword(fits, TDOUBLE, "ASIGEPS",  &mPar->a_sigma_eps[n],  "[-] Slope parameter for sigma_eps = a*depth + b");
-      addKeyword(fits, TDOUBLE, "BSIGEPS",  &mPar->b_sigma_eps[n],  "[-] Intercept parameter for sigma_eps = a*depth + b");
-      for (m2=0; m2<mPar->N_depth; m2++) {
-	k = m2 + n * mPar->N_depth;
-	addKeyword(fits, TSTRING, "VDNZPATH", mPar->VD_nOfZPath[k], "[-] Path to variable depth n(z)");
+    if (k2 >= sPar->nbTypes) {
+      m = (k2 - sPar->nbTypes) % sPar->nbDepthMaps;
+      n = (k2 - sPar->nbTypes) / sPar->nbDepthMaps;
+      addKeyword(fits, TINT,    "NDEPTH",   &sPar->N_depth,         "[-] Number of depth bins");
+      addKeyword(fits, TSTRING, "DMAPPATH", sPar->depthMapPath[m],  "[-] Path to depth map for type k");
+      addKeyword(fits, TDOUBLE, "ANGAL",    &sPar->a_n_gal[n],      "[-] Slope parameter for n_gal = a*depth + b");
+      addKeyword(fits, TDOUBLE, "BNGAL",    &sPar->b_n_gal[n],      "[-] Intercept parameter for n_gal = a*depth + b");
+      addKeyword(fits, TDOUBLE, "ASIGEPS",  &sPar->a_sigma_eps[n],  "[-] Slope parameter for sigma_eps = a*depth + b");
+      addKeyword(fits, TDOUBLE, "BSIGEPS",  &sPar->b_sigma_eps[n],  "[-] Intercept parameter for sigma_eps = a*depth + b");
+      for (m2=0; m2<sPar->N_depth; m2++) {
+	k = m2 + n * sPar->N_depth;
+	addKeyword(fits, TSTRING, "VDNZPATH", sPar->VD_nOfZPath[k], "[-] Path to variable depth n(z)");
       }
     }
   }
   return;
 }
 
-void outFitsGalListMat(MFP_param *mPar, gal_list_mat *gListMat, int verbose)
+void outFitsGalListMat(Salmo_param *sPar, gal_list_mat *gListMat, int verbose)
 {
-  if (mPar->verbose < 2) printf("Outputing...\r");
+  if (sPar->verbose < 2) printf("Outputing...\r");
   
-  int nbFiles             = (mPar->outStyle == 64) ? mPar->totNbTypes : mPar->outStyle;
+  int nbFiles             = (sPar->outStyle == 64) ? sPar->totNbTypes : sPar->outStyle;
   char *defaultFileTag[3] = {"_all", "_noLen", "_len"};
   long long *nbGal        = (long long*)malloc(nbFiles * sizeof(long long));
   FITS_t **fitsArr        = (FITS_t**)malloc(nbFiles * sizeof(FITS_t*));
@@ -1127,33 +1127,33 @@ void outFitsGalListMat(MFP_param *mPar, gal_list_mat *gListMat, int verbose)
   
   for (k2=0; k2<nbFiles; k2++) {
     nbGal[k2] = 0;
-    if      (mPar->outStyle == 1)            sprintf(fileTag, "%s", defaultFileTag[0]);
-    else if (mPar->outStyle == 2 && k2 == 0) sprintf(fileTag, "%s", defaultFileTag[1]);
-    else if (mPar->outStyle == 2 && k2 == 1) sprintf(fileTag, "%s", defaultFileTag[2]);
+    if      (sPar->outStyle == 1)            sprintf(fileTag, "%s", defaultFileTag[0]);
+    else if (sPar->outStyle == 2 && k2 == 0) sprintf(fileTag, "%s", defaultFileTag[1]);
+    else if (sPar->outStyle == 2 && k2 == 1) sprintf(fileTag, "%s", defaultFileTag[2]);
     else                                     sprintf(fileTag, "_type%d", k2);
     
-    sprintf(name, "%s%s%s.fits", mPar->outPrefix, mPar->runTag, fileTag);
+    sprintf(name, "%s%s%s.fits", sPar->outPrefix, sPar->runTag, fileTag);
     fitsArr[k2] = initializeTableWriter_FITS_t(name);
     fits = fitsArr[k2];
     
     addColumn(fits, "ALPHA_J2000", TFLOAT, "deg");
     addColumn(fits, "DELTA_J2000", TFLOAT, "deg");
     addColumn(fits, "z_spec",      TFLOAT, "-       ");
-    if (mPar->doNoise == 0) {
+    if (sPar->doNoise == 0) {
       addColumn(fits, "g1",       TFLOAT, "-       ");
       addColumn(fits, "g2",       TFLOAT, "-       ");
     }  
-    else if (mPar->doNoise == 1) {
+    else if (sPar->doNoise == 1) {
       addColumn(fits, "e1",       TFLOAT, "-       ");
       addColumn(fits, "e2",       TFLOAT, "-       ");
     }  
-    else if (mPar->doNoise == 2) {
+    else if (sPar->doNoise == 2) {
       addColumn(fits, "g1",       TFLOAT, "-       ");
       addColumn(fits, "g2",       TFLOAT, "-       ");
       addColumn(fits, "e1",       TFLOAT, "-       ");
       addColumn(fits, "e2",       TFLOAT, "-       ");
     }
-    if (mPar->doWgt == 1) {
+    if (sPar->doWgt == 1) {
       addColumn(fits, "weight",   TFLOAT, "-       ");
     }
   }
@@ -1165,15 +1165,15 @@ void outFitsGalListMat(MFP_param *mPar, gal_list_mat *gListMat, int verbose)
   //-- Loop over types
   for (k=0; k<gListMat->N2; k++) {
     //-- Determine which file to output
-    if      (mPar->outStyle == 1) k2 = 0;
-    else if (mPar->outStyle == 2) k2 = (k >= mPar->nbTypes || mPar->doLensing[k]);
+    if      (sPar->outStyle == 1) k2 = 0;
+    else if (sPar->outStyle == 2) k2 = (k >= sPar->nbTypes || sPar->doLensing[k]);
     else                          k2 = k;
     
     //-- Loop over redshift slices
     for (j=0; j<gListMat->N1; j++) {
       gList      = gListMat->matrix[j+k*gListMat->N1];
       nbGal[k2] += gList->size;
-      for (l=0, gNode=gList->first; l<gList->size; l++, gNode=gNode->next) outFits_gal_t(fitsArr[k2], gNode->g, RADIAN_TO_DEGREE, mPar->doNoise, mPar->doWgt); //-- factor = RADIAN_TO_DEGREE
+      for (l=0, gNode=gList->first; l<gList->size; l++, gNode=gNode->next) outFits_gal_t(fitsArr[k2], gNode->g, RADIAN_TO_DEGREE, sPar->doNoise, sPar->doWgt); //-- factor = RADIAN_TO_DEGREE
     }
   }
   
@@ -1182,14 +1182,14 @@ void outFitsGalListMat(MFP_param *mPar, gal_list_mat *gListMat, int verbose)
     addLineSpread(fits);
     addKeyword(fits, TLONGLONG, "NBGAL", &nbGal[k2], "[-] Number of galaxies in this file");
     addLineSpread(fits);
-    outFitsParam(fits, mPar, k2);
+    outFitsParam(fits, sPar, k2);
     
     free_FITS_t(fits);
-    if      (mPar->outStyle == 1)            sprintf(fileTag, "%s", defaultFileTag[0]);
-    else if (mPar->outStyle == 2 && k2 == 0) sprintf(fileTag, "%s", defaultFileTag[1]);
-    else if (mPar->outStyle == 2 && k2 == 1) sprintf(fileTag, "%s", defaultFileTag[2]);
+    if      (sPar->outStyle == 1)            sprintf(fileTag, "%s", defaultFileTag[0]);
+    else if (sPar->outStyle == 2 && k2 == 0) sprintf(fileTag, "%s", defaultFileTag[1]);
+    else if (sPar->outStyle == 2 && k2 == 1) sprintf(fileTag, "%s", defaultFileTag[2]);
     else                                     sprintf(fileTag, "_type%d", k2);
-    sprintf(name, "%s%s%s.fits", mPar->outPrefix, mPar->runTag, fileTag);
+    sprintf(name, "%s%s%s.fits", sPar->outPrefix, sPar->runTag, fileTag);
     if (verbose) printf("Outputed \"%s\"\n", name);
   }
   
@@ -1231,13 +1231,13 @@ double comovDist(interpolator_t *w_inter, double z)
   return execute_interpolator_t(w_inter, z, 2); //-- border = 2 (linear extrapolation)
 }
 
-void makeKappaMap(MFP_param *mPar, HPMap_t *delta, HPMap_t *kappa, interpolator_t *w_inter, double Omega_m, int zInd)
+void makeKappaMap(Salmo_param *sPar, HPMap_t *delta, HPMap_t *kappa, interpolator_t *w_inter, double Omega_m, int zInd)
 {
   //-- Reset
   long long i;
   for (i=0; i<kappa->nbPix; i++) kappa->map[i] = 0.0;
   
-  double z_s    = mPar->bin_z_map[zInd+1];
+  double z_s    = sPar->bin_z_map[zInd+1];
   double w_s    = comovDist(w_inter, z_s);
   double factor = FOUR_PI_G_OVER_C2 * CRITICAL_DENSITY * HUBBLE_DISTANCE * Omega_m / w_s;
   
@@ -1246,11 +1246,11 @@ void makeKappaMap(MFP_param *mPar, HPMap_t *delta, HPMap_t *kappa, interpolator_
   int j;
   
   for (j=0; j<=zInd; j++) {
-    sprintf(name, "%s%s_f1z%d.fits", mPar->denPrefix, mPar->runTag, j+1);
-    read_HPMap_t(name, delta, mPar->verbose<3);
+    sprintf(name, "%s%s_f1z%d.fits", sPar->denPrefix, sPar->runTag, j+1);
+    read_HPMap_t(name, delta, sPar->verbose<3);
     
-    z_l    = mPar->z_map[j];
-    dz_l   = 2.0 * mPar->half_dz_map[j];
+    z_l    = sPar->z_map[j];
+    dz_l   = 2.0 * sPar->half_dz_map[j];
     w_l    = comovDist(w_inter, z_l);
     E_sq   = E_sq_of_z(z_l, Omega_m);
     kernel = fmax(0.0, w_s-w_l) * w_l * (1.0 + z_l) * dz_l / sqrt(E_sq);
@@ -1262,10 +1262,10 @@ void makeKappaMap(MFP_param *mPar, HPMap_t *delta, HPMap_t *kappa, interpolator_
   return;
 }
 
-void kappaToGamma(MFP_param *mPar, HPMap_t *kappa, HPMap_t *gamma1, HPMap_t *gamma2, double_mat *kAlm, double_mat *gAlm, double_arr *weight, int l_maxx)
+void kappaToGamma(Salmo_param *sPar, HPMap_t *kappa, HPMap_t *gamma1, HPMap_t *gamma2, double_mat *kAlm, double_mat *gAlm, double_arr *weight, int l_maxx)
 {
-#ifdef __MFP_USE_HEALPIX_CXX__
-  mapToAlm(mPar->nside, kappa->map, l_maxx, kAlm->matrix, weight->array);
+#ifdef __SALMO_USE_HEALPIX_CXX__
+  mapToAlm(sPar->nside, kappa->map, l_maxx, kAlm->matrix, weight->array);
   
   double factor;
   int l, m, index;
@@ -1286,8 +1286,8 @@ void kappaToGamma(MFP_param *mPar, HPMap_t *kappa, HPMap_t *gamma1, HPMap_t *gam
     }
   }
   
-  almToMap_spin2(l_maxx, gAlm->matrix, mPar->nside, gamma1->map, gamma2->map);
-  if (mPar->verbose < 3) printf("Transformed kappa to gamma\n");
+  almToMap_spin2(l_maxx, gAlm->matrix, sPar->nside, gamma1->map, gamma2->map);
+  if (sPar->verbose < 3) printf("Transformed kappa to gamma\n");
 #endif
   return;
 }
@@ -1302,10 +1302,10 @@ void flipSignForFlask(HPMap_t *gamma1, HPMap_t *gamma2)
   return;
 }
 
-void outFitsLensingMaps(MFP_param *mPar, HPMap_t *kappa, HPMap_t *gamma1, HPMap_t *gamma2, int zInd, int verbose)
+void outFitsLensingMaps(Salmo_param *sPar, HPMap_t *kappa, HPMap_t *gamma1, HPMap_t *gamma2, int zInd, int verbose)
 {
   char name[STRING_LENGTH_MAX];
-  sprintf(name, "%s%s_f2z%d.fits", mPar->lenPrefix, mPar->runTag, zInd+1);
+  sprintf(name, "%s%s_f2z%d.fits", sPar->lenPrefix, sPar->runTag, zInd+1);
   
   FITS_t *fits     = initializeTableWriter_FITS_t(name);
   long long nbRows = kappa->nbPix / 1024;
@@ -1332,9 +1332,9 @@ void outFitsLensingMaps(MFP_param *mPar, HPMap_t *kappa, HPMap_t *gamma1, HPMap_
 #define N_MAX_1 4000
 #define N_MAX_2 10000
 
-void processLensingMaps(MFP_param *mPar)
+void processLensingMaps(Salmo_param *sPar)
 {
-#ifdef __MFP_USE_HEALPIX_CXX__
+#ifdef __SALMO_USE_HEALPIX_CXX__
   //-- Initialize interpolator
   double Omega_m = 0.2905;
   double dz = 0.0002;
@@ -1342,22 +1342,22 @@ void processLensingMaps(MFP_param *mPar)
   fillWInterpolator(w_inter, dz, Omega_m);
   
   //-- Initialize multiples
-  int l_maxx         = 3 * mPar->nside - 1;
+  int l_maxx         = 3 * sPar->nside - 1;
   int N_l            = (l_maxx+1) * (l_maxx+2) / 2;
   double_mat *kAlm   = initialize_double_mat(2, N_l);
   double_mat *gAlm   = initialize_double_mat(2, N_l);
-  double_arr *weight = initialize_double_arr(2*mPar->nside);
-  readWeight(mPar->nside, weight->array);
-  if (mPar->verbose < 3) printf("Read HEALPix ring weights\n");
+  double_arr *weight = initialize_double_arr(2*sPar->nside);
+  readWeight(sPar->nside, weight->array);
+  if (sPar->verbose < 3) printf("Read HEALPix ring weights\n");
   
-  HPMap_arr *bufferMap = initialize_HPMap_arr(mPar->nside, 3);
+  HPMap_arr *bufferMap = initialize_HPMap_arr(sPar->nside, 3);
   int j;
   
-  for (j=0; j<mPar->N_z_map; j++) {
-    makeKappaMap(mPar, bufferMap->array[1], bufferMap->array[0], w_inter, Omega_m, j);
-    kappaToGamma(mPar, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], kAlm, gAlm, weight, l_maxx);
+  for (j=0; j<sPar->N_z_map; j++) {
+    makeKappaMap(sPar, bufferMap->array[1], bufferMap->array[0], w_inter, Omega_m, j);
+    kappaToGamma(sPar, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], kAlm, gAlm, weight, l_maxx);
     flipSignForFlask(bufferMap->array[1], bufferMap->array[2]); //-- WARNING Go to Flask sign convention
-    outFitsLensingMaps(mPar, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], j, mPar->verbose<3);
+    outFitsLensingMaps(sPar, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], j, sPar->verbose<3);
   }
   
   free_interpolator_t(w_inter);
@@ -1372,30 +1372,30 @@ void processLensingMaps(MFP_param *mPar)
   return;
 }
 
-void processMock_typeMap_LOS(MFP_param *mPar)
+void processMock_typeMap_LOS(Salmo_param *sPar)
 {
-  type_map *tMap         = initialize_type_map(mPar->nside);
+  type_map *tMap         = initialize_type_map(sPar->nside);
   interpolator_t *inter  = initialize_interpolator_t(N_MAX_1);
-  sampler_arr *nOfZArr   = initialize_sampler_arr(mPar->N_z_map+1, mPar->nbTypes); //-- +1 is necessary
-  gal_list_mat *gListMat = initialize_gal_list_mat(mPar->N_z_map, mPar->nbTypes);
-  HPMap_arr *bufferMap   = initialize_HPMap_arr(mPar->nside, 6);
+  sampler_arr *nOfZArr   = initialize_sampler_arr(sPar->N_z_map+1, sPar->nbTypes); //-- +1 is necessary
+  gal_list_mat *gListMat = initialize_gal_list_mat(sPar->N_z_map, sPar->nbTypes);
+  HPMap_arr *bufferMap   = initialize_HPMap_arr(sPar->nside, 6);
   
   reset_type_map(tMap);
-  setTypeMap(mPar, tMap, bufferMap->array[0]);
-  setNOfZArr(mPar, inter, nOfZArr);
-  sampleGalaxies(mPar, tMap, NULL, nOfZArr, NULL, NULL, gListMat, bufferMap->array[0], N_MAX_2);
+  setTypeMap(sPar, tMap, bufferMap->array[0]);
+  setNOfZArr(sPar, inter, nOfZArr);
+  sampleGalaxies(sPar, tMap, NULL, nOfZArr, NULL, NULL, gListMat, bufferMap->array[0], N_MAX_2);
   
-  if (mPar->skipLensing == 1) {
-    if (mPar->verbose < 3) printf("Skipped lensing module\n");
+  if (sPar->skipLensing == 1) {
+    if (sPar->verbose < 3) printf("Skipped lensing module\n");
   }
   else {
-    interpolateLensing(mPar, gListMat, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], bufferMap->array[3], bufferMap->array[4], bufferMap->array[5]);
-    makeG(mPar, gListMat);
-    addNoise(mPar, gListMat);
-    flipSign(mPar, gListMat);
+    interpolateLensing(sPar, gListMat, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], bufferMap->array[3], bufferMap->array[4], bufferMap->array[5]);
+    makeG(sPar, gListMat);
+    addNoise(sPar, gListMat);
+    flipSign(sPar, gListMat);
   }
   
-  outFitsGalListMat(mPar, gListMat, mPar->verbose<3);
+  outFitsGalListMat(sPar, gListMat, sPar->verbose<3);
   
   free_type_map(tMap);
   free_interpolator_t(inter);
@@ -1406,29 +1406,29 @@ void processMock_typeMap_LOS(MFP_param *mPar)
   return;
 }
 
-void processMock_ratioMap_LOS(MFP_param *mPar)
+void processMock_ratioMap_LOS(Salmo_param *sPar)
 {
-  HPMap_arr *rMapArr     = initialize_HPMap_arr(mPar->nside, mPar->nbTypes);
+  HPMap_arr *rMapArr     = initialize_HPMap_arr(sPar->nside, sPar->nbTypes);
   interpolator_t *inter  = initialize_interpolator_t(N_MAX_1);
-  sampler_arr *nOfZArr   = initialize_sampler_arr(mPar->N_z_map+1, mPar->nbTypes); //-- +1 is necessary
-  gal_list_mat *gListMat = initialize_gal_list_mat(mPar->N_z_map, mPar->nbTypes);
-  HPMap_arr *bufferMap   = initialize_HPMap_arr(mPar->nside, 6);
+  sampler_arr *nOfZArr   = initialize_sampler_arr(sPar->N_z_map+1, sPar->nbTypes); //-- +1 is necessary
+  gal_list_mat *gListMat = initialize_gal_list_mat(sPar->N_z_map, sPar->nbTypes);
+  HPMap_arr *bufferMap   = initialize_HPMap_arr(sPar->nside, 6);
   
-  setRatioMaps(mPar, rMapArr);
-  setNOfZArr(mPar, inter, nOfZArr);
-  sampleGalaxies(mPar, NULL, rMapArr, nOfZArr, NULL, NULL, gListMat, bufferMap->array[0], N_MAX_2);
+  setRatioMaps(sPar, rMapArr);
+  setNOfZArr(sPar, inter, nOfZArr);
+  sampleGalaxies(sPar, NULL, rMapArr, nOfZArr, NULL, NULL, gListMat, bufferMap->array[0], N_MAX_2);
   
-  if (mPar->skipLensing == 1) {
-    if (mPar->verbose < 3) printf("Skipped lensing module\n");
+  if (sPar->skipLensing == 1) {
+    if (sPar->verbose < 3) printf("Skipped lensing module\n");
   }
   else {
-    interpolateLensing(mPar, gListMat, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], bufferMap->array[3], bufferMap->array[4], bufferMap->array[5]);
-    makeG(mPar, gListMat);
-    addNoise(mPar, gListMat);
-    flipSign(mPar, gListMat);
+    interpolateLensing(sPar, gListMat, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], bufferMap->array[3], bufferMap->array[4], bufferMap->array[5]);
+    makeG(sPar, gListMat);
+    addNoise(sPar, gListMat);
+    flipSign(sPar, gListMat);
   }
   
-  outFitsGalListMat(mPar, gListMat, mPar->verbose<3);
+  outFitsGalListMat(sPar, gListMat, sPar->verbose<3);
   
   free_HPMap_arr(rMapArr);
   free_interpolator_t(inter);
@@ -1439,29 +1439,29 @@ void processMock_ratioMap_LOS(MFP_param *mPar)
   return;
 }
 
-void processMock_ratioMap_CL(MFP_param *mPar)
+void processMock_ratioMap_CL(Salmo_param *sPar)
 {
-  HPMap_arr *rMapArr     = initialize_HPMap_arr(mPar->nside, mPar->nbTypes);
+  HPMap_arr *rMapArr     = initialize_HPMap_arr(sPar->nside, sPar->nbTypes);
   interpolator_t *inter  = initialize_interpolator_t(N_MAX_1);
-  sampler_arr *nOfZArr   = initialize_sampler_arr(mPar->N_z_map+1, mPar->nbTypes); //-- +1 is necessary
-  gal_list_mat *gListMat = initialize_gal_list_mat(mPar->N_z_map, mPar->nbTypes);
-  HPMap_arr *bufferMap   = initialize_HPMap_arr(mPar->nside, 3);
+  sampler_arr *nOfZArr   = initialize_sampler_arr(sPar->N_z_map+1, sPar->nbTypes); //-- +1 is necessary
+  gal_list_mat *gListMat = initialize_gal_list_mat(sPar->N_z_map, sPar->nbTypes);
+  HPMap_arr *bufferMap   = initialize_HPMap_arr(sPar->nside, 3);
   
-  setRatioMaps(mPar, rMapArr);
-  setNOfZArr(mPar, inter, nOfZArr);
-  sampleGalaxies(mPar, NULL, rMapArr, nOfZArr, NULL, NULL, gListMat, bufferMap->array[0], N_MAX_2);
+  setRatioMaps(sPar, rMapArr);
+  setNOfZArr(sPar, inter, nOfZArr);
+  sampleGalaxies(sPar, NULL, rMapArr, nOfZArr, NULL, NULL, gListMat, bufferMap->array[0], N_MAX_2);
   
-  if (mPar->skipLensing == 1) {
-    if (mPar->verbose < 3) printf("Skipped lensing module\n");
+  if (sPar->skipLensing == 1) {
+    if (sPar->verbose < 3) printf("Skipped lensing module\n");
   }
   else {
-    assignLensing(mPar, gListMat, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2]);
-    makeG(mPar, gListMat);
-    addNoise(mPar, gListMat);
-    flipSign(mPar, gListMat);
+    assignLensing(sPar, gListMat, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2]);
+    makeG(sPar, gListMat);
+    addNoise(sPar, gListMat);
+    flipSign(sPar, gListMat);
   }
   
-  outFitsGalListMat(mPar, gListMat, mPar->verbose<3);
+  outFitsGalListMat(sPar, gListMat, sPar->verbose<3);
   
   free_HPMap_arr(rMapArr);
   free_interpolator_t(inter);
@@ -1472,33 +1472,33 @@ void processMock_ratioMap_CL(MFP_param *mPar)
   return;
 }
 
-void processMock_depthMap_LOS(MFP_param *mPar)
+void processMock_depthMap_LOS(Salmo_param *sPar)
 {
-  HPMap_arr *rMapArr      = initialize_HPMap_arr(mPar->nside, mPar->nbTypes);
+  HPMap_arr *rMapArr      = initialize_HPMap_arr(sPar->nside, sPar->nbTypes);
   interpolator_t *inter   = initialize_interpolator_t(N_MAX_1);
-  sampler_arr *nOfZArr    = initialize_sampler_arr(mPar->N_z_map+1, mPar->nbTypes); //-- +1 is necessary
-  HPMap_arr *vdMapArr     = initialize_HPMap_arr(mPar->nside, mPar->nbDepthMaps);
-  sampler_arr *VD_nOfZArr = initialize_sampler_arr(mPar->N_z_map+1, mPar->VD_nbNOfZ); //-- +1 is necessary
-  gal_list_mat *gListMat  = initialize_gal_list_mat(mPar->N_z_map, mPar->totNbTypes);
-  HPMap_arr *bufferMap    = initialize_HPMap_arr(mPar->nside, 6);
+  sampler_arr *nOfZArr    = initialize_sampler_arr(sPar->N_z_map+1, sPar->nbTypes); //-- +1 is necessary
+  HPMap_arr *vdMapArr     = initialize_HPMap_arr(sPar->nside, sPar->nbDepthMaps);
+  sampler_arr *VD_nOfZArr = initialize_sampler_arr(sPar->N_z_map+1, sPar->VD_nbNOfZ); //-- +1 is necessary
+  gal_list_mat *gListMat  = initialize_gal_list_mat(sPar->N_z_map, sPar->totNbTypes);
+  HPMap_arr *bufferMap    = initialize_HPMap_arr(sPar->nside, 6);
   
-  setRatioMaps(mPar, rMapArr);
-  setNOfZArr(mPar, inter, nOfZArr);
-  setDepthMaps(mPar, vdMapArr);
-  setVDNOfZArr(mPar, inter, VD_nOfZArr);
-  sampleGalaxies(mPar, NULL, rMapArr, nOfZArr, vdMapArr, VD_nOfZArr, gListMat, bufferMap->array[0], N_MAX_2);
+  setRatioMaps(sPar, rMapArr);
+  setNOfZArr(sPar, inter, nOfZArr);
+  setDepthMaps(sPar, vdMapArr);
+  setVDNOfZArr(sPar, inter, VD_nOfZArr);
+  sampleGalaxies(sPar, NULL, rMapArr, nOfZArr, vdMapArr, VD_nOfZArr, gListMat, bufferMap->array[0], N_MAX_2);
   
-  if (mPar->skipLensing == 1) {
-    if (mPar->verbose < 3) printf("Skipped lensing module\n");
+  if (sPar->skipLensing == 1) {
+    if (sPar->verbose < 3) printf("Skipped lensing module\n");
   }
   else {
-    interpolateLensing(mPar, gListMat, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], bufferMap->array[3], bufferMap->array[4], bufferMap->array[5]);
-    makeG(mPar, gListMat);
-    addNoise(mPar, gListMat);
-    flipSign(mPar, gListMat);
+    interpolateLensing(sPar, gListMat, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], bufferMap->array[3], bufferMap->array[4], bufferMap->array[5]);
+    makeG(sPar, gListMat);
+    addNoise(sPar, gListMat);
+    flipSign(sPar, gListMat);
   }
   
-  outFitsGalListMat(mPar, gListMat, mPar->verbose<3);
+  outFitsGalListMat(sPar, gListMat, sPar->verbose<3);
   
   free_HPMap_arr(rMapArr);
   free_interpolator_t(inter);
@@ -1511,29 +1511,29 @@ void processMock_depthMap_LOS(MFP_param *mPar)
   return;
 }
 
-void processMock_ratioMap_projCL(MFP_param *mPar, int resol, int nbSplits)
+void processMock_ratioMap_projCL(Salmo_param *sPar, int resol, int nbSplits)
 {
-  HPMap_arr *rMapArr     = initialize_HPMap_arr(mPar->nside, mPar->nbTypes);
+  HPMap_arr *rMapArr     = initialize_HPMap_arr(sPar->nside, sPar->nbTypes);
   interpolator_t *inter  = initialize_interpolator_t(N_MAX_1);
-  sampler_arr *nOfZArr   = initialize_sampler_arr(mPar->N_z_map+1, mPar->nbTypes); //-- +1 is necessary
-  gal_list_mat *gListMat = initialize_gal_list_mat(mPar->nbTypes, mPar->nbTypes);
-  HPMap_arr *bufferMap   = initialize_HPMap_arr(mPar->nside, 3);
+  sampler_arr *nOfZArr   = initialize_sampler_arr(sPar->N_z_map+1, sPar->nbTypes); //-- +1 is necessary
+  gal_list_mat *gListMat = initialize_gal_list_mat(sPar->nbTypes, sPar->nbTypes);
+  HPMap_arr *bufferMap   = initialize_HPMap_arr(sPar->nside, 3);
   
-  setRatioMaps(mPar, rMapArr);
-  setNOfZArr(mPar, inter, nOfZArr);
-  sampleGalaxies_projCL(mPar, NULL, rMapArr, nOfZArr, NULL, NULL, gListMat, bufferMap->array[0], N_MAX_2, resol, nbSplits);
+  setRatioMaps(sPar, rMapArr);
+  setNOfZArr(sPar, inter, nOfZArr);
+  sampleGalaxies_projCL(sPar, NULL, rMapArr, nOfZArr, NULL, NULL, gListMat, bufferMap->array[0], N_MAX_2, resol, nbSplits);
   
-  if (mPar->skipLensing == 1) {
-    if (mPar->verbose < 3) printf("Skipped lensing module\n");
+  if (sPar->skipLensing == 1) {
+    if (sPar->verbose < 3) printf("Skipped lensing module\n");
   }
   else {
-    assignLensing_projCL(mPar, gListMat, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], nbSplits);
-    makeG(mPar, gListMat);
-    addNoise(mPar, gListMat);
-    flipSign(mPar, gListMat);
+    assignLensing_projCL(sPar, gListMat, bufferMap->array[0], bufferMap->array[1], bufferMap->array[2], nbSplits);
+    makeG(sPar, gListMat);
+    addNoise(sPar, gListMat);
+    flipSign(sPar, gListMat);
   }
   
-  outFitsGalListMat(mPar, gListMat, mPar->verbose<3);
+  outFitsGalListMat(sPar, gListMat, sPar->verbose<3);
   
   free_HPMap_arr(rMapArr);
   free_interpolator_t(inter);

@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
   int MPISize = 1;
   int MPIInd  = 0;
   
-#ifdef __MFP_USE_MPI__
+#ifdef __SALMO_USE_MPI__
   //-- MPI initialization
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &MPISize);
@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
   
   //-- Load inputs
   //-- Below are some strings that will be automatically recognized as keys for parameter files.
-  char *parPath = (argc >= 2) ? argv[1] : "../param/MFPParam.par";
-  if (!strcmp(parPath, "default"))        parPath = "../param/MFPParam.par";
+  char *parPath = (argc >= 2) ? argv[1] : "../param/salmoParam.par";
+  if (!strcmp(parPath, "default"))        parPath = "../param/salmoParam.par";
   else if (!strcmp(parPath, "anser"))     parPath = "../param/MFPParam_anser.par";
   else if (!strcmp(parPath, "buceros"))   parPath = "../param/MFPParam_buceros.par";
   else if (!strcmp(parPath, "corvus"))    parPath = "../param/MFPParam_corvus.par";
@@ -63,13 +63,13 @@ int main(int argc, char *argv[])
   int task = (argc >= 3) ? atoi(argv[2]) : -1;
   
   //-- Initialization
-  MFP_param *mPar = initialize_MFP_param();
-  readParameters(parPath, mPar, 0); //-- Get only verbose
-  mPar->MPISize = MPISize;
-  mPar->MPIInd  = MPIInd;
+  Salmo_param *sPar = initialize_Salmo_param();
+  readParameters(parPath, sPar, 0); //-- Get only verbose
+  sPar->MPISize = MPISize;
+  sPar->MPIInd  = MPIInd;
   
   //-- Print the header after read pkPar->verbose
-  if (MPIInd == 0 && mPar->verbose < 99) {
+  if (MPIInd == 0 && sPar->verbose < 99) {
     printf("\n");
     printf("        #################################################\n");
     printf("        ##                    Salmo                    ##\n");
@@ -81,23 +81,23 @@ int main(int argc, char *argv[])
   }
   
   //-- Initialization (continued)
-  readParameters(parPath, mPar, 1);                   //-- Read again
-  int help = updateFromCommandLine(argc, argv, mPar); //-- Update parameters from the command line
-  setParameters(mPar);                                //-- Precalculate some parameters
+  readParameters(parPath, sPar, 1);                   //-- Read again
+  int help = updateFromCommandLine(argc, argv, sPar); //-- Update parameters from the command line
+  setParameters(sPar);                                //-- Precalculate some parameters
   
   //-- Print parameters
-  if (MPIInd == 0 && mPar->verbose < 99) {
+  if (MPIInd == 0 && sPar->verbose < 99) {
     printf("Initialized parameters\n");
     printf("------------------------------------------------------------------------\n");
     
     if (task == -1 || task == -2) ;
     else {
-      printParam(mPar);
+      printParam(sPar);
       printf("------------------------------------------------------------------------\n");
     }
   }
   
-#ifdef __MFP_USE_MPI__
+#ifdef __SALMO_USE_MPI__
   //-- Stopping lock for no MPI task
   if (MPISize > 1 && !(task == 1)) {
     printf("Cannot use multiple processors for task %d\n", task);
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
   
   //-- Sandbox
   if (task == 0) {
-    sandbox(mPar);
+    sandbox(sPar);
   }
   
   //-- Print instructions
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
   
   //-- Print complete parameters
   else if (task == -2) {
-    printCompleteParam(mPar);
+    printCompleteParam(sPar);
     printf("------------------------------------------------------------------------\n");
   }
   
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
   else if (task == 1) {
     if (argc < 3 || help) printInstructions(task, 1);
     else {
-      processLensingMaps(mPar);
+      processLensingMaps(sPar);
     }
   }
   
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
   else if (task == 2) {
     if (argc < 3 || help) printInstructions(task, 1);
     else {
-      processMock_typeMap_LOS(mPar);
+      processMock_typeMap_LOS(sPar);
     }
   }
   
@@ -156,8 +156,8 @@ int main(int argc, char *argv[])
   else if (task == 3) {
     if (argc < 3 || help) printInstructions(task, 1);
     else {
-      if (mPar->doVariableDepth) processMock_depthMap_LOS(mPar);
-      else                       processMock_ratioMap_LOS(mPar);
+      if (sPar->doVariableDepth) processMock_depthMap_LOS(sPar);
+      else                       processMock_ratioMap_LOS(sPar);
     }
   }
   
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
   else if (task == 4) {
     if (argc < 3 || help) printInstructions(task, 1);
     else {
-      processMock_ratioMap_CL(mPar);
+      processMock_ratioMap_CL(sPar);
     }
   }
   
@@ -182,19 +182,19 @@ int main(int argc, char *argv[])
       int resol    = atoi(argv[3]);
       int nbSplits = atoi(argv[4]);
       printf("task = 5, resol = %d, nb of splits = %d\n", resol, nbSplits);
-      processMock_ratioMap_projCL(mPar, resol, nbSplits);
+      processMock_ratioMap_projCL(sPar, resol, nbSplits);
     }
   }
   
   //-- Stop stopwatch
   clock_t finish = clock();
-  if (MPIInd == 0 && mPar->verbose < 99) {
+  if (MPIInd == 0 && sPar->verbose < 99) {
     printTime(start, finish);
     printf("\n");
   }
   
-  free_MFP_param(mPar);
-#ifdef __MFP_USE_MPI__
+  free_Salmo_param(sPar);
+#ifdef __SALMO_USE_MPI__
   MPI_Finalize();
 #endif
   return 0;
@@ -323,7 +323,7 @@ void printDetails(int task, int doHelp)
   return;
 }
 
-void sandbox(MFP_param *mPar)
+void sandbox(Salmo_param *sPar)
 {
   char name[STRING_LENGTH_MAX];
   char name2[STRING_LENGTH_MAX];
@@ -332,7 +332,7 @@ void sandbox(MFP_param *mPar)
   printf("If you are a developer, please feel free to use this function for quick tests.\n");
   printf("\n");
   
-//   printCompleteParam(mPar);
+//   printCompleteParam(sPar);
   
   //mpirun -n 3 ./salmo default 35
   printf("------------------------------------------------------------------------\n");

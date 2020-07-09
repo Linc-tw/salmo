@@ -11,8 +11,8 @@
 
 #include "commonHeader.h"
 
-#ifndef __MFP_HEALPIX_FUNCTIONS__
-#define __MFP_HEALPIX_FUNCTIONS__
+#ifndef __SALMO_HEALPIX_FUNCTIONS__
+#define __SALMO_HEALPIX_FUNCTIONS__
 
 #include <chealpix.h>
 
