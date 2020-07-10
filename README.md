@@ -9,7 +9,7 @@ Date: 2020-07-10
 Description
 -----------
 
-_Salmo_ is a software to generate fast mocks for cosmological analysis with the following characteristics:
+_Salmo_ is a C-based software to generate fast mocks for cosmological analysis with the following characteristics:
 - galaxy mocks, with or without lensing signals;
 - curved sky;
 - can generate multiple tracers coherently;
@@ -67,7 +67,7 @@ _Salmo_ requires some external files as inputs to work:
 
 Other values to specify are galaxy number densities & shape noise.
 
-### Quick Run
+### Quick run
 
 With the provided parameter file `param/salmoParam.par` and input files in `demo/input`, 
 users can execute:
