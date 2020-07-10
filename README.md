@@ -3,19 +3,19 @@ Salmo
 
 Speedy Acquisition for Lensing and Matter Observables  
 Chieh-An Lin (IfA Edinburgh)  
-Date: 2020-07-09  
+Date: 2020-07-10  
 
 
 Description
 -----------
 
-Salmo is a software to generate fast mocks for cosmological analysis with the following characteristics:
+_Salmo_ is a software to generate fast mocks for cosmological analysis with the following characteristics:
 - galaxy mocks, with or without lensing signals;
 - curved sky;
 - can generate multiple tracers coherently;
 - each tracer can have its own mask and redshift distribution.
 
-Salmo is designed to be used with the [_Flask_](https://github.com/hsxavier/flask) software. 
+_Salmo_ is designed to be used with the [_Flask_](https://github.com/hsxavier/flask) software. 
 The map outputs from _Flask_ or those with the same format are required to generate catalogues.
 See **Usage** and [Wiki](https://github.com/Linc-tw/salmo/wiki) for details.
 
@@ -30,7 +30,6 @@ Installation
 - [gcc](https://gcc.gnu.org/)
 - [gsl](https://www.gnu.org/software/gsl/)
 - [cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/fitsio.html)
-- [chealpix](https://github.com/fabienbaron/chealpix) (see also [here](https://healpix.jpl.nasa.gov/index.shtml))
 
 
 ### Compilation
@@ -61,7 +60,7 @@ Usage
 
 ### External files to provide
 
-Salmo requires some external files as inputs to work:
+_Salmo_ requires some external files as inputs to work:
 - density & lensing maps,
 - masks, and 
 - redshift distributions.
@@ -90,7 +89,12 @@ $ ./salmo
 License
 -------
 
-Salmo is distributed under the terms of the [GNU General Public License Version 3 (GPLv3)](https://www.gnu.org/licenses/).
+_Salmo_ is released under [GNU General Public License Version 3 (GPLv3)](https://www.gnu.org/licenses/).
 
-It gives to users the option to distribute an application which uses Salmo under the terms of GNU GPLv3.
+It contains 2 pieces of code ([this](https://github.com/Linc-tw/salmo/blob/master/source/chealpix.c) 
+and [that](https://github.com/Linc-tw/salmo/blob/master/source/chealpix.h)
+taken from [HEALPix](https://healpix.sourceforge.io/index.php) and is released under 
+[GNU General Public License Version 2 (GPLv2)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
+
+It gives users the option to distribute an application which uses _Salmo_ under the same GNU GPLv3 license.
 

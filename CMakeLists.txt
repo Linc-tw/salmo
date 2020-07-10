@@ -16,7 +16,7 @@ option(CPP "Compile with Linc's path" OFF)
 
 ## Use pkg-config to find modules
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(REQ_PKG REQUIRED gsl cfitsio chealpix)
+pkg_check_modules(REQ_PKG REQUIRED gsl cfitsio)
 #pkg_check_modules(MPI mpi)
 
 ## Link the required modules
