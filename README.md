@@ -74,7 +74,7 @@ users can execute:
 ```Bash
 $ ./salmo default 3
 ```
-for a quick sample run and find catalogues in `demo/output`.
+for a quick example run and find catalogues in `demo/output`.
 
 See [Wiki](https://github.com/Linc-tw/salmo/wiki) for detailed tutorials.
 
@@ -92,9 +92,9 @@ License
 _Salmo_ is released under [GNU General Public License Version 3 (GPLv3)](https://www.gnu.org/licenses/).
 
 It contains 2 pieces of code ([this](https://github.com/Linc-tw/salmo/blob/master/source/chealpix.c) 
-and [that](https://github.com/Linc-tw/salmo/blob/master/source/chealpix.h)
+and [that](https://github.com/Linc-tw/salmo/blob/master/source/chealpix.h))
 taken from [HEALPix](https://healpix.sourceforge.io/index.php) and is released under 
 [GNU General Public License Version 2 (GPLv2)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
 
-It gives users the option to distribute an application which uses _Salmo_ under the same GNU GPLv3 license.
+This gives users the option to distribute an application which uses _Salmo_ under the same GPLv3 license.
 
