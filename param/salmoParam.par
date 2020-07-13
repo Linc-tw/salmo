@@ -19,7 +19,7 @@
 seed		random			## [int or string] Seed for generating random numbers
 					##   If seed is int, suggested range = [0, 4294967295]
 					##   Put anything containing 'r' for a random seed
-verbose		0			## [int] 0 = default, 1 = all, 2 = no flush, 99 = silent
+verbose		1			## [int] 1 = all, 2 = no flush, 99 = silent
 
 ################################################################################
 ## 2. Input maps
@@ -68,7 +68,6 @@ nOfZPath	0	../demo/input/nOfZ_hist_type0.dat
 nOfZPath        1       ../demo/input/nOfZ_hist_type1.dat
 					## [1 int, 1 string] Index of type and path to n(z) for that type
 					##   The index starts from 0 and should not exceed nbTypes-1.
-					##   All n(z) histogram needs to have the same redshift bins as defined by bin_z_map
 					##   Have to be ASCII files
 					##   Have to be put after nbTypes
 
