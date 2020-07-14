@@ -14,7 +14,7 @@
 #ifndef __SALMO_HEALPIX_FUNCTIONS__
 #define __SALMO_HEALPIX_FUNCTIONS__
 
-#include <chealpix.h>
+#include "chealpix.h"
 
 
 //-- Functions related to base 2 calculations
