@@ -746,6 +746,8 @@ void assignLensing(Salmo_param *sPar, gal_list_mat *gListMat, HPMap_t *kappa, HP
 	  g->kappa   = 0.0;
 	  g->gamma_1 = 0.0;
 	  g->gamma_2 = 0.0;
+          g->e_1     = 0.0;
+          g->e_2     = 0.0;
 	}
       }
     }
