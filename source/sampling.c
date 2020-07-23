@@ -2,7 +2,7 @@
 
   //------------------------------------------------------//
   //--  sampling.c                                      --//
-  //--  Version 2020.07.09                              --//
+  //--  Version 2020.07.21                              --//
   //--                                                  --//
   //--  Copyright (C) 2020 - Chieh-An Lin               --//
   //--  GNU GPLv3 - https://www.gnu.org/licenses/       --//
@@ -912,31 +912,43 @@ void addNoise(Salmo_param *sPar, gal_list_mat *gListMat)
     //--   epsilon2 = [e2(1 - g1^2 + g2^2) + g2(1 + C + A)] / [1 + A + B + C(g1^2 + g2^2)]
     
     for (k=0; k<gListMat->N2; k++) {
-      if (k < sPar->nbTypes && sPar->doLensing[k] == 0) continue;
+      if (k < sPar->nbTypes && sPar->doLensing[k] == 0) {
+        for (j=0; j<gListMat->N1; j++) {
+          gList = gListMat->matrix[j+k*gListMat->N1];
+          
+          for (l=0, gNode=gList->first; l<gList->size; l++, gNode=gNode->next) {
+            g = gNode->g;
+            g->e_1 = 0.0;
+            g->e_2 = 0.0;
+          }
+        }
+      }
       
-      for (j=0; j<gListMat->N1; j++) {
-	gList = gListMat->matrix[j+k*gListMat->N1];
-	
-	for (l=0, gNode=gList->first; l<gList->size; l++, gNode=gNode->next) {
-	  g  = gNode->g;
-	  g1 = g->gamma_1; //-- Already reduced shear
-	  g2 = g->gamma_2;
-	  
-	  do e1 = gsl_ran_gaussian(sPar->generator, g->sigma_eps);
-	  while (fabs(e1) >= 1.0);
-	  do e2 = gsl_ran_gaussian(sPar->generator, g->sigma_eps);
-	  while (fabs(e2) >= 1.0);
-	  
-	  A = 2.0 * g1 * e1;
-	  B = 2.0 * g2 * e2;
-	  C = e1 * e1 + e2 * e2;
-	  g1_sq = g1 * g1;
-	  g2_sq = g2 * g2;
-	  factor = 1.0 / (1.0 + A + B + (g1_sq + g2_sq) * C);
-	  
-	  g->e_1 = factor * (e1 * (1.0 + g1_sq - g2_sq) + g1 * (1.0 + C + B));
-	  g->e_2 = factor * (e2 * (1.0 - g1_sq + g2_sq) + g2 * (1.0 + C + A));
-	}
+      else {
+        for (j=0; j<gListMat->N1; j++) {
+          gList = gListMat->matrix[j+k*gListMat->N1];
+          
+          for (l=0, gNode=gList->first; l<gList->size; l++, gNode=gNode->next) {
+            g  = gNode->g;
+            g1 = g->gamma_1; //-- Already reduced shear
+            g2 = g->gamma_2;
+            
+            do e1 = gsl_ran_gaussian(sPar->generator, g->sigma_eps);
+            while (fabs(e1) >= 1.0);
+            do e2 = gsl_ran_gaussian(sPar->generator, g->sigma_eps);
+            while (fabs(e2) >= 1.0);
+            
+            A = 2.0 * g1 * e1;
+            B = 2.0 * g2 * e2;
+            C = e1 * e1 + e2 * e2;
+            g1_sq = g1 * g1;
+            g2_sq = g2 * g2;
+            factor = 1.0 / (1.0 + A + B + (g1_sq + g2_sq) * C);
+            
+            g->e_1 = factor * (e1 * (1.0 + g1_sq - g2_sq) + g1 * (1.0 + C + B));
+            g->e_2 = factor * (e2 * (1.0 - g1_sq + g2_sq) + g2 * (1.0 + C + A));
+          }
+        }
       }
     }
   }
