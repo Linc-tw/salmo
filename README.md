@@ -2,7 +2,7 @@ Salmo
 =====
 
 Speedy Acquisition for Lensing and Matter Observables  
-Chieh-An Lin (IfA Edinburgh)  
+Chieh-An Lin (Institute for Astronomy, University of Edinburgh)  
 Date: 2020-07-30  
 ![logo](doc/Salmo_400px.png)
 
@@ -85,6 +85,28 @@ To get program instructions, please execute:
 ```Bash
 $ ./salmo
 ```
+
+Attribution
+-----------
+
+Please cite the following paper for referencing _Salmo_:
+- [Joachimi, Lin, et al.](https://arxiv.org/abs/2007.01844). Submitted to A&A. _KiDS-1000 Methodology: Modelling and inference for joint weak gravitational lensing and spectroscopic galaxy clustering analysis_.
+
+Here are some other works in which _Salmo_ is involved:
+- [Giblin et al.](https://arxiv.org/abs/2007.01845). Submitted to A&A. _KiDS-1000 catalogue: weak gravitational lensing shear measurements_.
+- [Heydenreich et al. (2020)](https://doi.org/10.1051/0004-6361/201936966). A&A, 634, A104. _The effects of varying depth in cosmic shear surveys_.
+
+
+Contributing to _Salmo_
+-----------------------
+
+No upcoming development is planned by the owner. 
+Only maintenance will be done.
+However, developers are welcome to contribute to _Salmo_ in various ways:
+- draft an issue,
+- e-mail to the owner at calin(at)roe.ac.uk,
+- propose a pull request from a fork of this repository, or
+- request for being a collaborator.
 
 
 License
