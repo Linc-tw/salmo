@@ -3,7 +3,7 @@ Salmo
 
 Speedy Acquisition for Lensing and Matter Observables  
 Chieh-An Lin (Institute for Astronomy, University of Edinburgh)  
-Date: 2020-07-30  
+Release v1.0.0 - 2020-07-31  
 ![logo](doc/Salmo_400px.png)
 
 
@@ -90,10 +90,12 @@ Attribution
 -----------
 
 Please cite the following paper for referencing _Salmo_:
-- [Joachimi, Lin, et al.](https://arxiv.org/abs/2007.01844). Submitted to A&A. _KiDS-1000 Methodology: Modelling and inference for joint weak gravitational lensing and spectroscopic galaxy clustering analysis_.
+- [Joachimi, Lin, et al.](https://arxiv.org/abs/2007.01844) Submitted to A&A. _KiDS-1000 Methodology: Modelling and inference for joint weak gravitational lensing and spectroscopic galaxy clustering analysis_.
 
 Here are some other works in which _Salmo_ is involved:
-- [Giblin et al.](https://arxiv.org/abs/2007.01845). Submitted to A&A. _KiDS-1000 catalogue: weak gravitational lensing shear measurements_.
+- [Heymans et al.](https://arxiv.org/abs/2007.15632) Submitted to A&A. _KiDS-1000 Cosmology: Multi-probe weak gravitational lensing and spectroscopic galaxy clustering constraints_.
+- [Asgari, Lin, et al.](https://arxiv.org/abs/2007.15633) Submitted to A&A. _KiDS-1000 Cosmology: Cosmic shear constraints and comparison between two point statistics_.
+- [Giblin et al.](https://arxiv.org/abs/2007.01845) Submitted to A&A. _KiDS-1000 catalogue: weak gravitational lensing shear measurements_.
 - [Heydenreich et al. (2020)](https://doi.org/10.1051/0004-6361/201936966). A&A, 634, A104. _The effects of varying depth in cosmic shear surveys_.
 
 
