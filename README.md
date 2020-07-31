@@ -3,8 +3,7 @@ Salmo
 
 Speedy Acquisition for Lensing and Matter Observables  
 Chieh-An Lin (IfA Edinburgh)  
-Date: 2020-07-30
-<p align="center"><img src="https://github.com/Linc-tw/salmo/blob/master/doc/Salmo_400px.png" width="300px" /></p>  
+Date: 2020-07-10  
 
 
 Description
